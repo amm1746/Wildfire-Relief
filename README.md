@@ -5,10 +5,14 @@ An online U-Fund system built in Java **21** and ___ _replace with other platfor
   
 ## Team
 
+<<<<<<< HEAD
 - MEMBER1
-- Alexandra Mantagas
+=======
+- Eric Zheng Wu
+- MEMBER2
+>>>>>>> c90b04aefc746350806ceae382a3bd7a624cd7d8
 - MEMBER3
-- MEMBER4
+- Alexandra Mantagas
 
 
 ## Prerequisites
