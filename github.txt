@@ -1,0 +1,30 @@
+commit 216e54144f08ce35fa63e1f1cb99621e50442cbd
+Author: Alexandra Mantagas <amm1746@rit.edu>
+Date:   Thu Feb 13 01:03:10 2025 -0500
+
+    Resolved conflict
+
+commit ba2e98c6e1fcc873494aa93f7cfe865c4a88415e
+Merge: cf81496 c90b04a
+Author: Alexandra Mantagas <amm1746@rit.edu>
+Date:   Wed Feb 12 18:04:23 2025 -0500
+
+    Alex check in
+
+commit cf81496dacbd1119be88abc83e187227ff567aa0
+Author: Alexandra Mantagas <amm1746@rit.edu>
+Date:   Wed Feb 12 18:01:27 2025 -0500
+
+    Added name to README
+
+commit c90b04aefc746350806ceae382a3bd7a624cd7d8
+Author: ez8664 <ez8664@g.rit.edu>
+Date:   Wed Feb 12 17:57:02 2025 -0500
+
+    Eric check in
+
+commit f18eba8d3b8e6bfef5f218e0eb9cc76bf0b91f4a
+Author: github-classroom[bot] <66690702+github-classroom[bot]@users.noreply.github.com>
+Date:   Tue Feb 11 02:15:24 2025 +0000
+
+    Initial commit
