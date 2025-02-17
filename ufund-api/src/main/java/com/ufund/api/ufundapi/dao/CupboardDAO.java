@@ -6,10 +6,8 @@
 
  package com.ufund.api.ufundapi.dao;
 
- import com.ufund.model.Need;
- import java.util.List;
-
  import com.ufund.api.ufundapi.model.Need;
+ import java.util.List;
 
  public interface CupboardDAO{
     Need needByName(String name);
