@@ -4,7 +4,7 @@
  * @author Alexandra Mantagas
  */
 
- package com.ufund.model; 
+ package main.java.com.ufund.api.ufundapi.model;
 
  public class Need {
     private String name;
@@ -18,7 +18,6 @@
         this.quantity = quantity;
         this.type = type;
     }
- }
 
  //getters and setters 
  public String getName(){
@@ -51,5 +50,6 @@
  
  public void setType(String type){
     this.type = type; 
+ }
  }
 
