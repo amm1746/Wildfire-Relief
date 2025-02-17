@@ -10,6 +10,10 @@
  import java.util.List;
 
  public interface CupboardDAO{
-    
+    Need needByName(String name);
+    Need createNeed(Need need);
+    List<Need> getAllNeeds();
+    void deleteNeed(String name);
+    boolean needExists(String name);
  }
 
