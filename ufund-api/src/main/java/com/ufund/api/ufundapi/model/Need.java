@@ -4,7 +4,7 @@
  * @author Alexandra Mantagas
  */
 
- package main.java.com.ufund.api.ufundapi.model;
+ package com.ufund.api.ufundapi.model;
 
  public class Need {
     private String name;

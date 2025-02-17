@@ -4,7 +4,7 @@
  * @author Alexandra Mantagas
  */
 
- package main.java.com.ufund.api.ufundapi.dao;
+ package com.ufund.api.ufundapi.dao;
 
  import main.java.com.ufund.api.ufundapi.model.Need;
  import java.util.*;
