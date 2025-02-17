@@ -6,7 +6,7 @@ An online U-Fund system built in Java **21** and ___ _replace with other platfor
 ## Team
 
 - Eric Zheng Wu
-- MEMBER2
+- Evan Lin 
 - MEMBER3
 - Alexandra Mantagas
 
