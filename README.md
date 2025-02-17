@@ -7,11 +7,7 @@ An online U-Fund system built in Java **21** and ___ _replace with other platfor
 
 - Eric Zheng Wu
 - Evan Lin
-<<<<<<< HEAD
-- MEMBER3
-=======
 - Sophia Le
->>>>>>> 6a0701d49dfdb23d859b001068540ef70848d69c
 - Alexandra Mantagas
 
 
