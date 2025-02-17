@@ -6,7 +6,7 @@
 
  package com.ufund.api.ufundapi.dao;
 
- import com.ufund.api.ufundapi.model.Need;
+ import main.java.com.ufund.api.ufundapi.model.Need;
  import java.util.*;
  import java.io.*;
 
