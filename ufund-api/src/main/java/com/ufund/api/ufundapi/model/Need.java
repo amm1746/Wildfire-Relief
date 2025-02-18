@@ -5,14 +5,16 @@
  */
 
  package com.ufund.api.ufundapi.model;
+ import java.util.logging.Logger;
 
  public class Need {
+   private static final Logger LOG = Logger.getLogger(Need.class.getName());
     private String name;
     private double cost;
     private int quantity;
     private String type; 
 
-    public Need(String name, double cost, int quantity, String type){
+    public Need(@JsonProperty("name") String name, @JsonProperty("cost") double cost, @JsonProperty("quantity") int quantity, @JsonProperty("type") String type){
         this.name = name;
         this.cost = cost;
         this.quantity = quantity;
