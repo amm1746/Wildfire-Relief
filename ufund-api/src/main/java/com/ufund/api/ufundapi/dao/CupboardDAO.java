@@ -6,8 +6,9 @@
 
  package com.ufund.api.ufundapi.dao;
 
- import com.ufund.api.ufundapi.model.Need;
  import java.util.List;
+
+ import com.ufund.api.ufundapi.model.Need;
 
  public interface CupboardDAO{
     Need needByName(String name);
@@ -15,5 +16,6 @@
     List<Need> getAllNeeds();
     void deleteNeed(String name);
     boolean needExists(String name);
+    Need updateNeed(String name, Need updated);
  }
 
