@@ -2,8 +2,16 @@ package com.ufund.api.ufundapi.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
+import java.io.IOException;
 
 /**
  * Controller for managing cupboard-related operations such
@@ -11,6 +19,9 @@ import com.ufund.api.ufundapi.model.Need;
  * 
  * @author Sophia Le
  */
+
+ @RestController
+ @RequestMapping("/cupboard")
 public class CupboardController {
 
     private final CupboardDAO cupboardDAO;
@@ -49,5 +60,20 @@ public class CupboardController {
     public List<Need> getCupboard() {
         List<Need> needs = cupboardDAO.getAllNeeds();
         return needs;
+    }
+
+    //accepts need object from request body, checks if need exists, creates need if doesnt exist and returns 201 CREATED, returns 409 Conflict if need exists 
+    @PostMapping("/need")
+    public ResponseEntity<Need> createNeed(@RequestBody Need need){
+        try{
+            if(cupboardDAO.needExists(need.getName())){
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+            Need createdNeed = cupboardDAO.createNeed(need);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdNeed);
+        }
+        catch(IOException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
