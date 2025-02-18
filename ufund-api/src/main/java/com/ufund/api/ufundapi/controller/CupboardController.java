@@ -1,5 +1,7 @@
 package com.ufund.api.ufundapi.controller;
 
+import java.util.List;
+
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
 
@@ -36,5 +38,10 @@ public class CupboardController {
 
         Need updated = cupboardDAO.updateNeed(name, updatedNeed);
         return (updated != null) ? "Need updated successfully" : "Failed to update need";
+    }
+    
+    public List<Need> getCupboard() {
+        List<Need> needs = cupboardDAO.getAllNeeds();
+        return needs;
     }
 }
