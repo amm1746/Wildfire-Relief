@@ -40,6 +40,13 @@ import com.ufund.api.ufundapi.model.Need;
         return false;
     }
 
+    /**
+     * Updates an existing need.
+     * 
+     * @param name The name of the need to be updated
+     * @param updated The need object containing updated data
+     * @return The updated need if successful, null otherwise
+     */
     @Override
     public Need updateNeed(String name, Need updated) {
         for(int i = 0; i < needs.size(); i++) {
