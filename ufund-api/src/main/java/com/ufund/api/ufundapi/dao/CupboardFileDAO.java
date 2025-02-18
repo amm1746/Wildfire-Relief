@@ -6,8 +6,10 @@
 
  package com.ufund.api.ufundapi.dao;
 
- import com.ufund.api.ufundapi.model.Need;
- import java.util.*;
+ import java.util.ArrayList;
+ import java.util.List;
+
+import com.ufund.api.ufundapi.model.Need;
 
  public class CupboardFileDAO implements CupboardDAO{
     List<Need> needs = new ArrayList<>();
@@ -36,5 +38,16 @@
     @Override
     public boolean needExists(String name){
         return false;
+    }
+
+    @Override
+    public Need updateNeed(String name, Need updated) {
+        for(int i = 0; i < needs.size(); i++) {
+            if(needs.get(i).getName().equalsIgnoreCase(name)) {
+                needs.set(i, updated);
+                return updated;
+            }
+        }
+        return null; // need not found
     }
  }
