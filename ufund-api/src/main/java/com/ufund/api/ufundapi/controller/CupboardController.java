@@ -40,6 +40,12 @@ public class CupboardController {
         return (updated != null) ? "Need updated successfully" : "Failed to update need";
     }
     
+    /**
+     * Gets the entire cupboard
+     * 
+     * @return a list of all needs in the cupboard, empty list
+     * otherwise
+     */
     public List<Need> getCupboard() {
         List<Need> needs = cupboardDAO.getAllNeeds();
         return needs;
