@@ -20,6 +20,8 @@ import java.io.IOException;
  * @author Sophia Le
  */
 
+ //restcontroller marks the class as a controller to handle HTTP requests
+ //requestmapping sets base url 
  @RestController
  @RequestMapping("/cupboard")
 public class CupboardController {
@@ -62,7 +64,7 @@ public class CupboardController {
         return needs;
     }
 
-    //accepts need object from request body, checks if need exists, creates need if doesnt exist and returns 201 CREATED, returns 409 Conflict if need exists 
+    //accepts need object from request body, checks if need exists, creates need if doesnt exist and returns 201 CREATED, returns 409 Conflict if need exists
     @PostMapping("/need")
     public ResponseEntity<Need> createNeed(@RequestBody Need need){
         try{

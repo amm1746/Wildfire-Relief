@@ -12,8 +12,11 @@
  import com.ufund.api.ufundapi.model.Need;
  import java.io.IOException;
  import org.springframework.beans.factory.annotation.Value;
- import java.io.File;
+import org.springframework.stereotype.Component;
 
+import java.io.File;
+
+ @Component
  public class CupboardFileDAO implements CupboardDAO{
     List<Need> needs = new ArrayList<>();
     private ObjectMapper objectMapper;
