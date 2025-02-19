@@ -85,4 +85,13 @@ public class CupboardController {
         return(need != null) ? ResponseEntity.ok(need) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
     }
+
+    @DeleteMapping("/need/{name}")
+    public ResponseEntity<String> deleteNeed(@PathVariable String name){
+        if(!cupboardDAO.needExists(name)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Need not found");
+        }
+        cupboardDAO.deleteNeed(name);
+        return ResponseEntity.ok("Need deleted successfully");
+    }
 }
