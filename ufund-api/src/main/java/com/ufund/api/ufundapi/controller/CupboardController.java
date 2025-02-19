@@ -61,7 +61,12 @@ public class CupboardController {
         return ResponseEntity.ok(needs);
     }
 
-    //accepts need object from request body, checks if need exists, creates need if doesnt exist and returns 201 CREATED, returns 409 Conflict if need exists
+    /**
+     * Creates a new need in the cupboard.
+     * 
+     * @param need The need being created.
+     * @return The created need if successful, or a conflict status if it already exists.
+     */
     @PostMapping("/need")
     public ResponseEntity<Need> createNeed(@RequestBody Need need){
         try{
@@ -76,6 +81,12 @@ public class CupboardController {
         }
     }
 
+    /**
+     * Gets a specific need by its name.
+     * 
+     * @param name The name of the need.
+     * @return The need if found, otherwise a not found status.
+     */
     @GetMapping("/need/{name}")
     public ResponseEntity<Need> getNeedByName(@PathVariable String name){
         Need need = cupboardDAO.getNeed(name);
@@ -83,6 +94,12 @@ public class CupboardController {
 
     }
 
+    /**
+     * Deletes a need by its name.
+     * 
+     * @param name The name of the need being deleted.
+     * @return A message saying if it was deleted successfully or not.
+     */
     @DeleteMapping("/need/{name}")
     public ResponseEntity<String> deleteNeed(@PathVariable String name){
         if(!cupboardDAO.needExists(name)){
@@ -92,6 +109,12 @@ public class CupboardController {
         return ResponseEntity.ok("Need deleted successfully");
     }
 
+    /**
+     * Searches for needs based on partial or full name match.
+     * 
+     * @param name The name (partial or full) of need being searched for.
+     * @return A list of needs matching the name.
+     */
     @GetMapping("/needs/search")
     public ResponseEntity<List<Need>> searchNeeds(@RequestParam String name){
         List<Need> needs = cupboardDAO.getAllNeeds();
