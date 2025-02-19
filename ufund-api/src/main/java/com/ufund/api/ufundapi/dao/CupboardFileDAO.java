@@ -61,10 +61,40 @@ import java.io.File;
         save();
         return need;
     }
+
+    /**
+     * get a single need
+     * 
+     * @param name the name of the need
+     * @return return the need object if exist
+     */
     @Override 
-    public Need needByName(String name){
+    public Need getNeed(String name){
+        for (Need need : needs) {
+            if (need.getName().equalsIgnoreCase(name)) {
+                return need;
+            }
+        }
         return null;
     }
+
+    /**
+     * Searches for needs containing the given substring in their name.
+     * 
+     * @param substring The substring to search for
+     * @return A list of needs whose names contain the given substring
+     */
+    @Override
+    public List<Need> needByName(String substring) {
+        List<Need> matchingNeeds = new ArrayList<>();
+        for (Need need : needs) {
+            if (need.getName().toLowerCase().contains(substring.toLowerCase())) {
+                matchingNeeds.add(need);
+            }
+        }
+        return matchingNeeds;
+    }
+
     @Override
     public List<Need> getAllNeeds(){
         return needs;

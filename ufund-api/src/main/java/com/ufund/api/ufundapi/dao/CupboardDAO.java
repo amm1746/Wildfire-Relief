@@ -11,7 +11,8 @@
  import com.ufund.api.ufundapi.model.Need;
 
  public interface CupboardDAO{
-    Need needByName(String name);
+    List<Need> needByName(String name);
+    Need getNeed(String name);
     Need createNeed(Need need) throws IOException;
     List<Need> getAllNeeds();
     void deleteNeed(String name);
