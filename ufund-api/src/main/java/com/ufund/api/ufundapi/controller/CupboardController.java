@@ -78,4 +78,11 @@ public class CupboardController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/need/{name}")
+    public ResponseEntity<Need> getNeedByName(@PathVariable String name){
+        Need need = cupboardDAO.getNeed(name);
+        return(need != null) ? ResponseEntity.ok(need) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+    }
 }
