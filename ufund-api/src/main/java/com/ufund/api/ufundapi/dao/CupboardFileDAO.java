@@ -1,3 +1,13 @@
+package com.ufund.api.ufundapi.dao;
+import java.util.ArrayList;
+import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ufund.api.ufundapi.model.Need;
+import java.io.IOException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import java.io.File;
+
 /**
  * Implementation of CupboardDAO.java
  *
@@ -5,25 +15,20 @@
  * @author Evan Lin
  */
 
- package com.ufund.api.ufundapi.dao;
-
- import java.util.ArrayList;
- import java.util.List;
- import com.fasterxml.jackson.databind.ObjectMapper;
- import com.ufund.api.ufundapi.model.Need;
- import java.io.IOException;
- import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import java.io.File;
-
  @Component
  public class CupboardFileDAO implements CupboardDAO{
     List<Need> needs = new ArrayList<>();
     private ObjectMapper objectMapper;
     private String filename;
 
-    //need file data access object 
+    /**
+     * Constructs CupboardFileDAO and loads existing needs.
+     * 
+     * @param filename File that stores need data.
+     * @param objectMapper JSON object mapper
+     * @throws IOException If an error occurs
+     */ 
+
     public CupboardFileDAO(@Value("${cupboard.file}") String filename, ObjectMapper objectMapper) throws IOException{
         this.filename = filename;
         this.objectMapper = objectMapper;
@@ -31,13 +36,25 @@ import java.io.File;
         load();
     }
 
-    //saves the list of need objects to a file in JSON format
+    /**
+     * Saves the list of need objects to a file 
+     * 
+     * @return True if successful.
+     * @throws IOException If an error occurs.
+     */
+
     private boolean save() throws IOException{
         objectMapper.writeValue(new File(filename), needs);
         return true;
     }
 
-    //loads previously saved need objects from json file into memory 
+    /**
+     * Loads saved need objects into memory.
+     * 
+     * @return True if successful.
+     * @throws IOException If an error occurs.
+     */
+
     private boolean load() throws IOException{
         File file = new File(filename);
         if(!file.exists()){
@@ -52,7 +69,14 @@ import java.io.File;
         return true;
     }
 
-    //creates need 
+    /**
+     * Creates and adds a need to the cupboard.
+     *
+     * @param need The need being added.
+     * @return The created need, or null if it already exists.
+     * @throws IOException If an error occurs.
+     */
+
     @Override
     public Need createNeed(Need need) throws IOException{
         if(needExists(need.getName())){
@@ -64,10 +88,10 @@ import java.io.File;
     }
 
     /**
-     * get a single need
+     * Get a single need.
      * 
-     * @param name the name of the need
-     * @return return the need object if exist
+     * @param name The name of the need
+     * @return The need object if exist
      */
     @Override 
     public Need getNeed(String name){
@@ -96,17 +120,36 @@ import java.io.File;
         return matchingNeeds;
     }
 
+    /**
+     * Gets all needs in the cupboard.
+     *
+     * @return A list of all stored needs.
+     */
+
     @Override
     public List<Need> getAllNeeds(){
         return needs;
     }
+
+    /**
+     * Deletes a need by its name from the cupboard.
+     *
+     * @param name The name of the need being deleted.
+     */
+
     @Override
     public void deleteNeed(String name)
     {
         needs.removeIf(need -> need.getName().equalsIgnoreCase(name));
     }
 
-    //whether need exists or not 
+    /**
+     * Checks whether a need exists or not.
+     *
+     * @param name The name of the need.
+     * @return True if the need exists, false if it does not.
+     */
+
     @Override
     public boolean needExists(String name){
         for(Need need : needs){
