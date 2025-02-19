@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -59,9 +61,10 @@ public class CupboardController {
      * @return a list of all needs in the cupboard, empty list
      * otherwise
      */
-    public List<Need> getCupboard() {
+    @GetMapping("/needs")
+    public ResponseEntity<List<Need>> getCupboard() {
         List<Need> needs = cupboardDAO.getAllNeeds();
-        return needs;
+        return ResponseEntity.ok(needs);
     }
 
     //accepts need object from request body, checks if need exists, creates need if doesnt exist and returns 201 CREATED, returns 409 Conflict if need exists
