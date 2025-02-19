@@ -2,6 +2,7 @@
  * Implementation of CupboardDAO.java
  *
  * @author Alexandra Mantagas
+ * @author Evan Lin
  */
 
  package com.ufund.api.ufundapi.dao;
@@ -100,8 +101,9 @@ import java.io.File;
         return needs;
     }
     @Override
-    public void deleteNeed(String name){
-
+    public void deleteNeed(String name)
+    {
+        needs.removeIf(need -> need.getName().equalsIgnoreCase(name));
     }
 
     //whether need exists or not 
