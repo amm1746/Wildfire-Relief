@@ -2,11 +2,7 @@ package com.ufund.api.ufundapi.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,13 +42,14 @@ public class CupboardController {
      * @param updatedNeed the updated need object
      * @return a message indicating the result of the update
      */
-    public String updateNeed( String name, Need updatedNeed) {
+    @PutMapping("/need/{name}")
+    public ResponseEntity<String> updateNeed(@PathVariable String name, @RequestBody Need updatedNeed) {
         if (!cupboardDAO.needExists(name)) {
-            return "Need not found";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Need not found");
         }
 
         Need updated = cupboardDAO.updateNeed(name, updatedNeed);
-        return (updated != null) ? "Need updated successfully" : "Failed to update need";
+        return (updated != null) ? ResponseEntity.ok("Need updated successfully") : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update need");
     }
     
     /**
