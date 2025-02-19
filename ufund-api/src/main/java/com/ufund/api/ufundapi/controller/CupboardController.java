@@ -1,12 +1,8 @@
 package com.ufund.api.ufundapi.controller;
-
-import java.util.List;
-
+import java.util.*;
 import org.springframework.web.bind.annotation.*;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
 import java.io.IOException;
@@ -16,6 +12,7 @@ import java.io.IOException;
  * as CRUD operations for needs
  * 
  * @author Sophia Le
+ * @author Alexandra Mantagas
  */
 
  //restcontroller marks the class as a controller to handle HTTP requests
@@ -93,5 +90,17 @@ public class CupboardController {
         }
         cupboardDAO.deleteNeed(name);
         return ResponseEntity.ok("Need deleted successfully");
+    }
+
+    @GetMapping("/needs/search")
+    public ResponseEntity<List<Need>> searchNeeds(@RequestParam String name){
+        List<Need> needs = cupboardDAO.getAllNeeds();
+        List<Need> searchedNeeds = new ArrayList<>();
+        for(Need need : needs){
+            if(need.getName().toLowerCase().contains(name.toLowerCase())){
+                searchedNeeds.add(need);
+            }
+        }
+        return ResponseEntity.ok(searchedNeeds);
     }
 }
