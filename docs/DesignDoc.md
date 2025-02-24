@@ -157,6 +157,10 @@ This section describes the web interface flow; this is how the user views and in
 
 > _Law of Demeter: The object should know as little as possible about the others, basically everything should be private. Other objects should not have direct access to the data. For example, the getters we use._
 
+> _Low Coupling: One person can edit the interface while another team member can work on the backend development at the same time._
+
+> _Low Coupling: The Need class is the information expert for all need-related data._
+
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
 
 > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
