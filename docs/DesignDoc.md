@@ -111,6 +111,8 @@ This section describes the web interface flow; this is how the user views and in
 ### ViewModel Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
 
+> CupboardController: Implements the REST API endpoints for CRUD operations for wildfire relief needs. It also interacts with the > CupboardDAO file for data persistence. 
+
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
 > Tier above._
@@ -122,6 +124,12 @@ This section describes the web interface flow; this is how the user views and in
 
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
+
+> Model:
+> Need: Represents a single need. Contains the attributes name, cost, quantity, and type. 
+> CupboardDAO (interface): Defines the methods for need management, such as retrieving, adding, and updating a need.
+> CupboardFileDAO: Reads and writes needs to a JSON file. 
+
 
 > _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
