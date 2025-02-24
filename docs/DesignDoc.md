@@ -111,7 +111,8 @@ This section describes the web interface flow; this is how the user views and in
 ### ViewModel Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
 
-> CupboardController: Implements the REST API endpoints for CRUD operations for wildfire relief needs. It also interacts with the > CupboardDAO file for data persistence. 
+> _CupboardController: Implements the REST API endpoints for CRUD operations for wildfire relief needs. It also interacts with
+> the CupboardDAO file for data persistence._
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -125,10 +126,10 @@ This section describes the web interface flow; this is how the user views and in
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
 
-> Model:_
-> Need: Represents a single need. Contains the attributes name, cost, quantity, and type. _
-> CupboardDAO (interface): Defines the methods for need management, such as retrieving, adding, and updating a need._
-> CupboardFileDAO: Reads and writes needs to a JSON file._
+> _Model:_
+> _Need: Represents a single need. Contains the attributes name, cost, quantity, and type. _
+> _CupboardDAO (interface): Defines the methods for need management, such as retrieving, adding, and updating a need._
+> _CupboardFileDAO: Reads and writes needs to a JSON file._
 
 
 > _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
@@ -144,16 +145,16 @@ This section describes the web interface flow; this is how the user views and in
 
 > _**[Sprint 1]** Name and describe the initial OO Principles that your team has considered in support of your design (and implementation) for this first Sprint._
 
-> Single Responsibility Principle (SRP): Need is responsible only for storing data about a need._
-> Open/Closed Principle (OCP): CupboardDAO is an interface which allows for future modifications without changing the existing
+> _Single Responsibility Principle (SRP): Need is responsible only for storing data about a need._
+> _Open/Closed Principle (OCP): CupboardDAO is an interface which allows for future modifications without changing the existing
 > logic._
-> Controller: Component that manages user input and interacts with the model and view to process requests and update the user
+> _Controller: Component that manages user input and interacts with the model and view to process requests and update the user
 > interface._
-> Pure Fabrication: Designed to improve the overall system by encapsulating complex logic or providing a clean interface between > other classes._
-> Dependency Inversion/Injection:  important parts of the code should not rely on details. They should rely on general ideas or
-> rules. We follow this by using interfaces.
-> Law of Demeter: The object should know as little as possible about the others, basically everything should be private. Other 
-> objects should not have direct access to the data. For example, the getters we use. 
+> _Pure Fabrication: Designed to improve the overall system by encapsulating complex logic or providing a clean interface between > other classes._
+> _Dependency Inversion/Injection:  important parts of the code should not rely on details. They should rely on general ideas or
+> rules. We follow this by using interfaces._
+> _Law of Demeter: The object should know as little as possible about the others, basically everything should be private. Other 
+> objects should not have direct access to the data. For example, the getters we use._
 
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
 
