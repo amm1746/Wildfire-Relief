@@ -113,6 +113,8 @@ This section describes the web interface flow; this is how the user views and in
 
 > _CupboardController: Implements the REST API endpoints for CRUD operations for wildfire relief needs. It also interacts with
 > the CupboardDAO file for data persistence._
+>
+> _CupboardDAO (interface): Defines the methods for need management, such as retrieving, adding, and updating a need._
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -128,7 +130,6 @@ This section describes the web interface flow; this is how the user views and in
 
 > _Model:_
 > _Need: Represents a single need. Contains the attributes name, cost, quantity, and type. _
-> _CupboardDAO (interface): Defines the methods for need management, such as retrieving, adding, and updating a need._
 > _CupboardFileDAO: Reads and writes needs to a JSON file._
 
 
