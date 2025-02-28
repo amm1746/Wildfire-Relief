@@ -1,120 +1,52 @@
 package com.ufund.api.ufundapi.log;
 
 import com.ufund.api.ufundapi.model.Need;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Helper class to manage a collection of Needs using a Binary Search Tree (BST).
- * Provides methods to add and remove Needs efficiently while maintaining sorted order.
- * 
- * @author Sophia Le
- */
-/**
- * Helper class to manage a collection of Needs using a Binary Search Tree (BST).
- * Provides methods to add and remove Needs efficiently while maintaining sorted order.
+ * Helper class to manage the funding basket.
  */
 public class Helper {
-    /**
-     * Represents a node in the Binary Search Tree (BST), storing a Need object.
-     */
-    private class Node {
-        Need need;
-        Node left, right;
-
-        /**
-         * Constructs a new Node containing the given Need object.
-         *
-         * @param need The Need object to be stored in the node.
-         */
-        Node(Need need) {
-            this.need = need;
-            this.left = this.right = null;
-        }
-    }
-
-    private Node root;
+    private List<Need> fundingBasket;
 
     /**
-     * Adds a Need to the BST while maintaining sorted order.
-     *
-     * @param need The Need object to be added.
+     * Constructor to initialize the funding basket.
      */
-    public void addNeed(Need need) {
-        root = addRecursive(root, need);
+    public Helper() {
+        this.fundingBasket = new ArrayList<>();
     }
 
     /**
-     * Recursively adds a Need to the BST.
-     *
-     * @param node The current node in the recursive traversal.
-     * @param need The Need object to be added.
-     * @return The modified subtree with the new Need inserted.
+     * Adds a need to the funding basket.
+     * 
+     * @param need The need to add.
+     * @return true if added successfully, false if it already exists.
      */
-    private Node addRecursive(Node node, Need need) {
-        if (node == null) {
-            return new Node(need);
+    public boolean addToFundingBasket(Need need) {
+        if (!fundingBasket.contains(need)) {
+            fundingBasket.add(need);
+            return true;
         }
-        
-        int cmp = need.getName().compareTo(node.need.getName());
-        if (cmp < 0) {
-            node.left = addRecursive(node.left, need);
-        } else if (cmp > 0) {
-            node.right = addRecursive(node.right, need);
-        }
-        // If names are equal, we assume no duplicate additions
-        return node;
+        return false; // Need already in the basket
     }
 
     /**
-     * Removes a Need from the BST by name.
-     *
-     * @param name The name of the Need to be removed.
+     * Removes a need from the funding basket.
+     * 
+     * @param need The need to remove.
+     * @return true if removed successfully, false if it was not in the basket.
      */
-    public void removeNeed(String name) {
-        root = removeRecursive(root, name);
+    public boolean removeFromFundingBasket(Need need) {
+        return fundingBasket.remove(need);
     }
 
     /**
-     * Recursively removes a Need from the BST.
-     *
-     * @param node The current node in the recursive traversal.
-     * @param name The name of the Need to be removed.
-     * @return The modified subtree after deletion.
+     * Gets the current list of needs in the funding basket.
+     * 
+     * @return List of needs in the basket.
      */
-    private Node removeRecursive(Node node, String name) {
-        if (node == null) {
-            return null;
-        }
-        
-        int cmp = name.compareTo(node.need.getName());
-        if (cmp < 0) {
-            node.left = removeRecursive(node.left, name);
-        } else if (cmp > 0) {
-            node.right = removeRecursive(node.right, name);
-        } else {
-            // Node to be deleted found
-            if (node.left == null) {
-                return node.right;
-            } else if (node.right == null) {
-                return node.left;
-            }
-            
-            // Node with two children: Get inorder successor (smallest in right subtree)
-            node.need = findMin(node.right).need;
-            node.right = removeRecursive(node.right, node.need.getName());
-        }
-        return node;
-    }
-
-    /**
-     * Finds the node with the smallest Need (by name) in the BST.
-     *
-     * @param node The root of the subtree to search.
-     * @return The node containing the smallest Need in the subtree.
-     */
-    private Node findMin(Node node) {
-        while (node.left != null) {
-            node = node.left;
-        }
-        return node;
+    public List<Need> getFundingBasket() {
+        return new ArrayList<>(fundingBasket);
     }
 }
