@@ -23,7 +23,7 @@ public class LoginController{
             return createResponse("Username is required", null);
         }
         if(username.equalsIgnoreCase("admin")){
-            userType = "Manager";
+            userType = "U-fund Manager";
         }
         else{
             userType = "Helper";
