@@ -16,17 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController{
 
     private String userType;
+    private static final String ADMIN_PASSWORD = "admin123";
+    private static final String HELPER_PASSWORD = "helper123";
+
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestParam String username){
-        if(username == null || username.isEmpty()) {
-            return createResponse("Username is required", null);
+    public Map<String, String> login(@RequestParam String username, @RequestParam String password){
+        if(username == null || username.isEmpty() || password == null || password.isEmpty()) {
+            return createResponse("Username and password are required", null);
         }
-        if(username.equalsIgnoreCase("admin")){
+        if(username.equalsIgnoreCase("admin") && password.equals(ADMIN_PASSWORD)){
             userType = "U-fund Manager";
         }
-        else{
+        else if(!username.equalsIgnoreCase("admin") && password.equals(HELPER_PASSWORD)){
             userType = "Helper";
+        }
+        else{
+            return createResponse("Invalid username or password", null);
         }
         return createResponse("Login successful", userType);
     }
