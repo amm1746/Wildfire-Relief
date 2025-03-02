@@ -9,4 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 public class Login{
 
+    private String userType;
+
+    @PostMapping("/login")
+    
+    @PostMapping("/logout")
+
+    @GetMapping("/role")
+
 }
