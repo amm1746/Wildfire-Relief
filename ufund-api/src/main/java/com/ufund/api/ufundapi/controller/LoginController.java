@@ -26,6 +26,10 @@ public class LoginController{
     }
 
     @PostMapping("/logout")
+    public Map<String, String> logout(){
+        userType = null;
+        return createResponse("Logged out sucessfully", null);
+    }
 
     @GetMapping("/role")
     public Map<String, String> getRole(){
