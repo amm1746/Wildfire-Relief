@@ -215,4 +215,5 @@ This section describes the web interface flow; this is how the user views and in
 
 ## Ongoing Rationale
 >_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
+>
 > 2025/03/03: Sprint 2, implemented basic login system where user can log in as either a U-Fund Manager or a Helper. 
