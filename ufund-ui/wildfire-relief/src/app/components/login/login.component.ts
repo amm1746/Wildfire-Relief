@@ -35,5 +35,9 @@ export class LoginComponent {
     });
   }
 
-  
+  getRole(): void{
+    this.authService.getRole().subscribe(response => {
+      this.role = response.role;
+    });
+  }
 }
