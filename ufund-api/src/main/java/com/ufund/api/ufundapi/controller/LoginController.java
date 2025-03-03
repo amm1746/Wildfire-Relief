@@ -2,12 +2,16 @@ package com.ufund.api.ufundapi.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import jakarta.servlet.http.HttpSession;
 
 /**
  * LoginController
@@ -20,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 
 public class LoginController{
 
@@ -38,20 +42,23 @@ public class LoginController{
      * @return A response saying if the login was a success or a fail, with the role.
      */
     @PostMapping("/login")
-    public Map<String, String> login(@RequestParam String username, @RequestParam String password){
+    public Map<String, String> login(@RequestBody Map<String, String> loginData, HttpSession session){
+        String username = loginData.get("username");
+        String password = loginData.get("password");
+
         if(username == null || username.isEmpty() || password == null || password.isEmpty()) {
             return createResponse("Username and password are required", null);
         }
         if(username.equalsIgnoreCase("admin") && password.equals(ADMIN_PASSWORD)){
-            userType = "U-fund Manager";
+            session.setAttribute("role", "U-Fund Manager");
         }
         else if(!username.equalsIgnoreCase("admin") && password.equals(HELPER_PASSWORD)){
-            userType = "Helper";
+            session.setAttribute("role", "Helper");
         }
         else{
-            return createResponse("Invalid username or password", null);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
         }
-        return createResponse("Login successful", userType);
+        return createResponse("Login successful", (String) session.getAttribute("role"));
     }
 
     /**
@@ -60,8 +67,8 @@ public class LoginController{
      * @return A response saying the user has been logged out successfully.
      */
     @PostMapping("/logout")
-    public Map<String, String> logout(){
-        userType = null;
+    public Map<String, String> logout(HttpSession session){
+        session.removeAttribute("role");
         return createResponse("Logged out sucessfully", null);
     }
 
@@ -72,11 +79,12 @@ public class LoginController{
      * is logged in.
      */
     @GetMapping("/role")
-    public Map<String, String> getRole(){
-        if(userType == null){
+    public Map<String, String> getRole(HttpSession session){
+        String role = (String) session.getAttribute("role");
+        if(role == null){
             return createResponse("No user logged in", null);
         }
-        return createResponse(null, userType);
+        return createResponse(null, role);
     }
     
     /**
