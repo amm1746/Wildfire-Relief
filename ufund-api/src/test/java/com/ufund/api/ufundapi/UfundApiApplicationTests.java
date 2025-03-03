@@ -1,5 +1,8 @@
 package com.ufund.api.ufundapi;
 
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +20,7 @@ class UfundApiApplicationTests {
 	private HttpSession session;
 	
 	@BeforeEach
+        @SuppressWarnings("unused")
 	void start(){
 		loginController = new LoginController();
 		session = new MockHttpSession();
@@ -29,7 +33,13 @@ class UfundApiApplicationTests {
 
 	@Test
 	void testManagerLogin(){
-		
+		Map<String, String> response = loginController.login(
+			Map.of("username", "admin", "password", "admin123"), session
+			);
+		assertEquals("Login sucessful", response.get("message"));
+		assertEquals("U-Fund Manager", response.get("role"));
+		assertEquals("U-Fund Manager", session.getAttribute("role"));
+
 	}
 
 }
