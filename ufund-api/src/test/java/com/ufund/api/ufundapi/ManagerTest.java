@@ -44,6 +44,7 @@ public class ManagerTest {
 
     @Test
     public void testDeleteNeed() {
+        when(needsCupboard.needExists("OldNeed")).thenReturn(true); // Add this line
         manager.deleteNeed("OldNeed");
         verify(needsCupboard, times(1)).deleteNeed("OldNeed");
     }
