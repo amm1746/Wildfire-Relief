@@ -69,7 +69,7 @@ public class LoginController{
     @PostMapping("/logout")
     public Map<String, String> logout(HttpSession session){
         session.removeAttribute("role");
-        return createResponse("Logged out sucessfully", null);
+        return createResponse("Logged out successfully", null);
     }
 
     /**

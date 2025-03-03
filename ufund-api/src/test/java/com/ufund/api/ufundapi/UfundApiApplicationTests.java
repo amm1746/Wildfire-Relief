@@ -53,7 +53,7 @@ class UfundApiApplicationTests {
 		Map<String, String> response = loginController.login(
 			Map.of("username", "admin", "password", "admin123"), session
 			);
-		assertEquals("Login sucessful", response.get("message"));
+		assertEquals("Login successful", response.get("message"));
 		assertEquals("U-Fund Manager", response.get("role"));
 		assertEquals("U-Fund Manager", session.getAttribute("role"));
 
@@ -69,7 +69,7 @@ class UfundApiApplicationTests {
 		Map<String, String> response = loginController.login(
 			Map.of("username", "user1", "password", "helper123"), session
 			);
-		assertEquals("Login sucessful", response.get("message"));
+		assertEquals("Login successful", response.get("message"));
 		assertEquals("Helper", response.get("role"));
 		assertEquals("Helper", session.getAttribute("role"));
 
