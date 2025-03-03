@@ -28,7 +28,6 @@ import jakarta.servlet.http.HttpSession;
 
 public class LoginController{
 
-    private String userType;
     private static final String ADMIN_PASSWORD = "admin123";
     private static final String HELPER_PASSWORD = "helper123";
 
@@ -37,8 +36,8 @@ public class LoginController{
     /**
      * Handles user login and determiens if user is an Admin or a Helper.
      * 
-     * @param username The username entered.
-     * @param password The password entered.
+     * @param loginData The username and password entered.
+     * @param session The Http session used to track the login state.
      * @return A response saying if the login was a success or a fail, with the role.
      */
     @PostMapping("/login")
@@ -64,6 +63,7 @@ public class LoginController{
     /**
      * Handles user logout and clears role.
      * 
+     * @param session The HttpSession to be cleared.
      * @return A response saying the user has been logged out successfully.
      */
     @PostMapping("/logout")
@@ -75,6 +75,7 @@ public class LoginController{
     /**
      * Gets the user's role.
      * 
+     * @param session The HttpSession storing user information.
      * @return A response saying the user's role, or an error message if no user
      * is logged in.
      */
