@@ -53,4 +53,12 @@ class UfundApiApplicationTests {
 
 	}
 
+	@Test
+	void testGetRole(){
+		session.setAttribute("role", "U-Fund Manager");
+		Map<String, String> response = loginController.getRole(session);
+		assertEquals("U-Fund Manager", response.get("role"));
+
+	}
+
 }
