@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * Helper class to manage the funding basket.
+ * 
+ * @author Sophia Le
  */
 public class Helper {
     private List<Need> fundingBasket;
