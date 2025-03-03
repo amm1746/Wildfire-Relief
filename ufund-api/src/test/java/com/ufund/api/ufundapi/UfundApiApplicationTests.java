@@ -3,6 +3,7 @@ package com.ufund.api.ufundapi;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,6 +60,14 @@ class UfundApiApplicationTests {
 		Map<String, String> response = loginController.getRole(session);
 		assertEquals("U-Fund Manager", response.get("role"));
 
+	}
+
+	@Test
+	void testLogout(){
+		session.setAttribute("role", "U-Fund Manager");
+		Map<String, String> response = loginController.logout(session);
+		assertEquals("Logged out successfully", response.get("message"));
+		assertNull(session.getAttribute("role"));
 	}
 
 }
