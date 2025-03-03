@@ -1,0 +1,4 @@
+<h2>Wildfire Relief Dashboard</h2>
+<p *ngIf="role">You are logged in as {{ role }}.</p>
+<p *ngIf="!role">Loading...</p>
+<button (click)="logout()">Logout</button>

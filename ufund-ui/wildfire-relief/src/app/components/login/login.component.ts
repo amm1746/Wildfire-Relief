@@ -1,6 +1,13 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router'; 
+/**
+ * LoginComponent
+ * 
+ * Handles user authentication, redirecting to dashboard upon sucessful login.
+ * 
+ * @author Alexandra Mantagas
+ */
 
 @Component({
   selector: 'app-login',
@@ -13,8 +20,17 @@ export class LoginComponent {
   role: string | null = null;
   error: string | null = null; 
 
+  /**
+   * Initializes authentication service and router for naviagtion.
+   * 
+   * @param authService 
+   * @param router 
+   */
   constructor(private authService: AuthService, private router: Router) {}
 
+  /**
+   * Logs in the user with provided credentials. Goes to dashboard if successful.
+   */
   login(): void{
     this.authService.login(this.username, this.password).subscribe(
       response => {
@@ -32,6 +48,9 @@ export class LoginComponent {
     );
   }
 
+  /**
+   * Logs user out, resetting the session data. 
+   */
   logout(): void{
     this.authService.logout().subscribe(() => {
       this.role = null;
@@ -40,6 +59,9 @@ export class LoginComponent {
     });
   }
 
+  /**
+   * Gets the user's role.
+   */
   getRole(): void{
     this.authService.getRole().subscribe(response => {
       this.role = response.role;
