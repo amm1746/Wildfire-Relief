@@ -1,6 +1,7 @@
 package com.ufund.api.ufundapi.log;
 
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.dao.CupboardDAO;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +10,19 @@ import java.util.List;
  */
 public class Helper {
     private List<Need> fundingBasket;
+    private static CupboardDAO cupboardDAO = null;
 
     /**
      * Constructor to initialize the funding basket.
      */
-    public Helper() {
+    public Helper(CupboardDAO cupboardDAO) {
         this.fundingBasket = new ArrayList<>();
+        this.cupboardDAO = cupboardDAO;
+    }
+
+    public Need searchNeed(String name) {
+        Need need = cupboardDAO.getNeed(name);
+        return need;
     }
 
     /**
