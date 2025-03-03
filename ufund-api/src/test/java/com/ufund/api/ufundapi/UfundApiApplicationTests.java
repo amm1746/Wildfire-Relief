@@ -13,6 +13,11 @@ import org.springframework.mock.web.MockHttpSession;
 import com.ufund.api.ufundapi.controller.LoginController;
 
 import jakarta.servlet.http.HttpSession;
+/**
+ * JUnit Tests for UfundAPIApplication
+ * 
+ * @author Alexandra Mantagas
+ */
 
 @SpringBootTest
 class UfundApiApplicationTests {
@@ -20,6 +25,9 @@ class UfundApiApplicationTests {
 	private LoginController loginController;
 	private HttpSession session;
 	
+	/**
+	 * Runs before each test to make new LoginController and a new session.
+	 */
 	@BeforeEach
         @SuppressWarnings("unused")
 	void start(){
@@ -27,11 +35,19 @@ class UfundApiApplicationTests {
 		session = new MockHttpSession();
 	}
 
+	/**
+	 * Checks that the application starts without errors.
+	 */
 	@Test
 	void contextLoads() {
 		assertTrue(true);
 	}
 
+	/**
+	 * Tests Manager login by calling login() method with admin credentials,
+	 * checks that response contains "Login successful", and ensures that
+	 * session correcrtly stores the role "U-Fund Manager".
+	 */
 	@Test
 	void testManagerLogin(){
 		Map<String, String> response = loginController.login(
@@ -43,6 +59,11 @@ class UfundApiApplicationTests {
 
 	}
 
+	/**
+	 * Tests Helper login by calling login() method with helper credentials,
+	 * checks that response contains "Login successful", and ensures that
+	 * session correcrtly stores the role "Helper".
+	 */
 	@Test
 	void testHelperLogin(){
 		Map<String, String> response = loginController.login(
@@ -54,6 +75,10 @@ class UfundApiApplicationTests {
 
 	}
 
+	/**
+	 * Tests getRole() by manually setting the role, calling getRole(),
+	 * and checking that the returned role matches what was set.
+	 */
 	@Test
 	void testGetRole(){
 		session.setAttribute("role", "U-Fund Manager");
@@ -62,6 +87,11 @@ class UfundApiApplicationTests {
 
 	}
 
+	/**
+	 * Tests logout by manually setting the role, calling logout, and 
+	 * ensuring "Logged out successfully" is returned as well as the role
+	 * being removed from the session.
+	 */
 	@Test
 	void testLogout(){
 		session.setAttribute("role", "U-Fund Manager");
