@@ -27,9 +27,15 @@ This is a summary of the project.
 ### Glossary and Acronyms
 > _**[Sprint 2 & 4]** Provide a table of terms and acronyms._
 
-| Term | Definition |
-|------|------------|
-| SPA | Single Page |
+| Term | Definition                       |
+|------|----------------------------------|
+| SPA  | Single Page                      |
+| API  | Application Programming Interface|
+| HTTP | Hypertext Transfer Protocol      |
+| CRUD | Create, Read, Update, Delete     |
+| REST | Representational State Transfer  |
+| DAO  | Data Access Object               |
+
 
 
 ## Requirements
@@ -59,6 +65,18 @@ This section describes the application domain.
 > _**[Sprint 2 & 4]** Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
 > to each other._
+>
+> User: A person using the system, either a Helper or a U-Fund manager. Can
+> interact with Needs and Funding Basket.
+> 
+> Need: A request for resources. Stored in Cupboard, managed by U-Fund managers,
+> funded by Helpers.
+>
+> Cupboard: Holds all active Needs. Accessed by U-Fund managers.
+>
+> Funding Basket: A temporary selection of Needs a Helper wants to fund. Belongs to a specific Helper.
+>
+> Authentication System: Manages user login and role-based access. Determines if user is a Helper or a U-Fund Manager. 
 
 
 ## Architecture and Design
@@ -183,6 +201,8 @@ This section describes the web interface flow; this is how the user views and in
 > criteria tests failing, and the number of user stories that
 > have not had any testing yet. Highlight the issues found during
 > acceptance testing and if there are any concerns._
+>
+> Sprint 2: Login System user story passed all acceptance criteria tests. 
 
 ### Unit Testing and Code Coverage
 > _**[Sprint 4]** Discuss your unit testing strategy. Report on the code coverage
@@ -195,3 +215,4 @@ This section describes the web interface flow; this is how the user views and in
 
 ## Ongoing Rationale
 >_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
+> 2025/03/03: Sprint 2, implemented basic login system where user can log in as either a U-Fund Manager or a Helper. 
