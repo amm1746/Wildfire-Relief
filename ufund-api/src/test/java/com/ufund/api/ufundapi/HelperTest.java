@@ -4,9 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import com.ufund.api.ufundapi.log.Helper;
 import com.ufund.api.ufundapi.model.Need;
+
+import com.ufund.api.ufundapi.dao.CupboardFileDAO;
 
 import java.util.List;
 
@@ -14,9 +17,12 @@ public class HelperTest {
 
     private Helper helper;
 
+    @Mock
+    private CupboardFileDAO needsCupboard;
+
     @BeforeEach
     public void setup() {
-        helper = new Helper();
+        helper = new Helper(needsCupboard);
     }
 
     @Test
