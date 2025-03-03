@@ -19,6 +19,10 @@ export class AuthService {
   }
 
   logout(): Observable<any>{
-    return this.http.post(`${this.url}/role`, {withCredentials: true});
+    return this.http.post(`${this.url}/logout`, {}, {withCredentials: true});
+  }
+
+  getRole(): Observable<any>{
+    return this.http.get(`${this.url}/role`, {withCredentials: true});
   }
 }
