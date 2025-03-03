@@ -26,4 +26,14 @@ export class LoginComponent {
       }
     );
   }
+
+  logout(): void{
+    this.authService.logout().subscribe(() => {
+      this.role = null;
+      this.username = '';
+      this.password = '';
+    });
+  }
+
+  
 }
