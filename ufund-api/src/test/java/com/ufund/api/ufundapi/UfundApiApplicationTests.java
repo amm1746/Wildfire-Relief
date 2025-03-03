@@ -42,4 +42,15 @@ class UfundApiApplicationTests {
 
 	}
 
+	@Test
+	void testHelperLogin(){
+		Map<String, String> response = loginController.login(
+			Map.of("username", "user1", "password", "helper123"), session
+			);
+		assertEquals("Login sucessful", response.get("message"));
+		assertEquals("Helper", response.get("role"));
+		assertEquals("Helper", session.getAttribute("role"));
+
+	}
+
 }
