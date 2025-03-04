@@ -2,6 +2,7 @@ package com.ufund.api.ufundapi.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +29,11 @@ import jakarta.servlet.http.HttpSession;
 
 public class LoginController{
 
-    private static final String ADMIN_PASSWORD = "admin123";
-    private static final String HELPER_PASSWORD = "helper123";
+    @Value("${admin.password}")
+    private String ADMIN_PASSWORD;
+
+    @Value("${helper.password}")
+    private String HELPER_PASSWORD;
 
     // will later store credentials in file instead
 

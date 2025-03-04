@@ -7,8 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.TestPropertySource;
 
 import com.ufund.api.ufundapi.controller.LoginController;
 
@@ -20,9 +22,12 @@ import jakarta.servlet.http.HttpSession;
  */
 
 @SpringBootTest
+@TestPropertySource(properties = "admin.password=admin123")
 class UfundApiApplicationTests {
 
+	@Autowired
 	private LoginController loginController;
+	
 	private HttpSession session;
 	
 	/**
@@ -31,7 +36,6 @@ class UfundApiApplicationTests {
 	@BeforeEach
         @SuppressWarnings("unused")
 	void start(){
-		loginController = new LoginController();
 		session = new MockHttpSession();
 	}
 
