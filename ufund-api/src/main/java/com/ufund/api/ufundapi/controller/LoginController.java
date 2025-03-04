@@ -29,6 +29,9 @@ import jakarta.servlet.http.HttpSession;
 
 public class LoginController{
 
+    private static final String ADMIN = "U-Fund Manager";
+    private static final String HELPER = "Helper";
+
     @Value("${admin.password}")
     private String ADMIN_PASSWORD;
 
@@ -53,10 +56,10 @@ public class LoginController{
             return createResponse("Username and password are required", null);
         }
         if(username.equalsIgnoreCase("admin") && password.equals(ADMIN_PASSWORD)){
-            session.setAttribute("role", "U-Fund Manager");
+            session.setAttribute("role", ADMIN);
         }
         else if(!username.equalsIgnoreCase("admin") && password.equals(HELPER_PASSWORD)){
-            session.setAttribute("role", "Helper");
+            session.setAttribute("role", HELPER);
         }
         else{
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
