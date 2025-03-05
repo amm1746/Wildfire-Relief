@@ -27,11 +27,11 @@ public class CupboardFileDAOTest {
 
     @Test
     public void testCreateNeed() throws IOException {
-        Need newNeed = new Need("testing2", 200.10, 1, "type3");
-        Need createdNeed = cupboardFileDAO.createNeed(newNeed);
+        cupboardFileDAO.deleteNeed("name");
+        Need createdNeed = cupboardFileDAO.createNeed(testNeed);
 
         assertNotNull(createdNeed);
-        assertEquals(newNeed.getName(), createdNeed.getName());
+        assertEquals(testNeed.getName(), createdNeed.getName());
     }
 
     @Test
