@@ -1,8 +1,11 @@
 package com.ufund.api.ufundapi;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ufund.api.ufundapi.dao.CupboardFileDAO;
 import com.ufund.api.ufundapi.model.Need;
 
 /**
@@ -19,54 +22,39 @@ public class CupboardFileDAOTest {
     public void setup() throws IOException {
         // Initialize the DAO with a test file and a simple ObjectMapper
         cupboardFileDAO = new CupboardFileDAO("test_cupboard.json", new ObjectMapper());
-        testNeed = new Need("Food", 15.50, 3, "Essential");
+        testNeed = new Need("name", 20.0, 5, "type1");
     }
 
     @Test
     public void testCreateNeed() throws IOException {
-        // Act
-        Need createdNeed = cupboardFileDAO.createNeed(testNeed);
+        Need newNeed = new Need("testing2", 200.10, 1, "type3");
+        Need createdNeed = cupboardFileDAO.createNeed(newNeed);
 
-        // Assert
         assertNotNull(createdNeed);
-        assertEquals(testNeed.getName(), createdNeed.getName());
+        assertEquals(newNeed.getName(), createdNeed.getName());
     }
 
     @Test
     public void testGetNeed() throws IOException {
-        // Arrange
-        cupboardFileDAO.createNeed(testNeed);
-
-        // Act
-        Need retrievedNeed = cupboardFileDAO.getNeed("Food");
-
-        // Assert
+        Need retrievedNeed = cupboardFileDAO.getNeed("name");
         assertNotNull(retrievedNeed);
         assertEquals(testNeed.getName(), retrievedNeed.getName());
     }
 
     @Test
     public void testDeleteNeed() throws IOException {
-        // Arrange
         cupboardFileDAO.createNeed(testNeed);
+        cupboardFileDAO.deleteNeed("name");
 
-        // Act
-        cupboardFileDAO.deleteNeed("Food");
-
-        // Assert
-        assertNull(cupboardFileDAO.getNeed("Food"));
+        assertNull(cupboardFileDAO.getNeed("name"));
     }
 
     @Test
     public void testUpdateNeed() throws IOException {
-        // Arrange
         cupboardFileDAO.createNeed(testNeed);
-        Need updatedNeed = new Need("Food", 20.00, 5, "Luxury");
+        Need updatedNeed = new Need("nam", 15.5, 3, "type2");
+        Need result = cupboardFileDAO.updateNeed("name", updatedNeed);
 
-        // Act
-        Need result = cupboardFileDAO.updateNeed("Food", updatedNeed);
-
-        // Assert
         assertNotNull(result);
         assertEquals(updatedNeed.getCost(), result.getCost());
         assertEquals(updatedNeed.getQuantity(), result.getQuantity());
@@ -74,13 +62,9 @@ public class CupboardFileDAOTest {
 
     @Test
     public void testNeedExists() throws IOException {
-        // Arrange
         cupboardFileDAO.createNeed(testNeed);
+        boolean exists = cupboardFileDAO.needExists("name");
 
-        // Act
-        boolean exists = cupboardFileDAO.needExists("Food");
-
-        // Assert
         assertTrue(exists);
     }
 }
