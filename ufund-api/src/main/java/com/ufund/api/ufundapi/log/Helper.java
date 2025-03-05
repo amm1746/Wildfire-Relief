@@ -9,6 +9,7 @@ import java.util.List;
  * Helper class to manage the funding basket.
  * 
  * @author Sophia Le
+ * @author Eric Zheng Wu
  */
 public class Helper {
     private List<Need> fundingBasket;
@@ -22,6 +23,11 @@ public class Helper {
         this.cupboardDAO = cupboardDAO;
     }
 
+    /**
+     * search for a specific need
+     * @param name name of the need
+     * @return the need that matches the name
+     */
     public Need searchNeed(String name) {
         Need need = cupboardDAO.getNeed(name);
         return need;
