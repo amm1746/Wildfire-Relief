@@ -1,0 +1,57 @@
+<div class="dashboard-container">
+    <h2>Wildfire Relief Manager Dashboard</h2>
+  
+    <p>You are logged in as {{ "Manager" }}.</p>
+  
+    <div class="add-need-section">
+      <h3>Add a New Need</h3>
+      <form (ngSubmit)="addNeed()">
+        <label for="name">Name:</label>
+        <input id="name" [(ngModel)]="newNeed.name" name="name" required />
+  
+        <label for="cost">Cost:</label>
+        <input id="cost" type="number" [(ngModel)]="newNeed.cost" name="cost" required />
+  
+        <label for="quantity">Quantity:</label>
+        <input id="quantity" type="number" [(ngModel)]="newNeed.quantity" name="quantity" required />
+  
+        <label for="type">Type:</label>
+        <input id="type" [(ngModel)]="newNeed.type" name="type" required />
+  
+        <button type="submit">Add Need</button>
+      </form>
+    </div>
+  
+    <div *ngIf="selectedNeed" class="edit-need-section">
+      <h3>Edit Need</h3>
+      <form (ngSubmit)="updateNeed()">
+        <label for="edit-name">Name:</label>
+        <input id="edit-name" [(ngModel)]="selectedNeed.name" name="edit-name" required />
+  
+        <label for="edit-cost">Cost:</label>
+        <input id="edit-cost" type="number" [(ngModel)]="selectedNeed.cost" name="edit-cost" required />
+  
+        <label for="edit-quantity">Quantity:</label>
+        <input id="edit-quantity" type="number" [(ngModel)]="selectedNeed.quantity" name="edit-quantity" required />
+  
+        <label for="edit-type">Type:</label>
+        <input id="edit-type" [(ngModel)]="selectedNeed.type" name="edit-type" required />
+  
+        <button type="submit">Update Need</button>
+        <button type="button" (click)="selectedNeed = null">Cancel</button>
+      </form>
+    </div>
+  
+    <div class="needs-list-section">
+      <h3>Needs in Cupboard</h3>
+      <ul>
+        <li *ngFor="let need of needs">
+          {{ need.name }} - Cost: {{ need.cost }}, Quantity: {{ need.quantity }}, Type: {{ need.type }}
+          <button (click)="editNeed(need)">Edit</button>
+          <button (click)="deleteNeed(need.name)">Delete</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <button (click)="logout()" class="logout-button">Logout</button>
