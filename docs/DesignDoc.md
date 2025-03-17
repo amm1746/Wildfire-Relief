@@ -18,7 +18,7 @@ geometry: margin=1in
 
 ## Executive Summary
 
-This is a summary of the project.
+This project focuses on developing a web platform that facilitates wildfire relief funding by connecting affected communities with potential supporters. It illustrates a team-driven software development process, following the software development lifecycle. Wildfires leave many communities devastated, creating urgent needs for financial aid, essential supplies, and skilled labor for recovery efforts. Wildfire relief organizations often require a more customized solution to effectively manage and track their specific needs. This project aims to bridge that gap by providing a tailored, user-friendly platform to help communities recover efficiently. By streamlining the process of wildfire relief funding, the platform ensures that affected communities receive timely and effective support from willing donors and volunteers.
 
 ### Purpose
 >  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
