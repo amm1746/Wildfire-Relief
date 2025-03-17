@@ -22,30 +22,52 @@ export class ManagerDashboardComponent implements OnInit
    * @param needService 
    * @param router 
    */
+
   constructor(private needService: NeedService, private router: Router) {}
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.fetchNeeds();
   }
 
+  fetchNeeds(): void {
+    this.needService.getAllNeeds().subscribe(
+      (data) => {
+        this.needs = data;
+      },
+      (error) => {
+        console.error('Error fetching needs:', error);
+      }
+    );
+  }
+
+  message: string = '';
 
   needs: Need[] = [];
   newNeed: Need = new Need('', 0, 0, ''); 
   selectedNeed: Need | null = null;
+
   addNeed(): void {
+    if (!this.newNeed.name || this.newNeed.cost == null || this.newNeed.quantity == null || !this.newNeed.type) {
+      this.message = 'All fields are Required!';
+      return;
+    }
+
     this.needService.addNeed(this.newNeed).subscribe(
-      (data) => {
-        this.needs.push(data); // Add the new need to the list
-        this.newNeed = new Need('', 0, 0, ''); // Reset the form
+      (response) => {
+        this.message = 'Need Added Successfully!'
+        this.needs.push(response);
+        this.newNeed = new Need('', 0, 0, '')
       },
-      (error) => {
+      (error) => 
+        {
+        this.message = ' Failed to Create Need.'
         console.error('Error adding need:', error);
       }
     );
   }
 
   editNeed(need: Need): void {
-    this.selectedNeed = { ...need }; // Create a copy of the need for editing
+    this.selectedNeed = { ...need }; 
   }
 
   updateNeed(): void {
@@ -54,9 +76,9 @@ export class ManagerDashboardComponent implements OnInit
         (data) => {
           const index = this.needs.findIndex((n) => n.name === data.name);
           if (index !== -1) {
-            this.needs[index] = data; // Update the need in the list
+            this.needs[index] = data; 
           }
-          this.selectedNeed = null; // Clear the selected need
+          this.selectedNeed = null; 
         },
         (error) => {
           console.error('Error updating need:', error);
@@ -68,10 +90,12 @@ export class ManagerDashboardComponent implements OnInit
   deleteNeed(needName: string): void {
     this.needService.deleteNeed(needName).subscribe(
       () => {
+        this.message = 'Need deleted successfully!';
         this.needs = this.needs.filter((n) => n.name !== needName); // Remove the need from the list
       },
       (error) => {
         console.error('Error deleting need:', error);
+        this.message = 'Failed to delete need. Please try again.';
       }
     );
   }
