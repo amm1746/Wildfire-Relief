@@ -126,6 +126,20 @@ This section describes the web interface flow; this is how the user views and in
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
 
+The View Tier is responsible for the user interface and interactions. It provides a seamless and intuitive experience for both wildfire relief managers and supporters. This tier consists of:
+
+Landing Page: Introduces the platform and provides access to login/signup.
+
+Dashboard: Displays wildfire relief needs, progress bars for funded needs, and search/filter options.
+
+Need Details Page: Shows detailed information about specific needs, including funding status and urgency.
+
+Supporter Interface: Allows supporters to browse needs, add them to their funding basket, and proceed with the donation process.
+
+Relief Manager Interface: Enables relief managers to create, update, and remove wildfire relief needs.
+
+Checkout Page: Facilitates the funding process with a simple and secure transaction mechanism.
+
 ### ViewModel Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
 
@@ -143,6 +157,14 @@ This section describes the web interface flow; this is how the user views and in
 > 
 ![Replace with your ViewModel Tier class diagram 1, etc.](model-placeholder.png)
 
+The ViewModel Tier bridges the View Tier and Model Tier by handling business logic and API interactions. This tier consists of:
+
+CupboardController: Implements REST API endpoints for CRUD operations on wildfire relief needs and interacts with the CupboardDAO for data persistence.
+
+AuthenticationController: Manages user authentication and permissions.
+
+FundingController: Handles supporter funding transactions and updates funding status for relief needs.
+
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
 
@@ -159,6 +181,14 @@ This section describes the web interface flow; this is how the user views and in
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
 ![Replace with your Model Tier class diagram 1, etc.](model-placeholder.png)
+
+The Model Tier is responsible for data representation and persistence. It ensures that wildfire relief needs and funding transactions are accurately managed. This tier consists of:
+
+Need: Represents a single wildfire relief need with attributes such as name, cost, quantity, and urgency level.
+
+CupboardFileDAO: Handles reading and writing of relief needs to a JSON file, ensuring data persistence.
+
+Funding: Manages supporter contributions and updates funding progress for each need.
 
 ## OO Design Principles
 
