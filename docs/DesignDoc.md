@@ -138,13 +138,9 @@ The View Tier is responsible for the user interface and interactions. It provide
 
 Landing Page: Introduces the platform and provides access to login/signup.
 
-Dashboard: Displays wildfire relief needs, progress bars for funded needs, and search/filter options.
+Helper Dashboard: Allows supporters to browse needs, add them to their funding basket, and proceed with the donation process.
 
-Need Details Page: Shows detailed information about specific needs, including funding status and urgency.
-
-Supporter Interface: Allows supporters to browse needs, add them to their funding basket, and proceed with the donation process.
-
-Relief Manager Interface: Enables relief managers to create, update, and remove wildfire relief needs.
+Manager Dashboard: Enables relief managers to create, update, and remove wildfire relief needs.
 
 Checkout Page: Facilitates the funding process with a simple and secure transaction mechanism.
 
@@ -169,9 +165,6 @@ The ViewModel Tier bridges the View Tier and Model Tier by handling business log
 
 CupboardController: Implements REST API endpoints for CRUD operations on wildfire relief needs and interacts with the CupboardDAO for data persistence.
 
-AuthenticationController: Manages user authentication and permissions.
-
-FundingController: Handles supporter funding transactions and updates funding status for relief needs.
 
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
