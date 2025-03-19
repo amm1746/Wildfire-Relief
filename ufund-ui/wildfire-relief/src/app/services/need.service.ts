@@ -33,7 +33,7 @@ export class NeedService {
 
   // Search for needs by partial name
   searchNeedsByName(partialName: string): Observable<Need[]> {
-    return this.http.get<Need[]>(`${this.apiUrl}/needs/search?name=${partialName}`);
+    return this.http.get<Need[]>(`${this.apiUrl}/needs/search?name=${partialName}`)
   }
 
   // Get a need by name

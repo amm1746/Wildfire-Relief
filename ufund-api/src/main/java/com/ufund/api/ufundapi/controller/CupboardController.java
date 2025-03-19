@@ -2,6 +2,7 @@ package com.ufund.api.ufundapi.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -129,7 +130,7 @@ public class CupboardController {
      * @return A list of needs matching the name.
      */
     @GetMapping("/needs/search")
-    public ResponseEntity<List<Need>> searchNeeds(@RequestParam String name){
+    public ResponseEntity<?> searchNeeds(@RequestParam String name){
         List<Need> needs = cupboardDAO.getAllNeeds();
         List<Need> searchedNeeds = new ArrayList<>();
         for(Need need : needs){
@@ -137,6 +138,11 @@ public class CupboardController {
                 searchedNeeds.add(need);
             }
         }
+
+        if (searchedNeeds.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "No needs found matching your search."));
+        }
+
         return ResponseEntity.ok(searchedNeeds);
     }
 }
