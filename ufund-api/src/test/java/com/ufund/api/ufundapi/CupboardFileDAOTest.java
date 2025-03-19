@@ -12,6 +12,7 @@ import com.ufund.api.ufundapi.model.Need;
  * JUnit Tests for CupboardFileDAO.java
  * 
  * @author Evan Lin
+ * @author Eric Zheng Wu
  */
 public class CupboardFileDAOTest {
 
