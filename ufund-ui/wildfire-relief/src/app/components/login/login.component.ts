@@ -37,8 +37,12 @@ export class LoginComponent {
         this.role = response.role;
         this.error = null;
 
-        if(this.role){
-          this.router.navigate(['/dashboard']); 
+        if(this.role === 'U-Fund Manager'){
+          this.router.navigate(['/manager-dashboard']); 
+        } else if(this.role === 'Helper'){
+          this.router.navigate(['/helper-dashboard']);
+        } else {
+          this.error = 'Unknown role received.';
         }
       },
       error => {
