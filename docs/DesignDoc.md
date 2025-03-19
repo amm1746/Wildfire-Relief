@@ -24,6 +24,10 @@ This project revolves around making a website to help communities affected by wi
 >  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
 > important user group and user goals._
 
+The U-Fund project is a web-based platform designed to help community with financial assistance. 
+It allows users to create and contribute to funding requests for essential needs. 
+The primary user groups include individuals seeking financial support and donors willing to contribute. 
+
 ### Glossary and Acronyms
 > _**[Sprint 2 & 4]** Provide a table of terms and acronyms._
 
