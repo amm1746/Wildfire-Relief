@@ -50,8 +50,11 @@ This section describes the features of the application.
 > _**[Sprint 2 & 4]** Provide a simple description of the Minimum Viable Product._
 
 > _Sprint 2_
+
 > _User Authentication: Users should be able to log in and log out to the system and basic security mechanisms like password validation_
+
 > _Data Management (DAO Layer - CupboardDAO.java, CupboardFileDAO.java): Provides basic Create, Read, Update, Delete (CRUD)  operations and stores data in a simple file._
+
 > _Basic Logic (Controller Layer - CupboardController.java, InventoryController.java): Handles requests for managing cupboard items._
 
 ### MVP Features
