@@ -7,6 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -144,5 +145,64 @@ public class CupboardControllerTest{
         assertTrue(response.getBody().isEmpty());
     }
 
+    @Test
+    public void testCreateNeedIOException() throws IOException {
+        Need test = new Need("Rent", 2.5, 10, "Monetary");
+        when(mockCupboardDAO.needExists("Rent")).thenReturn(false);
+        when(mockCupboardDAO.createNeed(test)).thenThrow(new IOException());
+
+        ResponseEntity<Need> response = cupboardController.createNeed(test);
+
+        assertEquals(500, response.getStatusCodeValue());
+    }
+
+    @Test
+    public void testUpdateNeedFailure() {
+        Need updatedNeed = new Need("Rent", 2.5, 10, "Monetary");
+        when(mockCupboardDAO.needExists("Rent")).thenReturn(true);
+        when(mockCupboardDAO.updateNeed("Rent", updatedNeed)).thenReturn(null);
+
+        ResponseEntity<String> response = cupboardController.updateNeed("Rent", updatedNeed);
+
+        assertEquals(500, response.getStatusCodeValue());
+        assertEquals("Failed to update need", response.getBody());
+    }
+
+    @Test
+    public void testSearchNeedsPartialMatch() {
+        List<Need> allNeeds = Arrays.asList(
+                new Need("Rent Assistance", 2.5, 10, "Monetary"),
+                new Need("Food Stamps", 5, 10, "Emergency")
+        );
+        when(mockCupboardDAO.getAllNeeds()).thenReturn(allNeeds);
+    
+        ResponseEntity<List<Need>> response = cupboardController.searchNeeds("Rent");
+    
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(1, response.getBody().size());
+        assertEquals("Rent Assistance", response.getBody().get(0).getName());
+    }
+
+    @Test
+    public void testGetNeedByName_Found() {
+        Need testNeed = new Need("Rent", 2.5, 10, "Monetary");
+        when(mockCupboardDAO.getNeed("Rent")).thenReturn(testNeed);
+    
+        ResponseEntity<Need> response = cupboardController.getNeedByName("Rent");
+    
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+        assertEquals("Rent", response.getBody().getName());
+    }
+
+    @Test
+    public void testGetNeedByName_NotFound() {
+        when(mockCupboardDAO.getNeed("NonExistent")).thenReturn(null);
+
+        ResponseEntity<Need> response = cupboardController.getNeedByName("NonExistent");
+
+        assertEquals(404, response.getStatusCodeValue());
+        assertNull(response.getBody());
+    }
 
 }

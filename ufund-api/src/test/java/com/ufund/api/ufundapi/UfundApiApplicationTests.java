@@ -104,4 +104,9 @@ class UfundApiApplicationTests {
 		assertNull(session.getAttribute("role"));
 	}
 
+	@Test
+    void testMainMethod() {
+        UfundApiApplication.main(new String[] {}); // Call main method
+    }
+
 }

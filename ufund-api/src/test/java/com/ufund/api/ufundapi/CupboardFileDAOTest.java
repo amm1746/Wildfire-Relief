@@ -16,6 +16,7 @@ import com.ufund.api.ufundapi.model.Need;
  * JUnit Tests for CupboardFileDAO.java
  * 
  * @author Evan Lin
+ * @author Eric Zheng Wu
  */
 public class CupboardFileDAOTest {
 
@@ -40,7 +41,6 @@ public class CupboardFileDAOTest {
 
     @Test
     public void testGetNeed() throws IOException {
-        testNeed = new Need("name", 10.0, 5, "Supply");
         cupboardFileDAO.createNeed(testNeed);
         Need retrievedNeed = cupboardFileDAO.getNeed("name");
         assertNotNull(retrievedNeed);
@@ -73,4 +73,40 @@ public class CupboardFileDAOTest {
 
         assertTrue(exists);
     }
+
+    @Test
+    public void testGetAllNeeds() throws IOException {
+        cupboardFileDAO.createNeed(testNeed);
+        assertEquals(1, cupboardFileDAO.getAllNeeds().size());
+    }
+
+    @Test
+    public void testNeedByName() throws IOException {
+        cupboardFileDAO.createNeed(new Need("apple", 10.0, 2, "typeA"));
+        cupboardFileDAO.createNeed(new Need("application", 12.0, 3, "typeB"));
+    
+        assertEquals(2, cupboardFileDAO.needByName("app").size());
+        assertEquals(1, cupboardFileDAO.needByName("apple").size());
+    }
+
+    @Test
+    public void testCreateNeedAlreadyExists() throws IOException {
+        cupboardFileDAO.createNeed(testNeed);
+        Need duplicate = cupboardFileDAO.createNeed(testNeed);
+        assertNull(duplicate); // Should return null if need already exists
+    }
+
+    @Test
+    public void testUpdateNonExistentNeed() throws IOException {
+        Need updatedNeed = new Need("newName", 30.0, 10, "typeNew");
+        Need result = cupboardFileDAO.updateNeed("doesNotExist", updatedNeed);
+        assertNull(result);
+    }
+
+    @Test
+    public void testDeleteNonExistentNeed() throws IOException {
+        cupboardFileDAO.deleteNeed("doesNotExist");
+        assertNull(cupboardFileDAO.getNeed("doesNotExist"));
+    }
+
 }
