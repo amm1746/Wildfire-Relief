@@ -24,6 +24,7 @@ import com.ufund.api.ufundapi.model.Need;
  * JUnit Tests for CupboardControlllerTest.java
  * 
  * @author Alexandra Mantagas
+ * @author Eric Zheng Wu
  */
 
 @SuppressWarnings("null")
