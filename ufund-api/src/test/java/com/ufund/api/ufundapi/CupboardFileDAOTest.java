@@ -1,10 +1,14 @@
 package com.ufund.api.ufundapi;
 
-import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.ufund.api.ufundapi.dao.CupboardFileDAO;
 import com.ufund.api.ufundapi.model.Need;
 
@@ -36,6 +40,8 @@ public class CupboardFileDAOTest {
 
     @Test
     public void testGetNeed() throws IOException {
+        testNeed = new Need("name", 10.0, 5, "Supply");
+        cupboardFileDAO.createNeed(testNeed);
         Need retrievedNeed = cupboardFileDAO.getNeed("name");
         assertNotNull(retrievedNeed);
         assertEquals(testNeed.getName(), retrievedNeed.getName());
