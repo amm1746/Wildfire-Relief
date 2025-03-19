@@ -18,7 +18,7 @@ geometry: margin=1in
 
 ## Executive Summary
 
-This project focuses on developing a web platform that facilitates wildfire relief funding by connecting affected communities with potential supporters. It illustrates a team-driven software development process, following the software development lifecycle. Wildfires leave many communities devastated, creating urgent needs for financial aid, essential supplies, and skilled labor for recovery efforts. Wildfire relief organizations often require a more customized solution to effectively manage and track their specific needs. This project aims to bridge that gap by providing a tailored, user-friendly platform to help communities recover efficiently. By streamlining the process of wildfire relief funding, the platform ensures that affected communities receive timely and effective support from willing donors and volunteers.
+This project revolves around making a website to help communities affected by wildfires by connecting them with donors to provide them with any needs they may require. Relief organizations sometimes struggle to manage and track these needs effectively, so we're creating a simple solution that is user-friendly to make the process easier. 
 
 ### Purpose
 >  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
@@ -196,7 +196,6 @@ Need: Represents a single wildfire relief need with attributes such as name, cos
 
 CupboardFileDAO: Handles reading and writing of relief needs to a JSON file, ensuring data persistence.
 
-Funding: Manages supporter contributions and updates funding progress for each need.
 
 ## OO Design Principles
 
@@ -218,6 +217,10 @@ Funding: Manages supporter contributions and updates funding progress for each n
 > _Low Coupling: The Need class is the information expert for all need-related data._
 
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
+>
+OO PRINCIPLE #1: Single responsibility. This principle states that a class should have only one reason to change (it should only have one job). We applied this in our project by separating concerns across multiple different classes, and making sure each class has a focused purpose. For example, with the Need management system, everything was broken down into different parts. The Need Class (Model Layer) represents an individual need and only contains data and basic validation. Next, the CupboardDAO Interface defines operations for adding, retrieving, updating, and deleting needs from the cupboard. After that, the CupboardFileDAO (Persistence Layer) implements CupboardDAO and handles the file-based data storage. It ensures that anything to do with persistence is separate from the business login. Finally, CupboardController handles HTTP requests/responses for needs operations. This allows for easier maintenance and better readability.
+>
+OO PRINCIPLE #2: Open/closed principle. This principle states that a class should be open for extension but closed for modification (new functionality can be added without changing existing code). We applied this by making key components extensible, instead of having modifications be made to existing code. For example, the LoginService class determines user roles based on their username (admin = U-Fund Manager, anything else = Helper). In the future, if another role needs to be added, we can extend the system instead of modifying the existing logic. In addition, instead of hardcoding different need categories, we could use polymorphism to add these things easily and without modifying existing code. This allows for easier expansion of our code in the future.
 
 > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
 
@@ -240,7 +243,15 @@ Funding: Manages supporter contributions and updates funding progress for each n
 > have not had any testing yet. Highlight the issues found during
 > acceptance testing and if there are any concerns._
 >
-> Sprint 2: Login System user story passed all acceptance criteria tests. 
+Sprint 2: Login System user story passed all acceptance criteria tests.
+
+Sprint 2: Search for a need user story passed all acceptance criteria tests.
+
+Sprint 2: Add/remove a helper user story passed all acceptance criteria tests.
+
+Sprint 2: Add/remove/edit needs user story passed all acceptance criteria tests.
+
+Sprint 2: Create admin account, funding basket obscurity not tested. 
 
 ### Unit Testing and Code Coverage
 > _**[Sprint 4]** Discuss your unit testing strategy. Report on the code coverage
@@ -254,4 +265,8 @@ Funding: Manages supporter contributions and updates funding progress for each n
 ## Ongoing Rationale
 >_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
 >
-> 2025/03/03: Sprint 2, implemented basic login system where user can log in as either a U-Fund Manager or a Helper. 
+2025/03/03: Sprint 2, implemented basic login system where user can log in as either a U-Fund Manager or a Helper.
+
+2025/03/18: Sprint 2, implemented manager dashboard and ability for manager to add/remove/edit needs.
+
+2025/03/19: Sprint 2, implemented helper dashboard and ability for helper to add/remove needs to their basket and search for needs. 
