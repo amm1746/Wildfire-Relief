@@ -8,6 +8,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RouterModule } from '@angular/router';
 import { ManagerDashboardComponent } from './components/dashboard/manager-dashboard.component';
 import { HelperDashboardComponent } from './components/helper-dashboard/helper-dashboard.component';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { HelperDashboardComponent } from './components/helper-dashboard/helper-d
     LoginComponent,
     ManagerDashboardComponent,
     HelperDashboardComponent,
+    AccessDeniedComponent,
   ],
   imports: [
     BrowserModule,

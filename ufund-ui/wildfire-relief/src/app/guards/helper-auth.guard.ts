@@ -15,8 +15,8 @@ export class HelperAuthGuard implements CanActivate {
     if (role === 'Helper') {
       return true; 
     } else {
-      this.router.navigate(['/manager-dashboard']); 
-      return false; 
+      this.router.navigate(['/access-denied']); 
+      return false;
     }
   }
 }
