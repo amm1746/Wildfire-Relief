@@ -34,12 +34,13 @@ export class LoginComponent {
   login(): void{
     this.authService.login(this.username, this.password).subscribe(
       response => {
-        this.role = response.role;
+        const role = response.role;
+        sessionStorage.setItem('role', role);
         this.error = null;
 
-        if(this.role === 'U-Fund Manager'){
+        if(role === 'U-Fund Manager'){
           this.router.navigate(['/manager-dashboard']); 
-        } else if(this.role === 'Helper'){
+        } else if(role === 'Helper'){
           this.router.navigate(['/helper-dashboard']);
         } else {
           this.error = 'Unknown role received.';
@@ -47,7 +48,6 @@ export class LoginComponent {
       },
       error => {
         this.error = 'Incorrect username or password.';
-        this.role = null;
       }
     );
   }
