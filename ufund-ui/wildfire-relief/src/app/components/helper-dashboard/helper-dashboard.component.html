@@ -1,0 +1,25 @@
+<div class="dashboard">
+    <button (click)="logout()">Logout</button>
+    <h2>Available Needs</h2>
+  
+    <input [(ngModel)]="searchText" placeholder="Search needs..." (input)="searchNeeds()" />
+  
+    <ul>
+      <li *ngFor="let need of filteredNeeds()">
+        {{need.name}} ({{need.quantity}} available) - ${{need.cost}}
+        <button (click)="addToBasket(need)">Add to Basket</button>
+      </li>
+    </ul>
+  
+    <h3>Your Basket</h3>
+    <ul>
+      <li *ngFor="let item of basket">
+        {{ item.name }} - ${{ item.cost }} 
+        <button (click)="removeFromBasket(item)">Remove</button>
+      </li>
+    </ul>
+    
+  
+    <div *ngIf="message">{{message}}</div>
+  </div>
+  
