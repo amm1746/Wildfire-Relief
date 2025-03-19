@@ -22,13 +22,13 @@ export class NeedService {
   }
 
   // Update a need
-  updateNeed(name: string, updatedNeed: Need): Observable<Need> {
-    return this.http.put<Need>(`${this.apiUrl}/need/${name}`, updatedNeed);
+  updateNeed(name: string, updatedNeed: Need): Observable<string> {
+    return this.http.put(`${this.apiUrl}/need/${name}`, updatedNeed, { responseType: 'text' });
   }
 
   // Delete a need
-  deleteNeed(name: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/need/${name}`);
+  deleteNeed(name: string): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/need/${name}`, { responseType: 'text' });
   }
 
   // Search for needs by partial name

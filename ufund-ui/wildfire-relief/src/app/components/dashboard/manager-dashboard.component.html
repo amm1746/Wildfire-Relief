@@ -30,7 +30,7 @@
     <h3>Edit Need</h3>
     <form (ngSubmit)="updateNeed()">
       <label for="edit-name">Name:</label>
-      <input id="edit-name" [(ngModel)]="selectedNeed.name" name="edit-name" required />
+      {{ selectedNeed.name }}
 
       <label for="edit-cost">Cost:</label>
       <input id="edit-cost" type="number" [(ngModel)]="selectedNeed.cost" name="edit-cost" required />

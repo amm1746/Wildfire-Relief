@@ -21,7 +21,7 @@ public class CupboardFileDAOTest {
     @BeforeEach
     public void setup() throws IOException {
         // Initialize the DAO with a test file and a simple ObjectMapper
-        cupboardFileDAO = new CupboardFileDAO("test_cupboard.json", new ObjectMapper());
+        cupboardFileDAO = new CupboardFileDAO();
         testNeed = new Need("name", 20.0, 5, "type1");
     }
 

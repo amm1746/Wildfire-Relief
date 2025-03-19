@@ -46,9 +46,10 @@ export class ManagerDashboardComponent implements OnInit
   newNeed: Need = new Need('', 0, 0, ''); 
   selectedNeed: Need | null = null;
 
-  addNeed(): void {
+  addNeed(): void 
+  {
     if (!this.newNeed.name || this.newNeed.cost == null || this.newNeed.quantity == null || !this.newNeed.type) {
-      this.message = 'All fields are Required!';
+      this.message = 'All Fields are Required!';
       return;
     }
 
@@ -58,10 +59,15 @@ export class ManagerDashboardComponent implements OnInit
         this.needs.push(response);
         this.newNeed = new Need('', 0, 0, '')
       },
-      (error) => 
-        {
-        this.message = ' Failed to Create Need.'
-        console.error('Error adding need:', error);
+      (error) => {
+        console.error('Error Adding Need:', error);
+        if (error.error && error.error.message) {
+          this.message = error.error.message;
+        } else if (error.status === 409) {
+          this.message = 'A need with this name already exists.';
+        } else {
+          this.message = 'Failed to create need. ' + error;
+        }
       }
     );
   }
@@ -71,33 +77,43 @@ export class ManagerDashboardComponent implements OnInit
   }
 
   updateNeed(): void {
-    if (this.selectedNeed) {
-      this.needService.updateNeed(this.selectedNeed.name, this.selectedNeed).subscribe(
-        (data) => {
-          const index = this.needs.findIndex((n) => n.name === data.name);
+    if (this.selectedNeed) { // Check if selectedNeed is not null
+      this.needService.updateNeed(this.selectedNeed.name, this.selectedNeed).subscribe({
+        next: (response) => {
+          console.log('Update Successful:', response);
+  
+          // Manually update the needs list
+          const index = this.needs.findIndex((n) => n.name === this.selectedNeed!.name); // Use non-null assertion here
           if (index !== -1) {
-            this.needs[index] = data; 
+            this.needs[index] = this.selectedNeed!; // Use non-null assertion here
           }
-          this.selectedNeed = null; 
+  
+          this.selectedNeed = null; // Reset the selected need
+          this.message = 'Need Updated Successfully!';
         },
-        (error) => {
-          console.error('Error updating need:', error);
+        error: (error) => {
+          console.error('Error Updating Need:', error);
+          this.message = 'Failed to Update Need.';
         }
-      );
+      });
+    } else {
+      console.error('Selected Need is Null.');
+      this.message = 'No Need Selected for Update.';
     }
   }
 
   deleteNeed(needName: string): void {
-    this.needService.deleteNeed(needName).subscribe(
-      () => {
-        this.message = 'Need deleted successfully!';
+    this.needService.deleteNeed(needName).subscribe({
+      next: (response) => {
+        console.log('Delete Successful:', response);
+        this.message = 'Need Deleted Successfully!';
         this.needs = this.needs.filter((n) => n.name !== needName); // Remove the need from the list
       },
-      (error) => {
-        console.error('Error deleting need:', error);
-        this.message = 'Failed to delete need. Please try again.';
+      error: (error) => {
+        console.error('Error Deleting Need:', error);
+        this.message = 'Failed to Delete Deed.';
       }
-    );
+    });
   }
 
   logout(): void {
