@@ -34,4 +34,8 @@ public class RewardsController {
             }
         }
     }
+
+    public List<Rewards> getRewards(String helper) {
+        return rewards.getOrDefault(helper, new ArrayList<>());
+    }
 }
