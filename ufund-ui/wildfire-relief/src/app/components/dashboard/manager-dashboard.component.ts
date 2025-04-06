@@ -1,5 +1,6 @@
 import { Component, OnInit  } from '@angular/core';
 import { NeedService } from '../../services/need.service';
+import { BasketService } from '../../services/basket.service';
 import { Router } from '@angular/router';
 import { Need } from '../../models/need';
 /**
@@ -23,10 +24,14 @@ export class ManagerDashboardComponent implements OnInit
    * @param router 
    */
 
-  constructor(private needService: NeedService, private router: Router) {}
+  constructor(private needService: NeedService, private basketService: BasketService, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchNeeds();
+
+    this.basketService.cupboardUpdated$.subscribe(() => {
+      this.fetchNeeds();
+    });
   }
 
   fetchNeeds(): void {
