@@ -123,7 +123,14 @@ public class LoginController{
         return response;
     }
 
-    // registration 
+    /**
+     * Handles registration of new Helper accounts.
+     * 
+     * @param registrationData A map containing username and passwords.
+     * @return A response map with a success message and role information.
+     * @throws IOException if user file cannot be written to.
+     * @throws ResponseStatusException if input is invalid or the username is not allowed.
+     */
     @PostMapping("/register")
     public Map<String, String> register(@RequestBody Map<String, String> registrationData) throws IOException{
         String username = registrationData.get("username");

@@ -1,7 +1,7 @@
 package com.ufund.api.ufundapi.model;
 
 /**
- * Class to manage Users.
+ * Represents a user account.
  * 
  * @author Alexandra Mantagas 
  */
