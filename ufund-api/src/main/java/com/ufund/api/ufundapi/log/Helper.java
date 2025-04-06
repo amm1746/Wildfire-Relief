@@ -1,9 +1,10 @@
 package com.ufund.api.ufundapi.log;
 
-import com.ufund.api.ufundapi.model.Need;
-import com.ufund.api.ufundapi.dao.CupboardDAO;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ufund.api.ufundapi.dao.CupboardDAO;
+import com.ufund.api.ufundapi.model.Need;
 
 /**
  * Helper class to manage the funding basket.
@@ -12,7 +13,7 @@ import java.util.List;
  * @author Eric Zheng Wu
  */
 public class Helper {
-    private List<Need> fundingBasket;
+    private final List<Need> fundingBasket;
     private static CupboardDAO cupboardDAO = null;
 
     /**
@@ -20,7 +21,7 @@ public class Helper {
      */
     public Helper(CupboardDAO cupboardDAO) {
         this.fundingBasket = new ArrayList<>();
-        this.cupboardDAO = cupboardDAO;
+        Helper.cupboardDAO = cupboardDAO;
     }
 
     /**
