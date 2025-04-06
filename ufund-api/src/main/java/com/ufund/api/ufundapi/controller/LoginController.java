@@ -1,4 +1,5 @@
 package com.ufund.api.ufundapi.controller;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.ufund.api.ufundapi.dao.UserDAO;
+import com.ufund.api.ufundapi.model.User;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -26,8 +30,13 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
-
 public class LoginController{
+
+    private final UserDAO userDAO;
+
+    public LoginController(UserDAO userDAO){
+        this.userDAO = userDAO;
+    }
 
     private static final String ADMIN = "U-Fund Manager";
     private static final String HELPER = "Helper";
@@ -35,10 +44,7 @@ public class LoginController{
     @Value("${admin.password}")
     private String ADMIN_PASSWORD;
 
-    @Value("${helper.password}")
-    private String HELPER_PASSWORD;
 
-    // will later store credentials in file instead
 
     /**
      * Handles user login and determiens if user is an Admin or a Helper.
@@ -48,7 +54,7 @@ public class LoginController{
      * @return A response saying if the login was a success or a fail, with the role.
      */
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody Map<String, String> loginData, HttpSession session){
+    public Map<String, String> login(@RequestBody Map<String, String> loginData, HttpSession session) throws IOException{
         String username = loginData.get("username");
         String password = loginData.get("password");
 
@@ -58,12 +64,16 @@ public class LoginController{
         if(username.equalsIgnoreCase("admin") && password.equals(ADMIN_PASSWORD)){
             session.setAttribute("role", ADMIN);
         }
-        else if(!username.equalsIgnoreCase("admin") && password.equals(HELPER_PASSWORD)){
-            session.setAttribute("role", HELPER);
-        }
-        else{
+        else {
+            User user = userDAO.getUser(username);
+            if(user != null && user.getPassword().equals(password)){
+                session.setAttribute("role", HELPER);
+            }
+            else{
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
+            }
         }
+
         return createResponse("Login successful", (String) session.getAttribute("role"));
     }
 
@@ -111,6 +121,26 @@ public class LoginController{
             response.put("role", role);
         }
         return response;
+    }
+
+    // registration 
+    @PostMapping("/register")
+    public Map<String, String> register(@RequestBody Map<String, String> registrationData) throws IOException{
+        String username = registrationData.get("username");
+        String password = registrationData.get("password");
+
+        if(username == null || username.isEmpty() || password == null || password.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username and password are required");
+        }
+
+        if(username.equalsIgnoreCase("admin")){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username cannot be admin");
+        }
+        
+        User newUser = new User(username, password, HELPER);
+        userDAO.createUser(newUser);
+
+        return createResponse("Helper account created successfully", HELPER);
     }
 }
 
