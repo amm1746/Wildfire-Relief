@@ -39,5 +39,4 @@ export class BasketService {
   searchNeeds(name: string): Observable<Need[]> {
     return this.http.get<Need[]>(`${this.url}/cupboard/needs/search?name=${name}`, { withCredentials: true });
   }
-  
 }

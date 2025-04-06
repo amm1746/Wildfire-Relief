@@ -5,6 +5,7 @@ import { ManagerDashboardComponent } from './components/dashboard/manager-dashbo
 import { HelperDashboardComponent } from './components/helper-dashboard/helper-dashboard.component';
 import { HelperAuthGuard } from './guards/helper-auth.guard';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 /**
  * Defines the routes for the application.
  */
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'manager-dashboard', component: ManagerDashboardComponent},
   {path: 'helper-dashboard', component: HelperDashboardComponent, canActivate: [HelperAuthGuard]},
+  { path: 'checkout', component: CheckoutComponent },
   { path: 'access-denied', component: AccessDeniedComponent }, 
   { path: '**', redirectTo: '/login' }
 ];

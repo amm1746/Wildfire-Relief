@@ -1,0 +1,20 @@
+<div class="checkout">
+    <!-- Back Button -->
+    <button (click)="goBack()">← Back to Dashboard</button>
+  
+    <h2>Funding Basket</h2>
+  
+    <!-- Basket Items -->
+    <ul>
+      <li *ngFor="let item of basket">
+        {{ item.name }} - ${{ item.cost }}
+      </li>
+    </ul>
+  
+    <!-- Checkout Button -->
+    <button (click)="checkout()" [disabled]="basket.length === 0">Checkout</button>
+  
+    <!-- Success Message -->
+    <div *ngIf="message">{{ message }}</div>
+  </div>
+  

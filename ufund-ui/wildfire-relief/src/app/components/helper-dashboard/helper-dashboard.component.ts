@@ -88,4 +88,8 @@ export class HelperDashboardComponent implements OnInit {
       }
     });
   }
+
+  goToCheckout(): void {
+    this.router.navigate(['/checkout']);
+  }
 }

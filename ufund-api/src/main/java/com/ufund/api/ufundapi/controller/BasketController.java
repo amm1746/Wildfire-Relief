@@ -3,6 +3,7 @@ package com.ufund.api.ufundapi.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -88,23 +89,38 @@ public class BasketController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Need not found in basket");
     }
 
-    @PostMapping("/checkout")
-    public Map<String, String> checkoutBasket(HttpSession session) {
-        List<Need> basket = getBasket(session);
+@PostMapping("/checkout")
+public Map<String, String> checkoutBasket(HttpSession session) {
+    List<Need> basket = getBasket(session);
 
-        for (Need need : basket) {
-            Need currentNeed = cupboardDAO.getNeed(need.getName());
-            if (currentNeed != null && currentNeed.getQuantity() >= need.getQuantity()) {
-                currentNeed.setQuantity(currentNeed.getQuantity() - need.getQuantity());
-                cupboardDAO.updateNeed(currentNeed.getName(), currentNeed);
-            } else {
-                return Map.of("message", "Checkout failed: Need '" + need.getName() + "' is unavailable or insufficient quantity.");
-            }
-        }
-
-        basket.clear();
-        session.setAttribute(BASKET_KEY, basket);
-
-        return Map.of("message", "Checkout successful");
+    Map<String, Integer> needCountMap = new HashMap<>();
+    for (Need need : basket) {
+        needCountMap.put(need.getName(), needCountMap.getOrDefault(need.getName(), 0) + 1);
     }
+
+    for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
+        String name = entry.getKey();
+        int requestedQty = entry.getValue();
+        Need cupboardNeed = cupboardDAO.getNeed(name);
+
+        if (cupboardNeed == null || cupboardNeed.getQuantity() < requestedQty) {
+            return Map.of("message", "Checkout failed: Need '" + name + "' is unavailable or insufficient quantity.");
+        }
+    }
+
+    for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
+        String name = entry.getKey();
+        int requestedQty = entry.getValue();
+        Need cupboardNeed = cupboardDAO.getNeed(name);
+
+        cupboardNeed.setQuantity(cupboardNeed.getQuantity() - requestedQty);
+        cupboardDAO.updateNeed(name, cupboardNeed);
+    }
+
+    basket.clear();
+    session.setAttribute(BASKET_KEY, basket);
+
+    return Map.of("message", "Checkout successful");
+}
+
 }

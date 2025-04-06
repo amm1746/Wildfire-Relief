@@ -65,4 +65,11 @@ public class Helper {
     public List<Need> getFundingBasket() {
         return new ArrayList<>(fundingBasket);
     }
+
+    public void checkout() {
+        for (Need need : fundingBasket) {
+            cupboardDAO.deleteNeed(need.getName());
+        }
+        fundingBasket.clear();
+    }
 }
