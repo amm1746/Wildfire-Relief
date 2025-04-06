@@ -1,5 +1,4 @@
 package com.ufund.api.ufundapi.model;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -11,13 +10,11 @@ import java.util.List;
 public class Notification {
 
     private String message;
-    private final LocalDateTime timestamp;
     private String sender;
     private List<String> recipients;
 
     public Notification(String message, String sender, List<String> recipients){
         this.message = message;
-        this.timestamp = LocalDateTime.now();
         this.sender = sender;
         this.recipients = recipients;
 
@@ -29,10 +26,6 @@ public class Notification {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
     }
 
     public String getSender() {

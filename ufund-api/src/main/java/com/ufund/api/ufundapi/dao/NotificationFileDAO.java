@@ -33,11 +33,9 @@ public class NotificationFileDAO implements NotificationDAO {
 
     private void load() throws IOException {
         File file = new File(filename);
-        if (file.exists()){
-            notifications = Arrays.asList(objectMapper.readValue(file, Notification[].class));
-            notifications = new ArrayList<>(notifications); 
+        if (file.exists() && file.length() > 0){
+            notifications = new ArrayList<>(Arrays.asList(objectMapper.readValue(file, Notification[].class)));
         } 
-
         else{
             notifications = new ArrayList<>();
         }
