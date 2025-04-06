@@ -129,7 +129,14 @@ public class BasketController {
         // Clear basket
         basket.clear();
         session.setAttribute(BASKET_KEY, basket);
+
+        // Record reward for the helper
+        rewardsController.recordPurchase("HELPER");
     
         return Map.of("message", "Checkout successful");
+    }
+
+    public List<Rewards> getRewards(HttpSession session) {
+        return rewardsController.getRewards("HELPER");
     }
 }
