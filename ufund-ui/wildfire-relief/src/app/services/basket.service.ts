@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Need } from '../models/need';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,15 @@ export class BasketService {
 
   private url = 'http://localhost:8080';
 
+  private cupboardUpdatedSource = new Subject<void>();
+  cupboardUpdated$ = this.cupboardUpdatedSource.asObservable();
+  
+
   constructor(private http: HttpClient) { }
+
+  emitCupboardUpdate(): void {
+    this.cupboardUpdatedSource.next();
+  }
 
   getAllNeeds(): Observable<Need[]> {
     return this.http.get<Need[]>(`${this.url}/cupboard/needs`, { withCredentials: true });

@@ -33,11 +33,14 @@ export class CheckoutComponent implements OnInit {
       next: (res) => {
         this.message = res.message;
         this.basket = [];
+  
+        this.basketService.emitCupboardUpdate();
       },
       error: () => {
         this.message = 'Checkout failed. Please try again.';
       }
     });
   }
+  
   
 }

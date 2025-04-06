@@ -89,38 +89,44 @@ public class BasketController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Need not found in basket");
     }
 
-@PostMapping("/checkout")
-public Map<String, String> checkoutBasket(HttpSession session) {
-    List<Need> basket = getBasket(session);
-
-    Map<String, Integer> needCountMap = new HashMap<>();
-    for (Need need : basket) {
-        needCountMap.put(need.getName(), needCountMap.getOrDefault(need.getName(), 0) + 1);
-    }
-
-    for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
-        String name = entry.getKey();
-        int requestedQty = entry.getValue();
-        Need cupboardNeed = cupboardDAO.getNeed(name);
-
-        if (cupboardNeed == null || cupboardNeed.getQuantity() < requestedQty) {
-            return Map.of("message", "Checkout failed: Need '" + name + "' is unavailable or insufficient quantity.");
+    @PostMapping("/checkout")
+    public Map<String, String> checkoutBasket(HttpSession session) {
+        List<Need> basket = getBasket(session);
+    
+        Map<String, Integer> needCountMap = new HashMap<>();
+        for (Need need : basket) {
+            needCountMap.put(need.getName(), needCountMap.getOrDefault(need.getName(), 0) + 1);
         }
+    
+        for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
+            String name = entry.getKey();
+            int requestedQty = entry.getValue();
+            Need cupboardNeed = cupboardDAO.getNeed(name);
+    
+            if (cupboardNeed == null || cupboardNeed.getQuantity() < requestedQty) {
+                return Map.of("message", "Checkout failed: Need '" + name + "' is unavailable or has insufficient quantity.");
+            }
+        }
+    
+        for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
+            String name = entry.getKey();
+            int requestedQty = entry.getValue();
+            Need cupboardNeed = cupboardDAO.getNeed(name);
+    
+            int remainingQty = cupboardNeed.getQuantity() - requestedQty;
+    
+            if (remainingQty <= 0) {
+                cupboardDAO.deleteNeed(name);
+            } else {
+                cupboardNeed.setQuantity(remainingQty);
+                cupboardDAO.updateNeed(name, cupboardNeed);
+            }
+        }
+    
+        // Clear basket
+        basket.clear();
+        session.setAttribute(BASKET_KEY, basket);
+    
+        return Map.of("message", "Checkout successful");
     }
-
-    for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
-        String name = entry.getKey();
-        int requestedQty = entry.getValue();
-        Need cupboardNeed = cupboardDAO.getNeed(name);
-
-        cupboardNeed.setQuantity(cupboardNeed.getQuantity() - requestedQty);
-        cupboardDAO.updateNeed(name, cupboardNeed);
-    }
-
-    basket.clear();
-    session.setAttribute(BASKET_KEY, basket);
-
-    return Map.of("message", "Checkout successful");
-}
-
 }

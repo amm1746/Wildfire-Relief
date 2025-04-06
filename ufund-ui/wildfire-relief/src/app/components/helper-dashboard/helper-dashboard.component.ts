@@ -20,6 +20,10 @@ export class HelperDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loadNeeds();
     this.loadBasket();
+
+    this.basketService.cupboardUpdated$.subscribe(() => {
+      this.loadNeeds();
+    });
   }
 
   loadNeeds(): void {
