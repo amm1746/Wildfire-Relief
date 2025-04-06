@@ -66,11 +66,14 @@ public class Helper {
         return new ArrayList<>(fundingBasket);
     }
 
-    /**
-     * Retrieves all needs in the cupboard
-     * @return a list of needs
-     */
+    public void checkout() {
+      for(Need need: fundingBasket) {
+        cupboardDAO.deleteNeed(need.getName());
+      }
+      fundingBasket.clear();
+    }
+  
     public List<Need> viewAllNeeds() {
-        return cupboardDAO.getAllNeeds();
+      return cupboardDAO.getAllNeeds();
     }
 }

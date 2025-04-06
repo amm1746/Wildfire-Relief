@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { ManagerDashboardComponent } from './components/dashboard/manager-dashboard.component';
 import { HelperDashboardComponent } from './components/helper-dashboard/helper-dashboard.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
     ManagerDashboardComponent,
     HelperDashboardComponent,
     AccessDeniedComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,
