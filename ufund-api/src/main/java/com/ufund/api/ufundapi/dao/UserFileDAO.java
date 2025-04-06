@@ -54,6 +54,7 @@ public class UserFileDAO implements UserDAO {
 
     private void load() throws IOException {
         File file = new File(filename);
+
         if(file.exists()){
             users = new ArrayList<>(Arrays.asList(objectMapper.readValue(file, User[].class)));
         }
