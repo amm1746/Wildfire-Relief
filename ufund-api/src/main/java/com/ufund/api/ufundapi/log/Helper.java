@@ -2,7 +2,7 @@ package com.ufund.api.ufundapi.log;
 
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.Rewards;
-import com.ufund.api.ufundapi.controller.RewardsController;
+import com.ufund.api.ufundapi.model.RewardsService;
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 public class Helper {
     private List<Need> fundingBasket;
     private static CupboardDAO cupboardDAO = null;
-    private RewardsController rewardsController;
+    private RewardsService rewardsService;
 
     /**
      * Constructor to initialize the funding basket.
@@ -45,7 +45,7 @@ public class Helper {
     public boolean addToFundingBasket(Need need) {
         if (!fundingBasket.contains(need)) {
             fundingBasket.add(need);
-            rewardsController.recordPurchase("Helper");
+            rewardsService.recordPurchase("Helper");
             return true;
         }
         return false; // Need already in the basket
@@ -86,6 +86,6 @@ public class Helper {
      * @return a list of all the rewards a Helper has achieved
      */
     public List<Rewards> getRewards() {
-        return rewardsController.getRewards("Helper");
+        return rewardsService.getRewards("Helper");
     }
 }

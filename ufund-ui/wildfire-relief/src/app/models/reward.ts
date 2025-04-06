@@ -1,5 +1,5 @@
+// models/reward.ts
 export interface Reward {
-    description: string;
-    // Add other properties as needed
-  }
-  
+  name: string;          // Add the 'name' property
+  description: string;   // Add the 'description' property
+}

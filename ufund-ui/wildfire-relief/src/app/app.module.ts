@@ -10,7 +10,7 @@ import { ManagerDashboardComponent } from './components/dashboard/manager-dashbo
 import { HelperDashboardComponent } from './components/helper-dashboard/helper-dashboard.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
-import { PopupComponent } from './components/rewardspopup/popup.component';  // Import the PopupComponent
+import { PopupComponent } from './components/popup/popup.component';  // Import the PopupComponent
 
 @NgModule({
   declarations: [

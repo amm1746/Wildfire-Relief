@@ -1,0 +1,17 @@
+<div *ngIf="showPopup" class="popup">
+  <div class="popup-content">
+    <h3>{{ rewardMessage }}</h3>
+    <div *ngIf="rewards.length > 0" class="reward-list">
+      <!-- Loop through each reward -->
+      <div *ngFor="let reward of rewards" class="reward-item" [ngStyle]="getRewardStyles(reward)">
+        <div class="reward-header">
+          <span class="emoji">{{ getRewardEmoji(reward) }}</span>
+          <span class="reward-name">{{ reward.name }}</span>
+        </div>
+        <p>{{ reward.description }}</p>
+      </div>
+    </div>
+    <button *ngIf="showViewRewardsButton" (click)="viewRewards()">View More Rewards</button>
+    <button (click)="close.emit()">Close</button>
+  </div>
+</div>

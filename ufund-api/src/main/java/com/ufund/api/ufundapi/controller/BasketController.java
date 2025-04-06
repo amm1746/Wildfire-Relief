@@ -94,7 +94,7 @@ public class BasketController {
     }
 
     @PostMapping("/checkout")
-    public Map<String, String> checkoutBasket(HttpSession session) {
+    public Map<String, Object> checkoutBasket(HttpSession session) {
         List<Need> basket = getBasket(session);
     
         Map<String, Integer> needCountMap = new HashMap<>();
@@ -133,17 +133,22 @@ public class BasketController {
         basket.clear();
         session.setAttribute(BASKET_KEY, basket);
     
-        // Record the reward for the user
-        rewardsService.recordPurchase("HELPER");
+        // Record the purchase
+        String helper = (String) session.getAttribute("helper-id");  // Extract helper ID from session
+        rewardsService.recordPurchase(helper);
+    
+        // Add first donation reward if applicable
+        rewardsService.addFirstDonationReward(helper);
     
         // Get rewards after the checkout
-        List<Rewards> rewards = getRewards(session);
+        List<Rewards> rewards = rewardsService.getRewards(helper);  // Get rewards based on helper
     
-        // Optionally, convert rewards to a string if needed in the response
-        String rewardsMessage = rewards.isEmpty() ? "No rewards available" : "You have rewards.";
+        // Return the response with message and rewards
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Checkout successful");
+        response.put("rewards", rewards.isEmpty() ? "No rewards available" : rewards);
     
-        // Return the response with only message and optional rewards string
-        return Map.of("message", "Checkout successful", "rewards", rewardsMessage);
+        return response;
     }
     
 

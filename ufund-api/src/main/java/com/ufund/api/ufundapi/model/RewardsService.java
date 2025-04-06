@@ -41,4 +41,19 @@ public class RewardsService {
     public List<Rewards> getRewards(@RequestParam String helper) {
         return rewards.getOrDefault(helper, new ArrayList<>());
     }
+
+    public void addFirstDonationReward(String helper) {
+        // Check if the user is making their first donation
+        List<Rewards> userRewards = rewards.computeIfAbsent(helper, k -> new ArrayList<>());
+        
+        // If the user hasn't received the first donation reward yet, assign it
+        boolean hasReceivedFirstDonationReward = userRewards.stream()
+            .anyMatch(r -> r.getTitle().equals("First Donation Reward"));
+        
+        if (!hasReceivedFirstDonationReward) {
+            Rewards firstDonationReward = new Rewards("First Donation Reward", "You earned a special first donation reward!");
+            userRewards.add(firstDonationReward);
+            rewards.put(helper, userRewards); // Save in the map
+        }
+    }
 }

@@ -1,4 +1,10 @@
-<app-popup *ngIf="showPopup" [rewardMessage]="rewardMessage"></app-popup>
+<app-popup
+  [showPopup]="showPopup"
+  [rewardMessage]="rewardMessage"
+  [rewards]="rewards"
+  [showViewRewardsButton]="showViewRewardsButton"
+  (close)="closePopup()">
+</app-popup>
 
 <!-- Back Button -->
 <button class="back-btn" (click)="goBack()">← Back to Dashboard</button>
@@ -22,8 +28,6 @@
 <!-- Success Message -->
 <div *ngIf="message" class="message">{{ message }}</div>
 
-<!-- Popup -->
-<app-popup *ngIf="showPopup" 
-  [rewardMessage]="rewardMessage"
-  (close)="closePopup()">
-</app-popup>
+<!-- Button to view rewards -->
+<!-- The following button is now controlled through the app-popup component -->
+<!-- <button *ngIf="showViewRewardsButton" (click)="viewRewards()">View Rewards</button> -->
