@@ -1,19 +1,15 @@
 package com.ufund.api.ufundapi.controller;
 
-import org.springframework.web.bind.annotation.*;
 import java.util.*;
-
+import org.springframework.stereotype.Component;
 import com.ufund.api.ufundapi.model.Rewards;
 
-@RestController
-@RequestMapping("/api/rewards")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@Component
 public class RewardsController {
     private final Map<String, Integer> purchases = new HashMap<>();
     private final Map<String, List<Rewards>> rewards = new HashMap<>();
 
-    @PostMapping("/record")
-    public void recordPurchase(@RequestParam String helper) {
+    public void recordPurchase(String helper) {
         int p = purchases.getOrDefault(helper, 0) + 1;
         purchases.put(helper, p);
 
@@ -37,8 +33,7 @@ public class RewardsController {
         }
     }
 
-    @GetMapping
-    public List<Rewards> getRewards(@RequestParam String helper) {
+    public List<Rewards> getRewards(String helper) {
         return rewards.getOrDefault(helper, new ArrayList<>());
     }
 }
