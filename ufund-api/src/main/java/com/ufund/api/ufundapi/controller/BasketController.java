@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.Rewards;
+import com.ufund.api.ufundapi.model.RewardsService;
 
 import jakarta.servlet.http.HttpSession;
 /**
@@ -35,11 +36,11 @@ public class BasketController {
 
     private static final String BASKET_KEY = "basket";
     private final CupboardDAO cupboardDAO;
-    private final RewardsController rewardsController;
+    private final RewardsService rewardsService;
 
-    public BasketController(CupboardDAO cupboardDAO, RewardsController rewardsController) {
+    public BasketController(CupboardDAO cupboardDAO, RewardsService rewardsService) {
         this.cupboardDAO = cupboardDAO;
-        this.rewardsController = rewardsController;
+        this.rewardsService = rewardsService;
     }
 
 
@@ -101,6 +102,7 @@ public class BasketController {
             needCountMap.put(need.getName(), needCountMap.getOrDefault(need.getName(), 0) + 1);
         }
     
+        // Check if all items are available in the cupboard
         for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
             String name = entry.getKey();
             int requestedQty = entry.getValue();
@@ -111,6 +113,7 @@ public class BasketController {
             }
         }
     
+        // Update the cupboard stock
         for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
             String name = entry.getKey();
             int requestedQty = entry.getValue();
@@ -129,14 +132,22 @@ public class BasketController {
         // Clear basket
         basket.clear();
         session.setAttribute(BASKET_KEY, basket);
-
-        // Record reward for the helper
-        rewardsController.recordPurchase("HELPER");
     
-        return Map.of("message", "Checkout successful");
+        // Record the reward for the user
+        rewardsService.recordPurchase("HELPER");
+    
+        // Get rewards after the checkout
+        List<Rewards> rewards = getRewards(session);
+    
+        // Optionally, convert rewards to a string if needed in the response
+        String rewardsMessage = rewards.isEmpty() ? "No rewards available" : "You have rewards.";
+    
+        // Return the response with only message and optional rewards string
+        return Map.of("message", "Checkout successful", "rewards", rewardsMessage);
     }
+    
 
     public List<Rewards> getRewards(HttpSession session) {
-        return rewardsController.getRewards("HELPER");
+        return rewardsService.getRewards("HELPER");
     }
 }

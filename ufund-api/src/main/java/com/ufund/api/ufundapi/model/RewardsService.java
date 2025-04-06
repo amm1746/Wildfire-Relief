@@ -1,16 +1,14 @@
-package com.ufund.api.ufundapi.controller;
+package com.ufund.api.ufundapi.model;
 
 import java.util.*;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ufund.api.ufundapi.model.Rewards;
 
 @RestController
 @RequestMapping("/api")
-@Component
-public class RewardsController {
+public class RewardsService {
     private final Map<String, Integer> purchases = new HashMap<>();
     private final Map<String, List<Rewards>> rewards = new HashMap<>();
 
@@ -18,7 +16,7 @@ public class RewardsController {
         int p = purchases.getOrDefault(helper, 0) + 1;
         purchases.put(helper, p);
 
-        List<Rewards> r = rewards.computeIfAbsent(helper, k -> new ArrayList<>());
+        List<Rewards> r = rewards.computeIfAbsent(helper, k -> new ArrayList<>()); // Ensure the helper has a reward list
 
         // First Purchase Reward
         if (p == 1) {
@@ -38,7 +36,9 @@ public class RewardsController {
         }
     }
 
-    public List<Rewards> getRewards(String helper) {
+    // Adjusting getRewards to accept a helper parameter as a query parameter
+    @GetMapping("/rewards")
+    public List<Rewards> getRewards(@RequestParam String helper) {
         return rewards.getOrDefault(helper, new ArrayList<>());
     }
 }

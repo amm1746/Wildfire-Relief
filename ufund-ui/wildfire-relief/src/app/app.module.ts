@@ -10,6 +10,7 @@ import { ManagerDashboardComponent } from './components/dashboard/manager-dashbo
 import { HelperDashboardComponent } from './components/helper-dashboard/helper-dashboard.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
+import { PopupComponent } from './components/rewardspopup/popup.component';  // Import the PopupComponent
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
     HelperDashboardComponent,
     AccessDeniedComponent,
     CheckoutComponent,
+    PopupComponent,  // Declare PopupComponent here
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,6 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
     HttpClientModule,
     RouterModule
   ],
-
   providers: [],
   bootstrap: [AppComponent]
 })
