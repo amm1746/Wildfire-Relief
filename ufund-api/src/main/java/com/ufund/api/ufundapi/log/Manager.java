@@ -19,7 +19,7 @@ public class Manager {
     private static CupboardDAO cupboardDAO = null;
     
     public Manager(CupboardDAO cupboardDAO) {
-            this.cupboardDAO = cupboardDAO;
+            Manager.cupboardDAO = cupboardDAO;
     }
 
     /**

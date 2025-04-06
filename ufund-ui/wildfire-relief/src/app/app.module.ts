@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { ManagerDashboardComponent } from './components/dashboard/manager-dashboard.component';
 import { HelperDashboardComponent } from './components/helper-dashboard/helper-dashboard.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { RegisterComponent } from './register/register.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
     ManagerDashboardComponent,
     HelperDashboardComponent,
     AccessDeniedComponent,
+    RegisterComponent,
     CheckoutComponent,
   ],
   imports: [
