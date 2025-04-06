@@ -67,9 +67,13 @@ public class Helper {
     }
 
     public void checkout() {
-        for (Need need : fundingBasket) {
-            cupboardDAO.deleteNeed(need.getName());
-        }
-        fundingBasket.clear();
+      for(Need need: fundingBasket) {
+        cupboardDAO.deleteNeed(need.getName());
+      }
+      fundingBasket.clear();
+    }
+  
+    public List<Need> viewAllNeeds() {
+      return cupboardDAO.getAllNeeds();
     }
 }
