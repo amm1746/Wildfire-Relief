@@ -65,4 +65,12 @@ public class Helper {
     public List<Need> getFundingBasket() {
         return new ArrayList<>(fundingBasket);
     }
+
+    /**
+     * Retrieves all needs in the cupboard
+     * @return a list of needs
+     */
+    public List<Need> viewAllNeeds() {
+        return cupboardDAO.getAllNeeds();
+    }
 }
