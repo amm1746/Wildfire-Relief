@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.Rewards;
 
 import jakarta.servlet.http.HttpSession;
 /**
@@ -34,9 +35,11 @@ public class BasketController {
 
     private static final String BASKET_KEY = "basket";
     private final CupboardDAO cupboardDAO;
+    private final RewardsController rewardsController;
 
-    public BasketController(CupboardDAO cupboardDAO) {
+    public BasketController(CupboardDAO cupboardDAO, RewardsController rewardsController) {
         this.cupboardDAO = cupboardDAO;
+        this.rewardsController = rewardsController;
     }
 
 
