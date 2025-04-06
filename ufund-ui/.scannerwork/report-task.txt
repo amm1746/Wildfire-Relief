@@ -1,0 +1,6 @@
+projectKey=wild-fire
+serverUrl=http://localhost:9000
+serverVersion=25.3.0.104237
+dashboardUrl=http://localhost:9000/dashboard?id=wild-fire
+ceTaskId=50a5b374-d58f-4dd6-8d6c-14f63a7ca474
+ceTaskUrl=http://localhost:9000/api/ce/task?id=50a5b374-d58f-4dd6-8d6c-14f63a7ca474

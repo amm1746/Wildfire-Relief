@@ -10,6 +10,7 @@ import { ManagerDashboardComponent } from './components/dashboard/manager-dashbo
 import { HelperDashboardComponent } from './components/helper-dashboard/helper-dashboard.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { RegisterComponent } from './register/register.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { RegisterComponent } from './register/register.component';
     HelperDashboardComponent,
     AccessDeniedComponent,
     RegisterComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,

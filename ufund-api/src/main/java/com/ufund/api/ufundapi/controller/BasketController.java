@@ -3,6 +3,7 @@ package com.ufund.api.ufundapi.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -91,20 +92,41 @@ public class BasketController {
     @PostMapping("/checkout")
     public Map<String, String> checkoutBasket(HttpSession session) {
         List<Need> basket = getBasket(session);
-
+    
+        Map<String, Integer> needCountMap = new HashMap<>();
         for (Need need : basket) {
-            Need currentNeed = cupboardDAO.getNeed(need.getName());
-            if (currentNeed != null && currentNeed.getQuantity() >= need.getQuantity()) {
-                currentNeed.setQuantity(currentNeed.getQuantity() - need.getQuantity());
-                cupboardDAO.updateNeed(currentNeed.getName(), currentNeed);
-            } else {
-                return Map.of("message", "Checkout failed: Need '" + need.getName() + "' is unavailable or insufficient quantity.");
+            needCountMap.put(need.getName(), needCountMap.getOrDefault(need.getName(), 0) + 1);
+        }
+    
+        for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
+            String name = entry.getKey();
+            int requestedQty = entry.getValue();
+            Need cupboardNeed = cupboardDAO.getNeed(name);
+    
+            if (cupboardNeed == null || cupboardNeed.getQuantity() < requestedQty) {
+                return Map.of("message", "Checkout failed: Need '" + name + "' is unavailable or has insufficient quantity.");
             }
         }
-
+    
+        for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
+            String name = entry.getKey();
+            int requestedQty = entry.getValue();
+            Need cupboardNeed = cupboardDAO.getNeed(name);
+    
+            int remainingQty = cupboardNeed.getQuantity() - requestedQty;
+    
+            if (remainingQty <= 0) {
+                cupboardDAO.deleteNeed(name);
+            } else {
+                cupboardNeed.setQuantity(remainingQty);
+                cupboardDAO.updateNeed(name, cupboardNeed);
+            }
+        }
+    
+        // Clear basket
         basket.clear();
         session.setAttribute(BASKET_KEY, basket);
-
+    
         return Map.of("message", "Checkout successful");
     }
 }

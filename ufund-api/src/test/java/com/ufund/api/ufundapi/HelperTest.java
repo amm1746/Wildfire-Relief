@@ -85,4 +85,10 @@ public class HelperTest {
         assertNotNull(result);
         assertEquals("Need1", result.getName());
     }
+
+    @Test
+    public void testViewAllNeeds() {
+        when(needsCupboard.getAllNeeds()).thenReturn(List.of(new Need("Need1", 10.0, 1, "Type1"), new Need("Need2", 20.0, 2, "Type2")));
+        assertEquals(2, helper.viewAllNeeds().size());
+    }
 }

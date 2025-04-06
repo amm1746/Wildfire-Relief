@@ -20,6 +20,10 @@ export class HelperDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loadNeeds();
     this.loadBasket();
+
+    this.basketService.cupboardUpdated$.subscribe(() => {
+      this.loadNeeds();
+    });
   }
 
   loadNeeds(): void {
@@ -87,5 +91,9 @@ export class HelperDashboardComponent implements OnInit {
         console.error('Error searching needs:', error);
       }
     });
+  }
+
+  goToCheckout(): void {
+    this.router.navigate(['/checkout']);
   }
 }
