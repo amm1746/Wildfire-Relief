@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router'; 
+import { NotificationService } from '../../services/notification.service';
 /**
  * LoginComponent
  * 
@@ -26,7 +27,7 @@ export class LoginComponent {
    * @param authService 
    * @param router 
    */
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private notificationService: NotificationService) {}
 
   /**
    * Logs in the user with provided credentials. Goes to dashboard if successful.
@@ -61,6 +62,14 @@ export class LoginComponent {
       this.role = null;
       this.username = '';
       this.password = '';
+
+      sessionStorage.removeItem('role');
+      localStorage.removeItem('username');
+
+      this.notificationService.clearNotifications().subscribe(() => {
+        console.log('Notifications cleared');
+        this.router.navigate(['/login']);
+      });
     });
   }
 
