@@ -1,9 +1,9 @@
 package com.ufund.api.ufundapi.log;
 
-import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.Rewards;
 import com.ufund.api.ufundapi.model.RewardsService;
-import com.ufund.api.ufundapi.dao.CupboardDAO;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,23 +18,26 @@ import com.ufund.api.ufundapi.model.Need;
  */
 public class Helper {
     private final List<Need> fundingBasket;
-    private static CupboardDAO cupboardDAO = null;
-    private RewardsService rewardsService;
+    private final RewardsService rewardsService;
+    @SuppressWarnings("FieldMayBeFinal")
+    private CupboardDAO cupboardDAO;
 
     /**
      * Constructor to initialize the funding basket.
      */
-    public Helper(CupboardDAO cupboardDAO) {
+    public Helper(CupboardDAO cupboardDAO, RewardsService rewardsService) {
         this.fundingBasket = new ArrayList<>();
-        Helper.cupboardDAO = cupboardDAO;
+        this.cupboardDAO = cupboardDAO;
+        this.rewardsService = rewardsService;
     }
 
     /**
      * search for a specific need
      * @param name name of the need
      * @return the need that matches the name
+     * @throws IOException 
      */
-    public Need searchNeed(String name) {
+    public Need searchNeed(String name) throws IOException {
         Need need = cupboardDAO.getNeed(name);
         return need;
     }
@@ -73,7 +76,7 @@ public class Helper {
         return new ArrayList<>(fundingBasket);
     }
 
-    public void checkout() {
+    public void checkout() throws IOException {
       for(Need need: fundingBasket) {
         cupboardDAO.deleteNeed(need.getName());
       }

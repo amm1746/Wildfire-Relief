@@ -1,9 +1,16 @@
 package com.ufund.api.ufundapi.dao;
 
+import java.io.File;
+import java.io.IOException;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import com.ufund.api.ufundapi.model.Need;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ufund.api.ufundapi.model.Need;
 
 /**
  * Implementation of CupboardDAO.java
@@ -14,13 +21,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CupboardFileDAO implements CupboardDAO {
-    List<Need> needs = new ArrayList<>();
+    private final ObjectMapper objectMapper;
+    private final String filename;
+    private List<Need> needs;
 
     /**
      * Constructs CupboardFileDAO with an empty list of needs.
      */
-    public CupboardFileDAO() {
-        this.needs = new ArrayList<>();
+    public CupboardFileDAO(@Value("${needs.file}") String filename, 
+                          ObjectMapper objectMapper) throws IOException {
+        this.filename = filename;
+        this.objectMapper = objectMapper;
+        load();
     }
 
     /**
@@ -30,11 +42,10 @@ public class CupboardFileDAO implements CupboardDAO {
      * @return The created need, or null if it already exists.
      */
     @Override
-    public Need createNeed(Need need) {
-        if (needExists(need.getName())) {
-            return null;
-        }
+    public Need createNeed(Need need) throws IOException {
+        if (needExists(need.getName())) return null;
         needs.add(need);
+        save();
         return need;
     }
 
@@ -88,8 +99,15 @@ public class CupboardFileDAO implements CupboardDAO {
      */
     @Override
     public void deleteNeed(String name) {
+        try {
         needs.removeIf(need -> need.getName().equalsIgnoreCase(name));
-    }
+        save();
+        } catch (IOException e) {
+            // Log error or throw as unchecked exception
+            throw new RuntimeException("Failed to delete needs", e);
+        }
+
+    } 
 
     /**
      * Checks whether a need exists or not.
@@ -116,12 +134,36 @@ public class CupboardFileDAO implements CupboardDAO {
      */
     @Override
     public Need updateNeed(String name, Need updated) {
-        for (int i = 0; i < needs.size(); i++) {
-            if (needs.get(i).getName().equalsIgnoreCase(name)) {
-                needs.set(i, updated);
-                return updated;
+        try {
+            for (int i = 0; i < needs.size(); i++) {
+                if (needs.get(i).getName().equalsIgnoreCase(name)) {
+                    needs.set(i, updated);
+                    save();
+                    return updated;
+                }
             }
-        }
-        return null; // need not found
+            return null;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to update needs", e);
+    }
+    }
+    /**
+     * Load needs from JSON file
+     * 
+     * @throws IOException
+     */
+    private void load() throws IOException {
+        File file = new File(filename);
+        needs = file.exists() 
+            ? new ArrayList<>(Arrays.asList(objectMapper.readValue(file, Need[].class)))
+            : new ArrayList<>();
+    }
+    /**
+     * Save needs to JSON file
+     * 
+     * @throws IOException
+     */
+    private void save() throws IOException {
+        objectMapper.writeValue(new File(filename), needs);
     }
 }

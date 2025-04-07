@@ -103,7 +103,7 @@ public class BasketController {
     }
 
     @PostMapping("/checkout")
-    public Map<String, Object> checkoutBasket(HttpSession session) {
+    public Map<String, Object> checkoutBasket(HttpSession session) throws IOException {
         String currentUser = (String) session.getAttribute("username");
         List<Need> basket = getBasket(session);
     
@@ -119,7 +119,7 @@ public class BasketController {
             Need cupboardNeed = cupboardDAO.getNeed(name);
     
             if (cupboardNeed == null || cupboardNeed.getQuantity() < requestedQty) {
-                return Map.of("message", "Checkout failed: Need '" + name + "' is unavailable or has insufficient quantity.");
+                return Map.of("success", false, "message", "Checkout failed: Need " + name + "' is unavailable or has insufficient quantity.");
             }
         }
     
@@ -169,6 +169,7 @@ public class BasketController {
     
         // Return the response with message and rewards
         Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
         response.put("message", "Checkout successful");
         response.put("rewards", rewards.isEmpty() ? "No rewards available" : rewards);
     

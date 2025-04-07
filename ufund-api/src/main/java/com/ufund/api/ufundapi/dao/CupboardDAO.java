@@ -24,9 +24,10 @@ import com.ufund.api.ufundapi.model.Need;
     *
     * @param name The name of need.
     * @return The matching need, otherwise null.
+     * @throws IOException 
     */
 
-    Need getNeed(String name);
+    Need getNeed(String name) throws IOException;
 
    /**
     * Creates a new need.
@@ -50,9 +51,10 @@ import com.ufund.api.ufundapi.model.Need;
     * Deletes a need by name. 
     *
     * @param name The name of need being deleted.
+ * @throws IOException 
     */
 
-    void deleteNeed(String name);
+    void deleteNeed(String name) throws IOException;
 
    /**
     * Checks if a need exists or not.
@@ -69,8 +71,9 @@ import com.ufund.api.ufundapi.model.Need;
     * @param name The name of need being updated.
     * @param updated The updated need.
     * @return The updated need.
+ * @throws IOException 
     */
     
-    Need updateNeed(String name, Need updated);
+    Need updateNeed(String name, Need updated) throws IOException;
  }
 

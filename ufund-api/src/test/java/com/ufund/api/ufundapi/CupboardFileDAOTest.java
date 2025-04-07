@@ -1,6 +1,8 @@
 package com.ufund.api.ufundapi;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.dao.CupboardFileDAO;
 import com.ufund.api.ufundapi.model.Need;
 
@@ -26,13 +29,15 @@ public class CupboardFileDAOTest {
     @BeforeEach
     public void setup() throws IOException {
         // Initialize the DAO with a test file and a simple ObjectMapper
-        cupboardFileDAO = new CupboardFileDAO();
-        testNeed = new Need("name", 20.0, 5, "type1");
+        Files.write(Paths.get("test-needs.json"), "[]".getBytes());
+        ObjectMapper objectMapper = new ObjectMapper();
+        cupboardFileDAO = new CupboardFileDAO("test-needs.json", objectMapper);
+        testNeed = new Need("Socks", 5.0, 10, "Clothing");
     }
 
     @Test
     public void testCreateNeed() throws IOException {
-        cupboardFileDAO.deleteNeed("name");
+        cupboardFileDAO.deleteNeed("Socks");
         Need createdNeed = cupboardFileDAO.createNeed(testNeed);
 
         assertNotNull(createdNeed);
@@ -42,7 +47,7 @@ public class CupboardFileDAOTest {
     @Test
     public void testGetNeed() throws IOException {
         cupboardFileDAO.createNeed(testNeed);
-        Need retrievedNeed = cupboardFileDAO.getNeed("name");
+        Need retrievedNeed = cupboardFileDAO.getNeed("Socks");
         assertNotNull(retrievedNeed);
         assertEquals(testNeed.getName(), retrievedNeed.getName());
     }
@@ -50,16 +55,16 @@ public class CupboardFileDAOTest {
     @Test
     public void testDeleteNeed() throws IOException {
         cupboardFileDAO.createNeed(testNeed);
-        cupboardFileDAO.deleteNeed("name");
+        cupboardFileDAO.deleteNeed("Socks");
 
-        assertNull(cupboardFileDAO.getNeed("name"));
+        assertNull(cupboardFileDAO.getNeed("Socks"));
     }
 
     @Test
     public void testUpdateNeed() throws IOException {
         cupboardFileDAO.createNeed(testNeed);
-        Need updatedNeed = new Need("nam", 15.5, 3, "type2");
-        Need result = cupboardFileDAO.updateNeed("name", updatedNeed);
+        Need updatedNeed = new Need("Socks", 15.5, 3, "type2");
+        Need result = cupboardFileDAO.updateNeed("Socks", updatedNeed);
 
         assertNotNull(result);
         assertEquals(updatedNeed.getCost(), result.getCost());
@@ -69,7 +74,7 @@ public class CupboardFileDAOTest {
     @Test
     public void testNeedExists() throws IOException {
         cupboardFileDAO.createNeed(testNeed);
-        boolean exists = cupboardFileDAO.needExists("name");
+        boolean exists = cupboardFileDAO.needExists("Socks");
 
         assertTrue(exists);
     }

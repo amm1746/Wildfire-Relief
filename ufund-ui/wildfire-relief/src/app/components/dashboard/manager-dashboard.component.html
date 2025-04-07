@@ -45,6 +45,9 @@
       <button type="submit">Update Need</button>
       <button type="button" (click)="selectedNeed = null">Cancel</button>
     </form>
+    <p *ngIf="message" [ngClass]="{'success': message.includes('Successfully'), 'error': message.includes('Failed')}">
+      {{ message }}
+    </p>
   </div>
 
   <div class="needs-list-section">

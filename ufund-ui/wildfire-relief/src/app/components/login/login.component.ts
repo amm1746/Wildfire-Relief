@@ -81,4 +81,12 @@ export class LoginComponent {
       this.role = response.role;
     });
   }
+  /**
+   * @param event When the enter key is hit, the user will log in.
+   */
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.login();
+    }
+  }
 }
