@@ -73,7 +73,7 @@ public class LoginController{
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
             }
         }
-
+        session.setAttribute("username", username);
         return createResponse("Login successful", (String) session.getAttribute("role"));
     }
 

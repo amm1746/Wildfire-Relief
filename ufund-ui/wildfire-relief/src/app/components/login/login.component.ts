@@ -36,6 +36,7 @@ export class LoginComponent {
       response => {
         const role = response.role;
         sessionStorage.setItem('role', role);
+        localStorage.setItem('username', this.username);
         this.error = null;
 
         if(role === 'U-Fund Manager'){
