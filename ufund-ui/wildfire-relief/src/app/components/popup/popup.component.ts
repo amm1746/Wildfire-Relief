@@ -41,7 +41,6 @@ export class PopupComponent {
 
   // Get styles dynamically based on the reward type
   getRewardStyles(reward: Reward) {
-    // All rewards will now have a consistent green background
     return { backgroundColor: '#8BC34A', color: '#FFFFFF' };  // Green with white text
   }
 }
