@@ -1,5 +1,7 @@
 package com.ufund.api.ufundapi;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -13,10 +15,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ufund.api.ufundapi.log.Helper;
 import com.ufund.api.ufundapi.model.Need;
-import com.ufund.api.ufundapi.model.RewardsService;
 import com.ufund.api.ufundapi.dao.CupboardFileDAO;
 
 import java.util.List;
+
+import com.ufund.api.ufundapi.controller.RewardsService;
 
 @ExtendWith(MockitoExtension.class)
 public class HelperTest {
@@ -25,10 +28,11 @@ public class HelperTest {
     private Helper helper;
 
     @Mock
-    private RewardsService rewardsService;
-
-    @Mock
     private CupboardFileDAO needsCupboard;
+
+    @SuppressWarnings("unused")
+    @Mock
+    private RewardsService rewardsService;
 
     @BeforeEach
     public void setup() {
@@ -79,9 +83,10 @@ public class HelperTest {
     }
 
     @Test
-    public void testSearchNeed() {
+    public void testSearchNeed() throws IOException {
+        @SuppressWarnings("unused")
         Need need = new Need("Need1", 10.0, 1, "Type1");
-        when(needsCupboard.getNeed("Need1")).thenReturn(need);
+        when(needsCupboard.getNeed("Need1")).thenReturn(new Need("Need1", 10.0, 1, "Type1"));
 
         Need result = helper.searchNeed("Need1");
         assertNotNull(result);
@@ -90,7 +95,10 @@ public class HelperTest {
 
     @Test
     public void testViewAllNeeds() {
-        when(needsCupboard.getAllNeeds()).thenReturn(List.of(new Need("Need1", 10.0, 1, "Type1"), new Need("Need2", 20.0, 2, "Type2")));
+        when(needsCupboard.getAllNeeds()).thenReturn(List.of(
+            new Need("Need1", 10.0, 1, "Type1"), 
+            new Need("Need2", 20.0, 2, "Type2")
+        ));
         assertEquals(2, helper.viewAllNeeds().size());
     }
 }

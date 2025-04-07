@@ -20,6 +20,10 @@ public class Notification {
 
     }
 
+    public Notification(){
+        
+    }
+
     public String getMessage(){
         return message;
     }

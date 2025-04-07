@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.model.Notification;
 
+import jakarta.annotation.PreDestroy;
+
 
 /**
  * Implementation of NotificationDAO.java
@@ -24,6 +26,8 @@ public class NotificationFileDAO implements NotificationDAO {
     private final ObjectMapper objectMapper;
     private final String filename;
     private List<Notification> notifications;
+    private final Object lock = new Object();
+
 
     public NotificationFileDAO(@Value("${notifications.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
@@ -56,4 +60,14 @@ public class NotificationFileDAO implements NotificationDAO {
     public List<Notification> getAllNotifications() throws IOException {
         return notifications;
     }
+
+    @Override
+    @PreDestroy
+    public void clearNotifications() throws IOException {
+    synchronized(lock) {
+        notifications.clear();
+        save(); 
+    }
+}
+
 }

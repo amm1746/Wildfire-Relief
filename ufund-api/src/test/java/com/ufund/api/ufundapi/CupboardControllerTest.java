@@ -75,7 +75,7 @@ public class CupboardControllerTest{
     }
 
     @Test
-    public void testUpdateNeed() {
+    public void testUpdateNeed() throws IOException {
         Need updatedNeed = new Need("Rent", 2.5, 10, "Monetary");
         when(mockCupboardDAO.needExists("Rent")).thenReturn(true);
         when(mockCupboardDAO.updateNeed("Rent", updatedNeed)).thenReturn(updatedNeed);
@@ -87,7 +87,7 @@ public class CupboardControllerTest{
     }
 
     @Test
-    public void testUpdateNeedNotFound() {
+    public void testUpdateNeedNotFound() throws IOException {
         Need updatedNeed = new Need("Rent", 2.5, 10, "Monetary");
         when(mockCupboardDAO.needExists("Rent")).thenReturn(false);
 
@@ -98,7 +98,7 @@ public class CupboardControllerTest{
     }
 
     @Test
-    public void testDeleteNeed() {
+    public void testDeleteNeed() throws IOException {
         when(mockCupboardDAO.needExists("Rent")).thenReturn(true);
         doNothing().when(mockCupboardDAO).deleteNeed("Rent");
 
@@ -109,7 +109,7 @@ public class CupboardControllerTest{
     }
 
     @Test
-    public void testDeleteNeed_NotFound() {
+    public void testDeleteNeed_NotFound() throws IOException {
         when(mockCupboardDAO.needExists("Rent")).thenReturn(false);
 
         ResponseEntity<String> response = cupboardController.deleteNeed("Rent");
@@ -157,7 +157,7 @@ public class CupboardControllerTest{
     }
 
     @Test
-    public void testUpdateNeedFailure() {
+    public void testUpdateNeedFailure() throws IOException {
         Need updatedNeed = new Need("Rent", 2.5, 10, "Monetary");
         when(mockCupboardDAO.needExists("Rent")).thenReturn(true);
         when(mockCupboardDAO.updateNeed("Rent", updatedNeed)).thenReturn(null);
@@ -184,7 +184,7 @@ public class CupboardControllerTest{
     }
 
     @Test
-    public void testGetNeedByName_Found() {
+    public void testGetNeedByName_Found() throws IOException {
         Need testNeed = new Need("Rent", 2.5, 10, "Monetary");
         when(mockCupboardDAO.getNeed("Rent")).thenReturn(testNeed);
     
@@ -196,7 +196,7 @@ public class CupboardControllerTest{
     }
 
     @Test
-    public void testGetNeedByName_NotFound() {
+    public void testGetNeedByName_NotFound() throws IOException {
         when(mockCupboardDAO.getNeed("NonExistent")).thenReturn(null);
 
         ResponseEntity<Need> response = cupboardController.getNeedByName("NonExistent");

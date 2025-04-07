@@ -3,7 +3,9 @@ package com.ufund.api.ufundapi.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,4 +41,14 @@ public class NotificationController {
     public ResponseEntity<List<Notification>> getNotifications() throws IOException {
         return ResponseEntity.ok(notificationDAO.getAllNotifications());
     }
+
+    @DeleteMapping("/notifications")
+    public ResponseEntity<Void> clearNotifications() {
+    try {
+        notificationDAO.clearNotifications();
+        return ResponseEntity.ok().build();
+    } catch (IOException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
 }
