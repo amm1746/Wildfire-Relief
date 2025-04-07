@@ -14,13 +14,15 @@ export class HelperDashboardComponent implements OnInit {
   basket: Need[] = [];
   message: string | null = null;
   searchText: string = '';
+  currentUsername: string | null = null; 
 
   constructor(private basketService: BasketService, private router: Router) {}
 
   ngOnInit(): void {
+    
     this.loadNeeds();
     this.loadBasket();
-
+  
     this.basketService.cupboardUpdated$.subscribe(() => {
       this.loadNeeds();
     });
@@ -47,7 +49,14 @@ export class HelperDashboardComponent implements OnInit {
   }
 
   loadBasket(): void {
-    this.basketService.getBasket().subscribe(data => this.basket = data);
+    this.basketService.getBasket().subscribe({
+      next: (data) => this.basket = data,
+      error: (error) => {
+        console.error('Error loading basket:', error);
+        this.message = 'Error loading basket';
+        this.basket = []; // Reset basket on error
+      }
+    });
   }
 
   filteredNeeds(): Need[] {
@@ -58,11 +67,11 @@ export class HelperDashboardComponent implements OnInit {
     this.basketService.removeFromBasket(need).subscribe({
       next: () => {
         this.message = 'Need removed from basket!';
-        this.loadBasket(); 
+        this.loadBasket();
       },
-      error: error => {
+      error: (error) => {
         console.error('Error removing from basket:', error);
-        this.message = error.error.message || 'Failed to remove need.';
+        this.message = error.error?.message || 'Failed to remove need';
       }
     });
   }
@@ -77,7 +86,6 @@ export class HelperDashboardComponent implements OnInit {
       }
     });
   }
-
   
   searchNeeds(): void {
     if (this.searchText.trim() === '') {

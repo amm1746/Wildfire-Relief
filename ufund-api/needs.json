@@ -1,1 +1,1 @@
-[{"name":"Water","cost":2.0,"quantity":1,"type":"Food"},{"name":"Rent","cost":2.0,"quantity":1,"type":"Housing"},{"name":"Food","cost":5.0,"quantity":4,"type":"Food"}]
+[{"name":"water","cost":1.0,"quantity":1,"type":"test"},{"name":"rent","cost":3.0,"quantity":1,"type":"test"}]
