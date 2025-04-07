@@ -18,20 +18,27 @@ export class NotificationComponent implements OnInit {
   ngOnInit(): void{
 
     this.username = localStorage.getItem('username') || '';
+    console.log('Current username:', this.username);
 
     this.notificationService.getNotifications().subscribe(data => {
+      console.log('Fetched notifications:', data);
       this.notifications = data.filter(note =>
-        note.recipients.includes(this.username)
+        note.recipients.includes(this.username) &&
+        note.sender !== this.username
       );
+
+      console.log('Filtered notifications:', this.notifications);
       this.cdr.detectChanges();
     });
 
     setInterval(() => {
       this.notificationService.getNotifications().subscribe(data => {
+        console.log('Fetched (interval):', data);
         const filtered = data.filter(note =>
           note.recipients.includes(this.username)
         );
-        this.notifications = filtered;
+        console.log('Filtered (interval):', filtered);
+        this.notifications = [...filtered];
         this.cdr.detectChanges();
       });
     }, 2000);

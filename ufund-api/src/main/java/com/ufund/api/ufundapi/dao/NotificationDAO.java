@@ -15,4 +15,6 @@ public interface NotificationDAO {
     Notification createNotification(Notification notification) throws IOException;
 
     List<Notification> getAllNotifications() throws IOException;
+
+    void clearNotifications() throws IOException;
 }

@@ -19,4 +19,8 @@ export class NotificationService {
   getNotifications(): Observable<Notification[]>{
     return this.http.get<Notification[]>(this.apiUrl);
   }
+
+  clearNotifications(): Observable<void> {
+    return this.http.delete<void>('http://localhost:8080/api/notifications');
+  }
 }
