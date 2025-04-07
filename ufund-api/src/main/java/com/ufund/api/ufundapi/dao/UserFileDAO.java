@@ -46,6 +46,9 @@ public class UserFileDAO implements UserDAO {
      */
     @Override
     public User createUser(User user) throws IOException {
+        if (getUser(user.getUsername()) != null) {
+            throw new IOException("Username '" + user.getUsername() + "' already exists.");
+        }
         users.add(user);
         save();
         return user;

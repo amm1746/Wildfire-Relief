@@ -57,25 +57,34 @@ public class LoginController{
     public Map<String, String> login(@RequestBody Map<String, String> loginData, HttpSession session) throws IOException{
         String username = loginData.get("username");
         String password = loginData.get("password");
-
+    
         if(username == null || username.isEmpty() || password == null || password.isEmpty()) {
             return createResponse("Username and password are required", null);
         }
+        
+        // Handle admin login
         if(username.equalsIgnoreCase("admin") && password.equals(ADMIN_PASSWORD)){
             session.setAttribute("role", ADMIN);
         }
+        // Handle user login
         else {
             User user = userDAO.getUser(username);
             if(user != null && user.getPassword().equals(password)){
                 session.setAttribute("role", HELPER);
-            }
-            else{
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
+            } else {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
             }
         }
+    
+        // Store the username in session
         session.setAttribute("username", username);
+    
+        // Reset the donationCount upon login (set to 0)
+        session.setAttribute("donationCount", 0);
+    
         return createResponse("Login successful", (String) session.getAttribute("role"));
     }
+    
 
     /**
      * Handles user logout and clears role.
@@ -86,6 +95,7 @@ public class LoginController{
     @PostMapping("/logout")
     public Map<String, String> logout(HttpSession session){
         session.removeAttribute("role");
+        session.removeAttribute("donationCount");
         return createResponse("Logged out successfully", null);
     }
 
@@ -153,5 +163,17 @@ public class LoginController{
 
         return createResponse("Helper account created successfully", HELPER);
     }
+
+    @GetMapping("/donationCount")
+    public Map<String, Integer> getDonationCount(HttpSession session) {
+        Integer donationCount = (Integer) session.getAttribute("donationCount");
+        if (donationCount == null) {
+            donationCount = 0; // Default value if not set
+        }
+        Map<String, Integer> response = new HashMap<>();
+        response.put("donationCount", donationCount);
+        return response;
+    }
+
 }
 

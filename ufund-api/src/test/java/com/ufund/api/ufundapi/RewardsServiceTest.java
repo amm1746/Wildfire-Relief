@@ -16,10 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * JUnit tests for the Rewards system
  * Updated to reflect tracking of multiple rewards and purchase counts
  */
-@SpringBootTest
 public class RewardsServiceTest {
 
-    @Autowired
     private RewardsService rewardsService;
 
     @Test
