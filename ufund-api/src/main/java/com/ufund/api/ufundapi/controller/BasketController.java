@@ -103,7 +103,7 @@ public class BasketController {
     }
 
     @PostMapping("/checkout")
-    public Map<String, String> checkoutBasket(HttpSession session) {
+    public Map<String, Object> checkoutBasket(HttpSession session) {
         String currentUser = (String) session.getAttribute("username");
         List<Need> basket = getBasket(session);
     
