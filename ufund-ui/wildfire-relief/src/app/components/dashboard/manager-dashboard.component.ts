@@ -58,6 +58,16 @@ export class ManagerDashboardComponent implements OnInit
       return;
     }
 
+    if (this.newNeed.cost <= 0) {
+      this.message = 'Cost must be greater than $0';
+      return;
+    }
+  
+    if (this.newNeed.quantity <= 0) {
+      this.message = 'Quantity must be greater than 0';
+      return;
+    }
+
     this.needService.addNeed(this.newNeed).subscribe(
       (response) => {
         this.message = 'Need Added Successfully!'
@@ -82,18 +92,32 @@ export class ManagerDashboardComponent implements OnInit
   }
 
   updateNeed(): void {
-    if (this.selectedNeed) { // Check if selectedNeed is not null
+    if (!this.selectedNeed) {
+      this.message = 'No need selected for update.';
+      return;
+    }
+
+    if (this.selectedNeed.cost <= 0) {
+      this.message = 'Cost must be greater than $0';
+      return;
+    }
+  
+    if (this.selectedNeed.quantity <= 0) {
+      this.message = 'Quantity must be greater than 0';
+      return;
+    }
+
+    if (this.selectedNeed) {
       this.needService.updateNeed(this.selectedNeed.name, this.selectedNeed).subscribe({
         next: (response) => {
           console.log('Update Successful:', response);
   
-          // Manually update the needs list
-          const index = this.needs.findIndex((n) => n.name === this.selectedNeed!.name); // Use non-null assertion here
+          const index = this.needs.findIndex((n) => n.name === this.selectedNeed!.name); 
           if (index !== -1) {
-            this.needs[index] = this.selectedNeed!; // Use non-null assertion here
+            this.needs[index] = this.selectedNeed!; 
           }
   
-          this.selectedNeed = null; // Reset the selected need
+          this.selectedNeed = null; 
           this.message = 'Need Updated Successfully!';
         },
         error: (error) => {
