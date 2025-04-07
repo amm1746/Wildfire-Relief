@@ -2,6 +2,7 @@ package com.ufund.api.ufundapi;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.ufund.api.ufundapi.controller.RewardsService;
@@ -18,15 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class RewardsServiceTest {
 
+    @Autowired
     private RewardsService rewardsService;
-
-    @BeforeEach
-    public void setUp() {
-        // Use real maps for simpler integration-style behavior
-        Map<String, Integer> purchases = new HashMap<>();
-        Map<String, List<Rewards>> rewards = new HashMap<>();
-        rewardsService = new RewardsService(purchases, rewards);
-    }
 
     @Test
     public void testRecordPurchase_addsFirstPurchaseRewardOnce() {
