@@ -1,0 +1,141 @@
+.dashboard {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: #fff8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: 1px solid #e6d5c3;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23f5b041" fill-opacity="0.05" d="M30,10L50,30L70,10L90,30L70,50L90,70L70,90L50,70L30,90L10,70L30,50L10,30Z"/></svg>');
+    background-size: 200px;
+  }
+  
+  h2 {
+    color: #c72e00;
+    margin: 1.5rem 0;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #d4a76a;
+    padding-bottom: 0.5rem;
+  }
+  
+  h3 {
+    color: #e67e22;
+    margin: 1.5rem 0 1rem;
+    font-size: 1.4rem;
+  }
+  
+  input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 1.5rem;
+    border: 2px solid #d4a76a;
+    border-radius: 4px;
+    background-color: #fffdfa;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #e67e22;
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2);
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+  
+  li {
+    background-color: #fff;
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    border-radius: 4px;
+    border-left: 4px solid #e74c3c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+  }
+  
+  li:hover {
+    transform: translateY(-2px);
+  }
+  
+  button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+  }
+  
+  button:not(.logout-btn) {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  button:not(.logout-btn):hover {
+    background: linear-gradient(to right, #e74c3c, #f39c12);
+  }
+  
+  .logout-btn {
+    background-color: #95a5a6;
+    color: white;
+    float: right;
+  }
+  
+  .proceed-btn {
+    background-color: #27ae60;
+    color: white;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    display: block;
+    width: 100%;
+    margin-top: 2rem;
+  }
+  
+  .proceed-btn:hover {
+    background-color: #219653;
+  }
+  
+  div[ngIf="message"] {
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: #fdecea;
+    border-left: 4px solid #e74c3c;
+    color: #c0392b;
+    border-radius: 4px;
+    animation: pulse 2s infinite;
+  }
+  
+  li span:first-child {
+    flex-grow: 1;
+  }
+  
+  li span:first-child::after {
+    content: " • ";
+    color: #d4a76a;
+    margin: 0 8px;
+  }
+  
+  .priority-high {
+    animation: pulseWarning 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+  
+  @keyframes pulseWarning {
+    0% { border-left-color: #e74c3c; }
+    50% { border-left-color: #f39c12; }
+    100% { border-left-color: #e74c3c; }
+  }
