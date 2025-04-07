@@ -144,6 +144,10 @@ public class LoginController{
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username cannot be admin");
         }
         
+        if(userDAO.getUser(username) != null){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists");
+        }
+        
         User newUser = new User(username, password, HELPER);
         userDAO.createUser(newUser);
 
