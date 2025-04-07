@@ -20,6 +20,11 @@ public class RewardsServiceTest {
 
     private RewardsService rewardsService;
 
+    @BeforeEach
+    public void setup() {
+        rewardsService = new RewardsService();
+    }
+
     @Test
     public void testRecordPurchase_addsFirstPurchaseRewardOnce() {
         String helper = "user123";
