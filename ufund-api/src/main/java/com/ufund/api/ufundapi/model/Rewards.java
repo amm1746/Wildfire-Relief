@@ -1,5 +1,11 @@
 package com.ufund.api.ufundapi.model;
 
+/**
+ * Rewards class
+ * 
+ * Simple rewards class with title and description for each reward
+ * @author Sophia Le
+ */
 public class Rewards {
     private String title;
     private String description;
