@@ -2,7 +2,6 @@ package com.ufund.api.ufundapi;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.ufund.api.ufundapi.controller.RewardsService;
@@ -10,100 +9,93 @@ import com.ufund.api.ufundapi.model.Rewards;
 
 import java.util.*;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * JUnit tests for the Rewards system
- * @author Sophia Le
+ * Updated to reflect tracking of multiple rewards and purchase counts
  */
 @SpringBootTest
 public class RewardsServiceTest {
-
-    @Mock
-    private Map<String, Rewards> mockRewards;
 
     private RewardsService rewardsService;
 
     @BeforeEach
     public void setUp() {
-        // Initialize mocks and inject into RewardsService
-        MockitoAnnotations.openMocks(this);
-        rewardsService = new RewardsService(null, mockRewards);  // Ensure RewardsService is initialized with the mock
+        // Use real maps for simpler integration-style behavior
+        Map<String, Integer> purchases = new HashMap<>();
+        Map<String, List<Rewards>> rewards = new HashMap<>();
+        rewardsService = new RewardsService(purchases, rewards);
     }
 
     @Test
-    public void testRecordPurchase_addsFirstPurchaseReward() {
+    public void testRecordPurchase_addsFirstPurchaseRewardOnce() {
         String helper = "user123";
 
-        // Mock the rewards map to return null (simulate no existing rewards)
-        when(mockRewards.get(helper)).thenReturn(null);
-
-        // Simulate the purchase by calling recordPurchase
+        // First purchase should trigger reward
         rewardsService.recordPurchase(helper);
+        List<Rewards> rewards = rewardsService.getRewards(helper);
 
-        // Verify that the first purchase reward is added to the rewards map
-        verify(mockRewards).put(eq(helper), argThat(reward -> 
-            reward.getTitle().equals("First Purchase") && 
-            reward.getDescription().equals("You made your first purchase!")
-        ));
+        assertEquals(1, rewards.size(), "User should have one reward after first purchase");
+        assertEquals("First Purchase", rewards.get(0).getTitle());
+        assertEquals("You made your first purchase!", rewards.get(0).getDescription());
+
+        // Second purchase should not add new reward
+        rewardsService.recordPurchase(helper);
+        rewards = rewardsService.getRewards(helper);
+        assertEquals(1, rewards.size(), "User should still have only one reward after second purchase");
     }
 
     @Test
-    public void testAddFirstDonationReward_addsFirstDonationReward_whenNoRewardExists() {
-        String helper = "user123";
-        
-        // Simulate no reward for the user
-        when(mockRewards.get(helper)).thenReturn(null);
+    public void testAddFirstDonationReward_addsRewardIfNotExists() {
+        String helper = "donor123";
 
-        // Call the method to add the first donation reward
+        // Add the donation reward
+        rewardsService.addFirstDonationReward(helper);
+        List<Rewards> rewards = rewardsService.getRewards(helper);
+
+        assertEquals(1, rewards.size(), "Should have one donation reward");
+        assertEquals("First Donation Reward", rewards.get(0).getTitle());
+    }
+
+    @Test
+    public void testAddFirstDonationReward_doesNotDuplicate() {
+        String helper = "donor456";
+
+        // Add donation reward twice
+        rewardsService.addFirstDonationReward(helper);
         rewardsService.addFirstDonationReward(helper);
 
-        verify(mockRewards).put(eq(helper), argThat(reward ->
-        "First Donation Reward".equals(reward.getTitle()) &&
-        "You earned a special first donation reward!".equals(reward.getDescription())
-    ));
+        List<Rewards> rewards = rewardsService.getRewards(helper);
+        assertEquals(1, rewards.size(), "Should not add duplicate donation reward");
     }
-    
 
     @Test
-    public void testAddFirstDonationReward_doesNotAddAgain_whenAlreadyFirstDonationReward() {
-        String helper = "user123";
+    public void testUserCanHaveMultipleDifferentRewards() {
+        String helper = "multiRewardUser";
 
-        // Simulate that the user already has a "First Donation Reward"
-        Rewards existingReward = new Rewards("First Donation Reward", "You earned a special first donation reward!");
-        when(mockRewards.get(helper)).thenReturn(existingReward);
-
-        // Call the method to add the first donation reward
+        // Add both purchase and donation rewards
+        rewardsService.recordPurchase(helper);
         rewardsService.addFirstDonationReward(helper);
 
-        // Verify that the reward was not added again
-        verify(mockRewards, times(0)).put(eq(helper), any());  // It should not try to put a new reward
+        List<Rewards> rewards = rewardsService.getRewards(helper);
+        assertEquals(2, rewards.size(), "User should have two different rewards");
+
+        Set<String> rewardTitles = new HashSet<>();
+        for (Rewards r : rewards) {
+            rewardTitles.add(r.getTitle());
+        }
+
+        assertTrue(rewardTitles.contains("First Purchase"));
+        assertTrue(rewardTitles.contains("First Donation Reward"));
     }
+
     @Test
-    public void testGetRewards_returnsCorrectRewards() {
-        String helper = "user123";
+    public void testGetRewards_returnsEmptyListIfNoneExist() {
+        String helper = "noRewardsUser";
+        List<Rewards> rewards = rewardsService.getRewards(helper);
 
-        // Create a list of rewards for the user
-        List<Rewards> rewardsList = new ArrayList<>();
-        Rewards firstPurchaseReward = new Rewards("First Purchase", "You made your first purchase!");
-        rewardsList.add(firstPurchaseReward);
-        
-        // Mock the rewards map to return a single Rewards object (not a List)
-        // Since rewardsService.getRewards returns a List<Rewards>, we mock get() accordingly.
-        when(mockRewards.get(helper)).thenReturn(firstPurchaseReward);  // Simulate getting one reward
-
-        // Call the getRewards method
-        List<Rewards> userRewards = rewardsService.getRewards(helper);
-
-        // Verify that the returned reward is correct
-        assertNotNull(userRewards, "Rewards list should not be null");
-        assertEquals(1, userRewards.size(), "Rewards list should have one item");
-        assertEquals("First Purchase", userRewards.get(0).getTitle(), "Reward title should be 'First Purchase'");
-        assertEquals("You made your first purchase!", userRewards.get(0).getDescription(), "Reward description should match");
+        assertNotNull(rewards);
+        assertTrue(rewards.isEmpty(), "Should return an empty list for user with no rewards");
     }
-
 }

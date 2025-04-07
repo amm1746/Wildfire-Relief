@@ -19,7 +19,7 @@ import com.ufund.api.ufundapi.model.Rewards;
 public class RewardsService {
 
     private Map<String, Integer> purchases;
-    private Map<String, Rewards> rewards;
+    private Map<String, List<Rewards>> rewards;
 
     public RewardsService() {
         this.purchases = new HashMap<>();
@@ -27,38 +27,37 @@ public class RewardsService {
     }
 
     // Optionally add constructor for testing if you want to inject mock maps
-    public RewardsService(Map<String, Integer> purchases, Map<String, Rewards> rewards) {
+    public RewardsService(Map<String, Integer> purchases, Map<String, List<Rewards>> rewards) {
         this.purchases = purchases;
-        this.rewards = rewards;
+        this.rewards = new HashMap<>();
     }
 
     // Modify recordPurchase to add rewards to a list
     public void recordPurchase(String helper) {
-        if(rewards.get(helper) == null){
-            Rewards firstPurchaseReward = new Rewards("First Purchase", "You made your first purchase!");
-            rewards.put(helper, firstPurchaseReward);
+        int count = purchases.getOrDefault(helper,0) + 1;
+        purchases.put(helper, count);
+        if(count == 1) {
+            Rewards firstPurchase = new Rewards("First Purchase", "You made your first purchase!");
+            rewards.computeIfAbsent(helper, k -> new ArrayList<>()).add(firstPurchase);
         }
-    
     }
 
 
     // Adjusting getRewards to accept a helper parameter as a query parameter
     @GetMapping("/rewards")
     public List<Rewards> getRewards(String helper) {
-        Rewards r = rewards.get(helper);
-        return(r == null) ? List.of() : List.of(r);
+        return rewards.getOrDefault(helper, Collections.emptyList());
     }
-
 
     public void addFirstDonationReward(String helper) {
-        // Compute if absent, but ensure a valid Rewards object
-        Rewards userReward = rewards.get(helper);
-        if(userReward != null && "First Donation Reward".equals(userReward.getTitle())){
-            return;
-        }
-
-        Rewards reward = new Rewards("First Donation Reward", "You earned a special first donation reward!");
-        rewards.put(helper, reward);
-    }
+        List<Rewards> userRewards = rewards.computeIfAbsent(helper, k -> new ArrayList<>());
     
+        boolean alreadyHas = userRewards.stream()
+            .anyMatch(r -> "First Donation Reward".equals(r.getTitle()));
+    
+        if (!alreadyHas) {
+            Rewards reward = new Rewards("First Donation Reward", "You earned a special first donation reward!");
+            userRewards.add(reward);
+        }
+    }
 }
