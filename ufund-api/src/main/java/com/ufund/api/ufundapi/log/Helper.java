@@ -4,6 +4,8 @@ import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.Rewards;
 import com.ufund.api.ufundapi.model.RewardsService;
 import com.ufund.api.ufundapi.dao.CupboardDAO;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +35,9 @@ public class Helper {
      * search for a specific need
      * @param name name of the need
      * @return the need that matches the name
+     * @throws IOException 
      */
-    public Need searchNeed(String name) {
+    public Need searchNeed(String name) throws IOException {
         Need need = cupboardDAO.getNeed(name);
         return need;
     }
@@ -73,7 +76,7 @@ public class Helper {
         return new ArrayList<>(fundingBasket);
     }
 
-    public void checkout() {
+    public void checkout() throws IOException {
       for(Need need: fundingBasket) {
         cupboardDAO.deleteNeed(need.getName());
       }

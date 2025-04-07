@@ -52,9 +52,10 @@ public class CupboardController {
      * @param name the name of the need to update
      * @param updatedNeed the updated need object
      * @return a message indicating the result of the update
+     * @throws IOException 
      */
     @PutMapping("/need/{name}")
-    public ResponseEntity<String> updateNeed(@PathVariable String name, @RequestBody Need updatedNeed) {
+    public ResponseEntity<String> updateNeed(@PathVariable String name, @RequestBody Need updatedNeed) throws IOException {
         if (!cupboardDAO.needExists(name)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Need not found");
         }
@@ -100,9 +101,10 @@ public class CupboardController {
      * 
      * @param name The name of the need.
      * @return The need if found, otherwise a not found status.
+     * @throws IOException 
      */
     @GetMapping("/need/{name}")
-    public ResponseEntity<Need> getNeedByName(@PathVariable String name){
+    public ResponseEntity<Need> getNeedByName(@PathVariable String name) throws IOException{
         Need need = cupboardDAO.getNeed(name);
         return(need != null) ? ResponseEntity.ok(need) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
@@ -113,9 +115,10 @@ public class CupboardController {
      * 
      * @param name The name of the need being deleted.
      * @return A message saying if it was deleted successfully or not.
+     * @throws IOException 
      */
     @DeleteMapping("/need/{name}")
-    public ResponseEntity<String> deleteNeed(@PathVariable String name){
+    public ResponseEntity<String> deleteNeed(@PathVariable String name) throws IOException{
         if(!cupboardDAO.needExists(name)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Need not found");
         }

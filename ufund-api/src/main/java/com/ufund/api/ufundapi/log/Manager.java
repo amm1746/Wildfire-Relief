@@ -45,16 +45,18 @@ public class Manager {
      * @param name the name of the need to be updated
      * @param updated the updated need object
      * @return the updated need if successful, otherwise null if not found
+     * @throws IOException 
      */
-    public Need updateNeed(String name, Need updated) {
+    public Need updateNeed(String name, Need updated) throws IOException {
         return cupboardDAO.updateNeed(name, updated);
     }
     /**
      * Deletes a need from the cupboard by its name
      * @param name the name of the need to be deleted
      * @return True if the deletion was successful, otherwise False
+     * @throws IOException 
      */
-    public boolean deleteNeed(String name) {
+    public boolean deleteNeed(String name) throws IOException {
         if(cupboardDAO.needExists(name)) {
             cupboardDAO.deleteNeed(name);
             return true;
