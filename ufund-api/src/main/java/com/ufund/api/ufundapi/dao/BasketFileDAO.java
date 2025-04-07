@@ -3,7 +3,6 @@ package com.ufund.api.ufundapi.dao;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,11 +31,16 @@ public class BasketFileDAO {
 
     private void load() throws IOException {
         File file = new File(filename);
-        baskets = file.exists() 
-            ? objectMapper.readValue(file, objectMapper.getTypeFactory()
-                .constructMapType(HashMap.class, String.class, List.class))
-            : new HashMap<>();
+        if (file.exists()) {
+            var typeFactory = objectMapper.getTypeFactory();
+            var listType = typeFactory.constructCollectionType(List.class, Need.class);
+            var mapType = typeFactory.constructMapType(Map.class, typeFactory.constructType(String.class), listType);
+            baskets = objectMapper.readValue(file, mapType);
+        } else {
+            baskets = new HashMap<>();
+        }
     }
+    
 
     private void save() throws IOException {
         objectMapper.writeValue(new File(filename), baskets);

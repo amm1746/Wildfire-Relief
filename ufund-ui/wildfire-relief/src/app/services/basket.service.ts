@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Need } from '../models/need';
 import { Subject } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,18 @@ export class BasketService {
   cupboardUpdated$ = this.cupboardUpdatedSource.asObservable();
   
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   emitCupboardUpdate(): void {
     this.cupboardUpdatedSource.next();
+  }
+
+  private getUsername(): string {
+    const username = this.authService.getCurrentUser();
+    if (!username) {
+      throw new Error('No user logged in');
+    }
+    return username;
   }
 
   getAllNeeds(): Observable<Need[]> {
