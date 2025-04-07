@@ -12,7 +12,9 @@ public class NotificationTest {
     @Test
     public void testConstructorAndGetters() {
         Notification notification = new Notification(
-
+            "Hello World",
+            "Admin",
+            List.of("UserA", "UserB")
         );
 
         assertEquals("Hello World", notification.getMessage());

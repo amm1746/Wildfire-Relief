@@ -24,7 +24,8 @@ public class NotificationFileDAOTest {
 
     @Test
     public void testCreateNotification() throws Exception {
-        Notification n = new Notification();
+        Notification n = new Notification("Welcome", "System", List.of("testUser"));
+
         Notification result = dao.createNotification(n);
 
         assertNotNull(result);
@@ -37,8 +38,8 @@ public class NotificationFileDAOTest {
 
     @Test
     public void testGetAllNotifications() throws Exception {
-        dao.createNotification(new Notification());
-        dao.createNotification(new Notification());
+        dao.createNotification(new Notification("One", "Sender1", List.of("User")));
+        dao.createNotification(new Notification("Two", "Sender2", List.of("User")));
 
         List<Notification> notifications = dao.getAllNotifications();
         assertEquals(2, notifications.size());
@@ -46,7 +47,7 @@ public class NotificationFileDAOTest {
 
     @Test
     public void testClearNotifications() throws Exception {
-        dao.createNotification(new Notification());
+        dao.createNotification(new Notification("Clear me", "Helper", List.of("Manager")));
         dao.clearNotifications();
 
         List<Notification> notifications = dao.getAllNotifications();

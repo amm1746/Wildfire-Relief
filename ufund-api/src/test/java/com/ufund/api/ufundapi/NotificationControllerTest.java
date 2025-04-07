@@ -27,6 +27,9 @@ public class NotificationControllerTest {
         controller = new NotificationController(mockDao);
 
         sampleNotification = new Notification(
+            "Test message",
+            "helper",
+            List.of("admin")
 
         );
     }
@@ -52,9 +55,8 @@ public class NotificationControllerTest {
         assertEquals(200, response.getStatusCodeValue());
 
 
-        List<Notification> body = java.util.Optional.ofNullable(response.getBody())
-            .orElseThrow(() -> new AssertionError("Response body can't be null."));
-
+        List<Notification> body = response.getBody();
+        assertNotNull(body);
         assertFalse(body.isEmpty(), "Response body list should not be empty");
         assertEquals(1, body.size());
         assertEquals("helper", body.get(0).getSender());
