@@ -5,7 +5,9 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
+
 export class RegisterComponent {
   username = '';
   password = '';
@@ -25,5 +27,15 @@ export class RegisterComponent {
         alert(err.error.message || 'Registration failed.');
       }
     });
+  }
+  
+  navigateToLogin() {
+    this.router.navigate(['']);
+  }
+
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.register();
+    }
   }
 }
