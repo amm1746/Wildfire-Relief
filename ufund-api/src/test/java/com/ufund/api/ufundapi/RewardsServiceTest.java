@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.ufund.api.ufundapi.controller.RewardsService;
 import com.ufund.api.ufundapi.model.Rewards;
-import com.ufund.api.ufundapi.model.RewardsService;
 
 import java.util.*;
 

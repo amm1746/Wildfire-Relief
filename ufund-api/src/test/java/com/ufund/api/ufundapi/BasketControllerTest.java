@@ -30,7 +30,7 @@ import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.dao.NotificationDAO;
 import com.ufund.api.ufundapi.dao.UserDAO;
 import com.ufund.api.ufundapi.model.Need;
-import com.ufund.api.ufundapi.model.RewardsService;
+import com.ufund.api.ufundapi.controller.RewardsService;
 
 import jakarta.servlet.http.HttpSession;
 

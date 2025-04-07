@@ -19,7 +19,7 @@ import com.ufund.api.ufundapi.dao.CupboardFileDAO;
 
 import java.util.List;
 
-import com.ufund.api.ufundapi.model.RewardsService;
+import com.ufund.api.ufundapi.controller.RewardsService;
 
 @ExtendWith(MockitoExtension.class)
 public class HelperTest {
