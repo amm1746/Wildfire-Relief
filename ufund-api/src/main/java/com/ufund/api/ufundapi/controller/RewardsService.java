@@ -2,9 +2,8 @@ package com.ufund.api.ufundapi.controller;
 
 import java.util.*;
 
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.ufund.api.ufundapi.model.Rewards;
 
@@ -14,8 +13,7 @@ import com.ufund.api.ufundapi.model.Rewards;
  * Handles all commands related to Rewards
  * @author Sophia Le
  */
-@RestController
-@RequestMapping("/api")
+@Service
 public class RewardsService {
 
     private Map<String, Integer> purchases;
@@ -29,7 +27,7 @@ public class RewardsService {
     // Optionally add constructor for testing if you want to inject mock maps
     public RewardsService(Map<String, Integer> purchases, Map<String, List<Rewards>> rewards) {
         this.purchases = purchases;
-        this.rewards = new HashMap<>();
+        this.rewards = rewards;
     }
 
     // Modify recordPurchase to add rewards to a list
