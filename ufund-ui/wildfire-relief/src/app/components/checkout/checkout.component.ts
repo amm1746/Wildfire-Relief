@@ -17,6 +17,7 @@ export class CheckoutComponent implements OnInit {
   rewards: Reward[] = [];  // Array to hold all rewards
   showViewRewardsButton: boolean = false;  // Flag to control visibility of "View Rewards" button
   hasMadeFirstDonation: boolean = false;  // Flag to track if the first donation has been made
+  firstDonationRewardShown: boolean = false; // Flag to track if the first donation reward has been shown
 
   constructor(private router: Router, private basketService: BasketService) {}
 
@@ -50,31 +51,31 @@ export class CheckoutComponent implements OnInit {
           this.showViewRewardsButton = false;  // Hide "View Rewards" button if no array
   
           // Show the popup only if this is the first donation
-          if (!this.hasMadeFirstDonation) {
+          if (!this.hasMadeFirstDonation && !this.firstDonationRewardShown) {
             this.showPopup = true;  // Show the popup for the first donation
-            this.hasMadeFirstDonation = true;  // Mark that the first donation has been made
+            this.firstDonationRewardShown = true;  // Mark that the first donation reward has been shown
           }
         }
         // Check if rewards is an array (should be an array of Rewards)
         else if (Array.isArray(res.rewards)) {
-          this.rewards = res.rewards;  // Array of rewards
+          // Filter out the first donation reward if it has already been shown
+          this.rewards = res.rewards.filter((reward: { name: string; }) => reward.name !== 'Thanks for funding your first need!' || this.firstDonationRewardShown);
           this.rewardMessage = 'You earned the following rewards:';
           this.showViewRewardsButton = false;  // Show "View Rewards" button if rewards are available
   
           // Show the popup only if this is the first donation
-          if (!this.hasMadeFirstDonation) {
+          if (!this.hasMadeFirstDonation && !this.firstDonationRewardShown) {
             this.showPopup = true;  // Show the popup for the first donation
-            this.hasMadeFirstDonation = true;  // Mark that the first donation has been made
+            this.firstDonationRewardShown = true;  // Mark that the first donation reward has been shown
           }
         }
   
         // Additional reward logic based on donation count or other conditions
-        // Track the number of donations (assuming you have this count stored in localStorage)
         const donationCount = parseInt(localStorage.getItem('donationCount') || '0', 10);
   
         // Most Donations Reward
         if (donationCount >= 10) {
-          this.rewardMessage = 'Congratulations! You earned a special reward for making the most donations!';
+          this.rewardMessage = 'Rewards Earned: ';
           this.rewards.push({ 
             name: 'Most Donations Reward', 
             description: 'Thank you for being such a generous donor!' 
@@ -111,7 +112,6 @@ export class CheckoutComponent implements OnInit {
   
         // Save updated donation count to localStorage
         localStorage.setItem('donationCount', (donationCount + 1).toString());
-  
       },
       error: () => {
         this.message = 'Checkout failed. Please try again.';
@@ -161,5 +161,5 @@ export class CheckoutComponent implements OnInit {
         return '🎉'; // Default emoji (celebration)
     }
   }
-  
 }
+
