@@ -16,6 +16,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * JUnit tests for the Rewards system
+ * @author Sophia Le
+ */
 @SpringBootTest
 public class RewardsServiceTest {
 

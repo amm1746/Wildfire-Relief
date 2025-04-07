@@ -6,6 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * RewardsService
+ * 
+ * Handles all commands related to Rewards
+ * @author Sophia Le
+ */
 @RestController
 @RequestMapping("/api")
 public class RewardsService {
