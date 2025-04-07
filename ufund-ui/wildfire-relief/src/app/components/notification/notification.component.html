@@ -1,0 +1,10 @@
+<div class = "notification-panel" *ngIf ="notifications.length > 0">
+    <h4>Notifications</h4>
+    <ul>
+        <li *ngFor="let note of notifications">
+            <strong>{{ note.sender }}</strong>: {{ note.message }}
+        </li>
+    </ul>
+</div>
+    
+    
