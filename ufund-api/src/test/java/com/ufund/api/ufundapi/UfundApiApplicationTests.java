@@ -8,14 +8,17 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.controller.LoginController;
@@ -158,5 +161,15 @@ class UfundApiApplicationTests {
     void testMainMethod() {
         UfundApiApplication.main(new String[] {}); 
     }
+
+	@Test
+	void testRegisterFailsOnEmptyInput() {
+	ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> {
+	loginController.register(Map.of("username", "admin", "password", "pass"));
+	});
+	assertEquals(HttpStatus.CONFLICT, ex.getStatusCode());
+
+}
+
 
 }

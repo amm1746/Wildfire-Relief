@@ -55,4 +55,14 @@ public class ManagerTest {
         manager.updateNeed("Need1", updatedNeed);
         verify(needsCupboard, times(1)).updateNeed("Need1", updatedNeed);
     }
+
+    @Test
+    public void testDeleteNeed_NotExists() throws IOException {
+    when(needsCupboard.needExists("NonexistentNeed")).thenReturn(false);
+    boolean result = manager.deleteNeed("NonexistentNeed");
+
+    assertFalse(result);
+    verify(needsCupboard, never()).deleteNeed(any());
+    }
+
 }

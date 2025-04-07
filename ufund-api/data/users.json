@@ -1,1 +1,9 @@
+<<<<<<< HEAD
 [{"username":"helper","password":"helper123","role":"Helper"},{"username":"lala","password":"lala123","role":"Helper"},{"username":"evanlin3","password":"evanlin3","role":"Helper"},{"username":"red","password":"red123","role":"Helper"},{"username":"helper","password":"helper123","role":"Helper"},{"username":"alex","password":"alex123","role":"Helper"},{"username":"test1","password":"test123","role":"Helper"},{"username":"test2","password":"test123","role":"Helper"},{"username":"evanlin719","password":"evanlin719","role":"Helper"},{"username":"eric123","password":"eric123","role":"Helper"}]
+=======
+<<<<<<< HEAD
+[{"username":"helper","password":"helper123","role":"Helper"},{"username":"lala","password":"lala123","role":"Helper"},{"username":"evanlin3","password":"evanlin3","role":"Helper"},{"username":"red","password":"red123","role":"Helper"},{"username":"helper","password":"helper123","role":"Helper"},{"username":"alex","password":"alex123","role":"Helper"},{"username":"test1","password":"test123","role":"Helper"},{"username":"test2","password":"test123","role":"Helper"},{"username":"sophia","password":"sophia123","role":"Helper"},{"username":"test","password":"test123","role":"Helper"},{"username":"e","password":"e","role":"Helper"}]
+=======
+[{"username":"helper","password":"helper123","role":"Helper"},{"username":"lala","password":"lala123","role":"Helper"},{"username":"evanlin3","password":"evanlin3","role":"Helper"},{"username":"red","password":"red123","role":"Helper"},{"username":"helper","password":"helper123","role":"Helper"},{"username":"alex","password":"alex123","role":"Helper"},{"username":"test1","password":"test123","role":"Helper"},{"username":"test2","password":"test123","role":"Helper"},{"username":"evanlin719","password":"evanlin719","role":"Helper"}]
+>>>>>>> 4445e576cdaa55da1e60faad3147e0c7a0849c93
+>>>>>>> 90a78b5cc88c56936e857490e7543c3d7de48f84
