@@ -32,14 +32,26 @@ export class LoginComponent {
   /**
    * Logs in the user with provided credentials. Goes to dashboard if successful.
    */
-  login(): void{
+  login(): void {
     this.authService.login(this.username, this.password).subscribe(
       response => {
         const role = response.role;
         sessionStorage.setItem('role', role);
         localStorage.setItem('username', this.username);
+        
+        // Fetch donation count from backend
+        this.authService.getDonationCount().subscribe(
+          (donationResponse) => {
+            localStorage.setItem('donationCount', donationResponse.donationCount.toString());
+          },
+          (err) => {
+            console.error('Error fetching donation count', err);
+            localStorage.setItem('donationCount', '0'); // Set to 0 if there's an error
+          }
+        );
+        
         this.error = null;
-
+  
         if(role === 'U-Fund Manager'){
           this.router.navigate(['/manager-dashboard']); 
         } else if(role === 'Helper'){
@@ -53,6 +65,7 @@ export class LoginComponent {
       }
     );
   }
+  
 
   /**
    * Logs user out, resetting the session data. 

@@ -29,4 +29,8 @@ export class AuthService {
   getRole(): Observable<any>{
     return this.http.get(`${this.url}/role`, {withCredentials: true});
   }
+  getDonationCount() {
+    return this.http.get<{ donationCount: number }>('/api/donationCount', { withCredentials: true });
+  }
+  
 }

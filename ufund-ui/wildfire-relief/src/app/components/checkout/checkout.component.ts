@@ -12,12 +12,11 @@ import { Reward } from '../../models/reward';
 export class CheckoutComponent implements OnInit {
   basket: Need[] = [];
   message: string | null = null;
-  showPopup: boolean = false;  // Controls popup visibility
-  rewardMessage: string = '';  // Message to show in the popup
-  rewards: Reward[] = [];  // Array to hold all rewards
-  showViewRewardsButton: boolean = false;  // Flag to control visibility of "View Rewards" button
-  hasMadeFirstDonation: boolean = false;  // Flag to track if the first donation has been made
-  firstDonationRewardShown: boolean = false; // Flag to track if the first donation reward has been shown
+  showPopup: boolean = false; 
+  rewardMessage: string = '';  
+  rewards: Reward[] = [];  
+  hasMadeFirstDonation: boolean = false;  
+  firstDonationRewardShown: boolean = false; 
 
   constructor(private router: Router, private basketService: BasketService) {}
 
@@ -40,78 +39,71 @@ export class CheckoutComponent implements OnInit {
       next: (res) => {
         console.log('Checkout response:', res);
   
-        this.message = res.message;
-        this.basket = [];
-        this.basketService.emitCupboardUpdate();
+        // Retrieve current donation count from localStorage
+        let donationCount = parseInt(localStorage.getItem('donationCount') || '0', 10);
+        console.log('Current donation count:', donationCount); // Debugging output
   
-        // Check if rewards is a string (in case the backend sends a message)
+        // Handle rewards and messages
         if (typeof res.rewards === 'string') {
-          this.rewardMessage = res.message; // Special Donation Reward message
-          this.rewards = [];  // No rewards array if it's a string
-          this.showViewRewardsButton = false;  // Hide "View Rewards" button if no array
+          // First donation scenario
+          this.rewardMessage = res.message;
+          this.rewards = [];
   
-          // Show the popup only if this is the first donation
-          if (!this.hasMadeFirstDonation && !this.firstDonationRewardShown) {
-            this.showPopup = true;  // Show the popup for the first donation
-            this.firstDonationRewardShown = true;  // Mark that the first donation reward has been shown
+          // Show the first donation reward popup only when donationCount is 1
+          if (donationCount === 0 && !this.firstDonationRewardShown) {
+            this.showPopup = true;
+            this.firstDonationRewardShown = true;
+            localStorage.setItem('firstDonationRewardShown', 'true');  // Save state to prevent showing again
           }
-        }
-        // Check if rewards is an array (should be an array of Rewards)
-        else if (Array.isArray(res.rewards)) {
-          // Filter out the first donation reward if it has already been shown
+        } else if (Array.isArray(res.rewards)) {
           this.rewards = res.rewards.filter((reward: { name: string; }) => reward.name !== 'Thanks for funding your first need!' || this.firstDonationRewardShown);
           this.rewardMessage = 'You earned the following rewards:';
-          this.showViewRewardsButton = false;  // Show "View Rewards" button if rewards are available
   
-          // Show the popup only if this is the first donation
-          if (!this.hasMadeFirstDonation && !this.firstDonationRewardShown) {
-            this.showPopup = true;  // Show the popup for the first donation
-            this.firstDonationRewardShown = true;  // Mark that the first donation reward has been shown
+          if (donationCount === 0 && !this.firstDonationRewardShown) {
+            this.showPopup = true;
+            this.firstDonationRewardShown = true;
+            localStorage.setItem('firstDonationRewardShown', 'true');  // Save state to prevent showing again
           }
         }
   
-        // Additional reward logic based on donation count or other conditions
-        const donationCount = parseInt(localStorage.getItem('donationCount') || '0', 10);
-  
-        // Most Donations Reward
-        if (donationCount >= 10) {
-          this.rewardMessage = 'Rewards Earned: ';
-          this.rewards.push({ 
-            name: 'Most Donations Reward', 
-            description: 'Thank you for being such a generous donor!' 
-          });
-          this.showViewRewardsButton = false;  // Show "View Rewards" button
+        // Reward logic based on donation count
+        if (donationCount > 0) {
+          // Add rewards based on the number of donations
+          if (donationCount >= 100) {
+            this.rewards.push({
+              name: 'Most Donations Reward',
+              description: 'Thank you for being such a generous donor! You have the most donations!' 
+            });
+          }
+          if (donationCount >= 100) {
+            this.rewards.push({
+              name: 'Frequent Donor Reward',
+              description: 'You are a frequent donor! Thank you for your continued generosity.'
+            });
+          }
+          if (res.donationAmount && res.donationAmount >= 100) {
+            this.rewards.push({
+              name: 'Generosity Award',
+              description: 'Thank you for your large donation! Your generosity is truly appreciated.'
+            });
+          }
+          if (donationCount >= 3 && donationCount < 5) {
+            this.rewards.push({
+              name: 'Thank You Reward',
+              description: 'Thank you for your repeated donations! Your support is invaluable.'
+            });
+          }
         }
   
-        // Frequent Donor Reward (e.g., for donations every month)
-        if (donationCount >= 5) {
-          this.rewards.push({
-            name: 'Frequent Donor Reward',
-            description: 'You are a frequent donor! Thank you for your continued generosity.'
-          });
-          this.showViewRewardsButton = false;
-        }
+        console.log('Rewards after donation count check:', this.rewards);  // Debugging output
   
-        // Generosity Award (e.g., large donation amount)
-        if (res.donationAmount && res.donationAmount >= 100) {
-          this.rewards.push({
-            name: 'Generosity Award',
-            description: 'Thank you for your large donation! Your generosity is truly appreciated.'
-          });
-          this.showViewRewardsButton = false;
-        }
+        donationCount += 1;  // Increment the donation count
+        localStorage.setItem('donationCount', donationCount.toString());  // Save the updated count
+        console.log('Updated donation count saved:', donationCount);  // Debugging output
   
-        // Encourage more donations with a reward for 3 donations
-        if (donationCount >= 3 && donationCount < 5) {
-          this.rewards.push({
-            name: 'Thank You Reward',
-            description: 'Thank you for your repeated donations! Your support is invaluable.'
-          });
-          this.showViewRewardsButton = false;
-        }
-  
-        // Save updated donation count to localStorage
-        localStorage.setItem('donationCount', (donationCount + 1).toString());
+        // Clear the basket and trigger an update to reflect the changes
+        this.basket = [];
+        this.basketService.emitCupboardUpdate();
       },
       error: () => {
         this.message = 'Checkout failed. Please try again.';
@@ -121,15 +113,7 @@ export class CheckoutComponent implements OnInit {
   
 
   closePopup(): void {
-    this.showPopup = false;  // Close the popup by setting showPopup to false
-  }
-
-  viewRewards(): void {
-    if (this.rewards.length > 0) {
-      this.rewardMessage = 'You have earned the following rewards:';
-    } else {
-      this.rewardMessage = 'No rewards to display.';
-    }
+    this.showPopup = false; 
   }
 
   getRewardClass(reward: Reward): string {
@@ -162,4 +146,3 @@ export class CheckoutComponent implements OnInit {
     }
   }
 }
-
