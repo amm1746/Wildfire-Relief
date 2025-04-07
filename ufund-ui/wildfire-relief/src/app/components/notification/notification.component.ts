@@ -42,5 +42,8 @@ export class NotificationComponent implements OnInit {
         this.cdr.detectChanges();
       });
     }, 2000);
+    
+
+    
   }
 }
