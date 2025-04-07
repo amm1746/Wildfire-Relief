@@ -169,7 +169,18 @@ class UfundApiApplicationTests {
 	});
 	assertEquals(HttpStatus.CONFLICT, ex.getStatusCode());
 
-}
+	}
+
+	@Test
+	void testGetDonationCountDefaultAndSet() {
+    	Map<String, Integer> defaultResponse = loginController.getDonationCount(session);
+    	assertEquals(0, defaultResponse.get("donationCount"));
+
+    	session.setAttribute("donationCount", 5);
+    	Map<String, Integer> updatedResponse = loginController.getDonationCount(session);
+    	assertEquals(5, updatedResponse.get("donationCount"));
+	}
+
 
 
 }
