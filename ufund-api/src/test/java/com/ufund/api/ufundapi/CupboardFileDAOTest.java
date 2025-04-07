@@ -28,7 +28,7 @@ public class CupboardFileDAOTest {
 
     @BeforeEach
     public void setup() throws IOException {
-        // Initialize the DAO with a test file and a simple ObjectMapper
+        
         Files.write(Paths.get("test-needs.json"), "[]".getBytes());
         ObjectMapper objectMapper = new ObjectMapper();
         cupboardFileDAO = new CupboardFileDAO("test-needs.json", objectMapper);
@@ -98,7 +98,7 @@ public class CupboardFileDAOTest {
     public void testCreateNeedAlreadyExists() throws IOException {
         cupboardFileDAO.createNeed(testNeed);
         Need duplicate = cupboardFileDAO.createNeed(testNeed);
-        assertNull(duplicate); // Should return null if need already exists
+        assertNull(duplicate); 
     }
 
     @Test
@@ -113,5 +113,32 @@ public class CupboardFileDAOTest {
         cupboardFileDAO.deleteNeed("doesNotExist");
         assertNull(cupboardFileDAO.getNeed("doesNotExist"));
     }
+
+    @Test
+    public void testDeleteNeedWithSimilarName() throws IOException {
+    cupboardFileDAO.createNeed(new Need("Socks", 10.0, 5, "Clothing"));
+    cupboardFileDAO.createNeed(new Need("Sockers", 12.0, 3, "Clothing"));
+
+    cupboardFileDAO.deleteNeed("Socks");
+
+    assertNotNull(cupboardFileDAO.getNeed("Sockers"));
+    assertNull(cupboardFileDAO.getNeed("Socks"));
+    }
+
+    @Test
+    public void testLoadWhenFileMissing() throws IOException {
+    Files.deleteIfExists(Paths.get("test-needs.json"));
+    ObjectMapper mapper = new ObjectMapper();
+    CupboardFileDAO freshDAO = new CupboardFileDAO("test-needs.json", mapper);
+
+    assertTrue(freshDAO.getAllNeeds().isEmpty()); 
+    }
+
+    @Test
+    public void testGetNeedNotFound() throws IOException {
+    cupboardFileDAO.createNeed(new Need("Gloves", 7.5, 2, "Clothing"));
+    assertNull(cupboardFileDAO.getNeed("Hat")); 
+    }
+
 
 }

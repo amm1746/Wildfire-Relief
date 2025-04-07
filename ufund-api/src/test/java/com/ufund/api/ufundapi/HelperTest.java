@@ -19,7 +19,11 @@ import com.ufund.api.ufundapi.dao.CupboardFileDAO;
 
 import java.util.List;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import com.ufund.api.ufundapi.controller.RewardsService;
+import com.ufund.api.ufundapi.model.Rewards;
 
 @ExtendWith(MockitoExtension.class)
 public class HelperTest {
@@ -37,6 +41,7 @@ public class HelperTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
+        helper = new Helper(needsCupboard, rewardsService);
     }
 
     @Test
@@ -101,4 +106,37 @@ public class HelperTest {
         ));
         assertEquals(2, helper.viewAllNeeds().size());
     }
+
+@Test
+public void testGetRewards() {
+    List<Rewards> mockRewards = List.of(
+        new Rewards("First Purchase", "You made your first purchase!")
+    );
+
+    when(rewardsService.getRewards("Helper")).thenReturn(mockRewards);
+
+    List<Rewards> rewards = helper.getRewards();
+
+    assertEquals(1, rewards.size());
+    assertEquals("First Purchase", rewards.get(0).getTitle());
+    verify(rewardsService, times(1)).getRewards("Helper");
+}
+
+    @Test
+    public void testCheckout() throws IOException {
+        Need need1 = new Need("Food", 10.0, 1, "Supply");
+        Need need2 = new Need("Water", 5.0, 2, "Supply");
+
+        helper.addToFundingBasket(need1);
+        helper.addToFundingBasket(need2);
+
+
+        helper.checkout();
+
+        verify(needsCupboard).deleteNeed("Food");
+        verify(needsCupboard).deleteNeed("Water");
+
+        assertTrue(helper.getFundingBasket().isEmpty());
+    }
+    
 }

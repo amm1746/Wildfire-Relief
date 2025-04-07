@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-[{"name":"Water","cost":2.0,"quantity":80,"type":"Food"},{"name":"Rent","cost":2.0,"quantity":78,"type":"Housing"},{"name":"Food","cost":5.0,"quantity":80,"type":"Food"}]
-=======
 [{"name":"Water","cost":2.0,"quantity":1,"type":"Food"},{"name":"Rent","cost":2.0,"quantity":1,"type":"Housing"},{"name":"Food","cost":5.0,"quantity":1,"type":"Food"},{"name":"Test","cost":10.0,"quantity":97,"type":"Test"}]
->>>>>>> c6d276772e1341a10d41cc69c3fccb6e9816bf25
