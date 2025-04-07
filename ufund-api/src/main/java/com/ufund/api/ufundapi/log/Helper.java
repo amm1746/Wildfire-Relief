@@ -94,4 +94,5 @@ public class Helper {
     public List<Rewards> getRewards() {
         return rewardsService.getRewards("Helper");
     }
+
 }

@@ -169,6 +169,10 @@ The ViewModel Tier bridges the View Tier and Model Tier by handling business log
 
 CupboardController: Implements REST API endpoints for CRUD operations on wildfire relief needs and interacts with the CupboardDAO for data persistence.
 
+LoginController: Implements REST API endpoints for handling user authentication and login.
+
+BasketController: Handles all commands related to a helper and their basket. 
+
 
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
@@ -191,7 +195,9 @@ The Model Tier is responsible for data representation and persistence. It ensure
 
 Need: Represents a single wildfire relief need with attributes such as name, cost, quantity, and urgency level.
 
-CupboardFileDAO: Handles reading and writing of relief needs to a JSON file, ensuring data persistence.
+Notification: Represents a single notification for the wildfire relief website. 
+
+Reward: Represents a single reward for the wildfire relief website. 
 
 
 ## OO Design Principles

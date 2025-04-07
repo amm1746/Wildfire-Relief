@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.ufund.api.ufundapi.dao.BasketFileDAO;
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.dao.NotificationDAO;
 import com.ufund.api.ufundapi.dao.UserDAO;
@@ -42,94 +43,99 @@ public class BasketController {
     private final NotificationDAO notificationDAO;
     private final UserDAO userDAO;
     private final RewardsService rewardsService;
+    private BasketFileDAO basketDAO;
 
-    public BasketController(CupboardDAO cupboardDAO, NotificationDAO notificationDAO, UserDAO userDAO, RewardsService rewardsService) {
+    public BasketController(CupboardDAO cupboardDAO, NotificationDAO notificationDAO, UserDAO userDAO, RewardsService rewardsService, BasketFileDAO basketDAO) {
         this.cupboardDAO = cupboardDAO;
         this.notificationDAO = notificationDAO;
         this.userDAO = userDAO;
         this.rewardsService = rewardsService;
-
+        this.basketDAO = basketDAO;
     }
 
 
     @PostMapping("/add-to-basket")
     public Map<String, String> addToBasket(@RequestBody Need need, HttpSession session) throws IOException {
+        String username = (String) session.getAttribute("username");  
+        if (username == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not logged in");
+        }
+
         Need existingNeed = cupboardDAO.getNeed(need.getName());
         if (existingNeed == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Need does not exist");
         }
 
-        List<Need> basket = getBasket(session);
-        int count = 0;
-
-        for(Need n : basket){
-            if(n.getName().equalsIgnoreCase(need.getName())){
-                count++;
-            }
-        }
-
-        if(count >= existingNeed.getQuantity()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot add more than the available quantity");
-        }
+        List<Need> basket = basketDAO.getBasket(username); 
+        
         basket.add(need);
-        session.setAttribute(BASKET_KEY, basket);
+        basketDAO.saveBasket(username, basket);  
 
         return Map.of("message", "Added to basket");
     }
+
     @GetMapping("/basket")
     public List<Need> getBasket(HttpSession session) {
-        List<Need> basket = (List<Need>) session.getAttribute(BASKET_KEY);
-        if (basket == null) {
-            basket = new ArrayList<>();
-            session.setAttribute(BASKET_KEY, basket);
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return new ArrayList<>();
         }
-        return basket;
+        return basketDAO.getBasket(username);
     }
 
 @PostMapping("/remove-from-basket")
-    public Map<String, String> removeFromBasket(@RequestBody Need need, HttpSession session) {
-        List<Need> basket = getBasket(session);
-        
-        for (int i = 0; i < basket.size(); i++) {
-            if (basket.get(i).getName().equalsIgnoreCase(need.getName())) {
-                basket.remove(i);
-                session.setAttribute(BASKET_KEY, basket);
-                return Map.of("message", "Removed need from basket");
-            }
-        }
-        
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Need not found in basket");
+public Map<String, String> removeFromBasket(@RequestBody Need need, HttpSession session) throws IOException {
+    String username = (String) session.getAttribute("username");
+    if (username == null) {
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not logged in");
     }
 
+    List<Need> basket = basketDAO.getBasket(username);
+    
+    for (int i = 0; i < basket.size(); i++) {
+        if (basket.get(i).getName().equalsIgnoreCase(need.getName())) {
+            basket.remove(i);
+            basketDAO.saveBasket(username, basket);  
+            return Map.of("message", "Removed need from basket");
+        }
+    }
+    
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Need not found in basket");
+}
     @PostMapping("/checkout")
     public Map<String, Object> checkoutBasket(HttpSession session) throws IOException {
         String currentUser = (String) session.getAttribute("username");
-        List<Need> basket = getBasket(session);
+        if (currentUser == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not logged in");
+        }
+    
+        List<Need> basket = basketDAO.getBasket(currentUser);  
+        if (basket.isEmpty()) {
+            return Map.of("success", false, "message", "Basket is empty");
+        }
     
         Map<String, Integer> needCountMap = new HashMap<>();
         for (Need need : basket) {
             needCountMap.put(need.getName(), needCountMap.getOrDefault(need.getName(), 0) + 1);
         }
     
-        // Check if all items are available in the cupboard
         for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
             String name = entry.getKey();
             int requestedQty = entry.getValue();
             Need cupboardNeed = cupboardDAO.getNeed(name);
     
             if (cupboardNeed == null || cupboardNeed.getQuantity() < requestedQty) {
-                return Map.of("success", false, "message", "Checkout failed: Need " + name + "' is unavailable or has insufficient quantity.");
+                return Map.of("success", false, "message", 
+                    "Checkout failed: Need '" + name + "' is unavailable or has insufficient quantity.");
             }
         }
     
-        // Update the cupboard stock
         for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
             String name = entry.getKey();
             int requestedQty = entry.getValue();
             Need cupboardNeed = cupboardDAO.getNeed(name);
     
             int remainingQty = cupboardNeed.getQuantity() - requestedQty;
-    
             if (remainingQty <= 0) {
                 cupboardDAO.deleteNeed(name);
             } else {
@@ -140,45 +146,41 @@ public class BasketController {
     
         try {
             List<String> recipients = new ArrayList<>();
-            for (User user : userDAO.getAllUsers()){
-                if(!user.getUsername().equalsIgnoreCase(currentUser)){
+            for (User user : userDAO.getAllUsers()) {
+                if (!user.getUsername().equalsIgnoreCase(currentUser)) {
                     recipients.add(user.getUsername());
                 }
             }
-
-            String message = currentUser + " purchased items from the cupboard!";
-            Notification notification = new Notification(message, currentUser, recipients);
+            Notification notification = new Notification(
+                currentUser + " purchased items from the cupboard!", 
+                currentUser, 
+                recipients
+            );
             notificationDAO.createNotification(notification);
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create notification");
         }
-
+    
         basket.clear();
-        session.setAttribute(BASKET_KEY, basket);
+        basketDAO.saveBasket(currentUser, basket); 
     
-        // Record the purchase
-        String helper = (String) session.getAttribute("helper-id");  // Extract helper ID from session
+        String helper = (String) session.getAttribute("helper-id");
         rewardsService.recordPurchase(helper);
-    
-        // Add first donation reward if applicable
         rewardsService.addFirstDonationReward(helper);
+        List<Rewards> rewards = rewardsService.getRewards(helper);
     
-        // Get rewards after the checkout
-        List<Rewards> rewards = rewardsService.getRewards(helper);  // Get rewards based on helper
-    
-        // Return the response with message and rewards
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", true);
-        response.put("message", "Checkout successful");
-        response.put("rewards", rewards.isEmpty() ? "No rewards available" : rewards);
-    
-        return response;
+        return Map.of(
+            "success", true,
+            "message", "Checkout successful",
+            "rewards", rewards.isEmpty() ? "No rewards available" : rewards
+        );
     }
     
-
-    
-
     public List<Rewards> getRewards(HttpSession session) {
-        return rewardsService.getRewards("HELPER");
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return new ArrayList<>();
+        }
+        return rewardsService.getRewards(username); 
     }
 }
