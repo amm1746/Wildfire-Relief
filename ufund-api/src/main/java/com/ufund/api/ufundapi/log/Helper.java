@@ -1,12 +1,12 @@
 package com.ufund.api.ufundapi.log;
 
 import com.ufund.api.ufundapi.model.Rewards;
-import com.ufund.api.ufundapi.model.RewardsService;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ufund.api.ufundapi.controller.RewardsService;
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
 
