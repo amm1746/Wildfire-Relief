@@ -2,8 +2,6 @@
   <button class="logout-btn" (click)="logout()">Logout</button>
   <h2>Available Needs</h2>
 
-  <p>You are logged in as {{ this.currentUsername }}.</p>
-
   <input [(ngModel)]="searchText" placeholder="Search needs..." (input)="searchNeeds()" />
 
   <ul>
