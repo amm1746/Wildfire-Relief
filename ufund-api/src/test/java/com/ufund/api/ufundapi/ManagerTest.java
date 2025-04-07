@@ -43,14 +43,14 @@ public class ManagerTest {
     }
 
     @Test
-    public void testDeleteNeed() {
+    public void testDeleteNeed() throws IOException {
         when(needsCupboard.needExists("OldNeed")).thenReturn(true); // Add this line
         manager.deleteNeed("OldNeed");
         verify(needsCupboard, times(1)).deleteNeed("OldNeed");
     }
 
     @Test
-    public void testUpdateNeed() {
+    public void testUpdateNeed() throws IOException {
         Need updatedNeed = new Need("UpdatedNeed", 30.0, 5, "TypeB");
         manager.updateNeed("Need1", updatedNeed);
         verify(needsCupboard, times(1)).updateNeed("Need1", updatedNeed);

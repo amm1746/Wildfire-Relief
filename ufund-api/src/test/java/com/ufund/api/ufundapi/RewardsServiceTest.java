@@ -58,12 +58,12 @@ public class RewardsServiceTest {
         // Call the method to add the first donation reward
         rewardsService.addFirstDonationReward(helper);
 
-        // Define the expected first donation reward
-        Rewards expectedReward = new Rewards("First Donation Reward", "You earned a special first donation reward!");
-
-        // Verify that the put method was called with the correct reward
-        verify(mockRewards).put(eq(helper), eq(expectedReward));
+        verify(mockRewards).put(eq(helper), argThat(reward ->
+        "First Donation Reward".equals(reward.getTitle()) &&
+        "You earned a special first donation reward!".equals(reward.getDescription())
+    ));
     }
+    
 
     @Test
     public void testAddFirstDonationReward_doesNotAddAgain_whenAlreadyFirstDonationReward() {
