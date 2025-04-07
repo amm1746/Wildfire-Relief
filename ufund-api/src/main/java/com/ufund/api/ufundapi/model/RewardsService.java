@@ -9,51 +9,47 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class RewardsService {
-    private final Map<String, Integer> purchases = new HashMap<>();
-    private final Map<String, List<Rewards>> rewards = new HashMap<>();
+    private Map<String, Integer> purchases;
+    private Map<String, Rewards> rewards;
 
-    public void recordPurchase(String helper) {
-        int p = purchases.getOrDefault(helper, 0) + 1;
-        purchases.put(helper, p);
-
-        List<Rewards> r = rewards.computeIfAbsent(helper, k -> new ArrayList<>()); // Ensure the helper has a reward list
-
-        // First Purchase Reward
-        if (p == 1) {
-            r.add(new Rewards("First Purchase", "Thanks for funding your first need!"));
-        }
-
-        // Most Purchases Reward (reset for everyone else)
-        int max = purchases.values().stream().max(Integer::compare).orElse(0);
-        for (String user : purchases.keySet()) {
-            List<Rewards> userRewards = rewards.getOrDefault(user, new ArrayList<>());
-            userRewards.removeIf(a -> a.getTitle().equals("Most Purchases"));
-
-            if (purchases.get(user) == max) {
-                userRewards.add(new Rewards("Most Purchases", "You've funded the most needs!"));
-                rewards.put(user, userRewards);
-            }
-        }
+    public RewardsService() {
+        this.purchases = new HashMap<>();
+        this.rewards = new HashMap<>();
     }
+
+    // Optionally add constructor for testing if you want to inject mock maps
+    public RewardsService(Map<String, Integer> purchases, Map<String, Rewards> rewards) {
+        this.purchases = purchases;
+        this.rewards = rewards;
+    }
+
+    // Modify recordPurchase to add rewards to a list
+    public void recordPurchase(String helper) {
+        List<Rewards> rewardList = getRewards(helper); // Retrieve the current reward list
+        Rewards firstPurchaseReward = new Rewards("First Purchase", "You made your first purchase!");
+        rewardList.add(firstPurchaseReward); // Add the new reward to the list
+        // Save the updated list back if necessary (depends on your implementation)
+    }
+
 
     // Adjusting getRewards to accept a helper parameter as a query parameter
     @GetMapping("/rewards")
-    public List<Rewards> getRewards(@RequestParam String helper) {
-        return rewards.getOrDefault(helper, new ArrayList<>());
+    public List<Rewards> getRewards(String helper) {
+        List<Rewards> rewardsList = new ArrayList<>();
+
+        return rewardsList;
     }
 
+
     public void addFirstDonationReward(String helper) {
-        // Check if the user is making their first donation
-        List<Rewards> userRewards = rewards.computeIfAbsent(helper, k -> new ArrayList<>());
-        
-        // If the user hasn't received the first donation reward yet, assign it
-        boolean hasReceivedFirstDonationReward = userRewards.stream()
-            .anyMatch(r -> r.getTitle().equals("First Donation Reward"));
-        
-        if (!hasReceivedFirstDonationReward) {
-            Rewards firstDonationReward = new Rewards("First Donation Reward", "You earned a special first donation reward!");
-            userRewards.add(firstDonationReward);
-            rewards.put(helper, userRewards); // Save in the map
+        // Compute if absent, but ensure a valid Rewards object
+        Rewards userReward = rewards.computeIfAbsent(helper, k -> new Rewards("No Reward", "No description"));
+    
+        // Check if the user has already received the first donation reward
+        if (userReward.getTitle().equals("No Reward") || !userReward.getTitle().equals("First Donation Reward")) {
+            userReward = new Rewards("First Donation Reward", "You earned a special first donation reward!");
+            rewards.put(helper, userReward);  // Ensure updated reward is put back
         }
     }
+    
 }
