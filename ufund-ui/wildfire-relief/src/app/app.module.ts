@@ -11,6 +11,7 @@ import { HelperDashboardComponent } from './components/helper-dashboard/helper-d
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { RegisterComponent } from './register/register.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
+import { NotificationComponent } from './components/notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
     AccessDeniedComponent,
     RegisterComponent,
     CheckoutComponent,
+    NotificationComponent,
   ],
   imports: [
     BrowserModule,

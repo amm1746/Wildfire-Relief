@@ -12,13 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.dao.NotificationDAO;
+import com.ufund.api.ufundapi.dao.UserDAO;
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.Notification;
+import com.ufund.api.ufundapi.model.User;
 
 import jakarta.servlet.http.HttpSession;
 /**
@@ -39,9 +41,10 @@ public class BasketController {
     private final NotificationDAO notificationDAO;
     private final UserDAO userDAO;
 
-    public BasketController(CupboardDAO cupboardDAO, NotificationDAO notificiationDAO) {
+    public BasketController(CupboardDAO cupboardDAO, NotificationDAO notificationDAO, UserDAO userDAO) {
         this.cupboardDAO = cupboardDAO;
         this.notificationDAO = notificationDAO;
+        this.userDAO = userDAO;
     }
 
 
@@ -95,7 +98,8 @@ public class BasketController {
     }
 
     @PostMapping("/checkout")
-    public Map<String, String> checkoutBasket(HttpSession session, @RequestParam String currentUser) {
+    public Map<String, String> checkoutBasket(HttpSession session) {
+        String currentUser = (String) session.getAttribute("username");
         List<Need> basket = getBasket(session);
     
         Map<String, Integer> needCountMap = new HashMap<>();
@@ -128,10 +132,21 @@ public class BasketController {
             }
         }
     
-        // Clear basket
+        try {
+            List<String> recipients = new ArrayList<>();
+            for (User user : userDAO.getAllUsers()){
+                if(!user.getUsername().equalsIgnoreCase(currentUser)){
+                    recipients.add(user.getUsername());
+                }
+            }
 
-        String message = currentUser + " purchased items from the cupboard.";
-        List<String> recipients = List.of("user1".)
+            String message = currentUser + " purchased items from the cupboard!";
+            Notification notification = new Notification(message, currentUser, recipients);
+            notificationDAO.createNotification(notification);
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create notification");
+        }
+
         basket.clear();
         session.setAttribute(BASKET_KEY, basket);
     
