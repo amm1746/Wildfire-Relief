@@ -22,7 +22,6 @@ import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.Notification;
 import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.model.Rewards;
-import com.ufund.api.ufundapi.model.RewardsService;
 
 import jakarta.servlet.http.HttpSession;
 /**
@@ -148,7 +147,7 @@ public class BasketController {
             }
 
             String message = currentUser + " purchased items from the cupboard!";
-            Notification notification = new Notification();
+            Notification notification = new Notification(message, currentUser, recipients);
             notificationDAO.createNotification(notification);
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create notification");
