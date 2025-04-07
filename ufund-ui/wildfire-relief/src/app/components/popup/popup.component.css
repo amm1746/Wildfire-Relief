@@ -1,0 +1,73 @@
+/* Popup Container */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Popup Content */
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+}
+
+/* Reward list styling */
+.reward-list {
+  margin-top: 20px;
+}
+
+.reward-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;  /* Smaller than before */
+  font-weight: bold;  /* Bold the text */
+}
+
+/* Reward Header (Emoji + Name) */
+.reward-header {
+  display: flex;
+  justify-content: center;  /* Centers emoji and text horizontally */
+  align-items: center;  /* Aligns emoji and text vertically */
+  margin-bottom: 10px;
+  font-size: 1.1rem;  /* Smaller than before */
+}
+
+.reward-header .emoji {
+  font-size: 1.8rem;  /* Smaller than before */
+  margin-right: 10px;  /* Space between emoji and name */
+}
+
+.reward-name {
+  font-size: 1.2rem;  /* Smaller but still readable */
+  font-weight: bold;  /* Bold the text */
+  text-align: center;  /* Centers the text */
+}
+
+/* Buttons */
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}

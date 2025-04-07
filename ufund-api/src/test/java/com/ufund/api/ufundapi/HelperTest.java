@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ufund.api.ufundapi.log.Helper;
 import com.ufund.api.ufundapi.model.Need;
-
+import com.ufund.api.ufundapi.model.RewardsService;
 import com.ufund.api.ufundapi.dao.CupboardFileDAO;
 
 import java.util.List;
@@ -25,12 +25,14 @@ public class HelperTest {
     private Helper helper;
 
     @Mock
+    private RewardsService rewardsService;
+
+    @Mock
     private CupboardFileDAO needsCupboard;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        helper = new Helper(needsCupboard);
     }
 
     @Test

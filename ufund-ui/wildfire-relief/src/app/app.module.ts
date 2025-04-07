@@ -12,6 +12,7 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { RegisterComponent } from './register/register.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import { PopupComponent } from './components/popup/popup.component';  // Import the PopupComponent
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { NotificationComponent } from './components/notification/notification.co
     RegisterComponent,
     CheckoutComponent,
     NotificationComponent,
+    PopupComponent,  // Declare PopupComponent here
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,6 @@ import { NotificationComponent } from './components/notification/notification.co
     HttpClientModule,
     RouterModule
   ],
-
   providers: [],
   bootstrap: [AppComponent]
 })

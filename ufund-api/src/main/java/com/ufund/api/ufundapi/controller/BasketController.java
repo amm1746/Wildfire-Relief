@@ -21,6 +21,8 @@ import com.ufund.api.ufundapi.dao.UserDAO;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.Notification;
 import com.ufund.api.ufundapi.model.User;
+import com.ufund.api.ufundapi.model.Rewards;
+import com.ufund.api.ufundapi.model.RewardsService;
 
 import jakarta.servlet.http.HttpSession;
 /**
@@ -40,11 +42,14 @@ public class BasketController {
     private final CupboardDAO cupboardDAO;
     private final NotificationDAO notificationDAO;
     private final UserDAO userDAO;
+    private final RewardsService rewardsService;
 
-    public BasketController(CupboardDAO cupboardDAO, NotificationDAO notificationDAO, UserDAO userDAO) {
+    public BasketController(CupboardDAO cupboardDAO, NotificationDAO notificationDAO, UserDAO userDAO, RewardsService rewardsService) {
         this.cupboardDAO = cupboardDAO;
         this.notificationDAO = notificationDAO;
         this.userDAO = userDAO;
+        this.rewardsService = rewardsService;
+
     }
 
 
@@ -107,6 +112,7 @@ public class BasketController {
             needCountMap.put(need.getName(), needCountMap.getOrDefault(need.getName(), 0) + 1);
         }
     
+        // Check if all items are available in the cupboard
         for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
             String name = entry.getKey();
             int requestedQty = entry.getValue();
@@ -117,6 +123,7 @@ public class BasketController {
             }
         }
     
+        // Update the cupboard stock
         for (Map.Entry<String, Integer> entry : needCountMap.entrySet()) {
             String name = entry.getKey();
             int requestedQty = entry.getValue();
@@ -150,6 +157,28 @@ public class BasketController {
         basket.clear();
         session.setAttribute(BASKET_KEY, basket);
     
-        return Map.of("message", "Checkout successful");
+        // Record the purchase
+        String helper = (String) session.getAttribute("helper-id");  // Extract helper ID from session
+        rewardsService.recordPurchase(helper);
+    
+        // Add first donation reward if applicable
+        rewardsService.addFirstDonationReward(helper);
+    
+        // Get rewards after the checkout
+        List<Rewards> rewards = rewardsService.getRewards(helper);  // Get rewards based on helper
+    
+        // Return the response with message and rewards
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Checkout successful");
+        response.put("rewards", rewards.isEmpty() ? "No rewards available" : rewards);
+    
+        return response;
+    }
+    
+
+    
+
+    public List<Rewards> getRewards(HttpSession session) {
+        return rewardsService.getRewards("HELPER");
     }
 }

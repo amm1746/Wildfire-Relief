@@ -1,21 +1,33 @@
-<div class="checkout-container">
-  <!-- Back Button -->
-  <button class="back-btn" (click)="goBack()">← Back to Dashboard</button>
+<app-popup
+  [showPopup]="showPopup"
+  [rewardMessage]="rewardMessage"
+  [rewards]="rewards"
+  [showViewRewardsButton]="showViewRewardsButton"
+  (close)="closePopup()">
+</app-popup>
 
-  <h2>Funding Basket</h2>
+<!-- Back Button -->
+<button class="back-btn" (click)="goBack()">← Back to Dashboard</button>
 
-  <!-- Basket Items -->
-  <ul *ngIf="basket.length > 0" class="basket-list">
-    <li *ngFor="let item of basket">
-      <span class="item-name">{{ item.name }}</span>
-      <span class="item-cost">${{ item.cost }}</span>
-    </li>
-  </ul>
-  <p *ngIf="basket.length === 0" class="empty-msg">Your basket is currently empty.</p>
+<h2>Funding Basket</h2>
 
-  <!-- Checkout Button -->
-  <button class="checkout-btn" (click)="checkout()" [disabled]="basket.length === 0">Checkout</button>
+<!-- Basket Items -->
+<ul *ngIf="basket.length > 0" class="basket-list">
+  <li *ngFor="let item of basket">
+    <span class="item-name">{{ item.name }}</span>
+    <span class="item-cost">${{ item.cost }}</span>
+  </li>
+</ul>
 
-  <!-- Success Message -->
-  <div *ngIf="message" class="message">{{ message }}</div>
-</div>
+<!-- Empty Basket Message -->
+<p *ngIf="basket.length === 0" class="empty-msg">Your basket is currently empty.</p>
+
+<!-- Checkout Button -->
+<button class="checkout-btn" (click)="checkout()" [disabled]="basket.length === 0">Checkout</button>
+
+<!-- Success Message -->
+<div *ngIf="message" class="message">{{ message }}</div>
+
+<!-- Button to view rewards -->
+<!-- The following button is now controlled through the app-popup component -->
+<!-- <button *ngIf="showViewRewardsButton" (click)="viewRewards()">View Rewards</button> -->

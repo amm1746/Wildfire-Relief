@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
@@ -23,6 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ufund.api.ufundapi.controller.BasketController;
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.RewardsService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -34,6 +37,9 @@ class BasketControllerTest {
 
     @Mock
     private HttpSession session;
+
+    @Mock
+    private RewardsService rewardsService;
 
     @InjectMocks
     private BasketController basketController;
@@ -127,7 +133,7 @@ class BasketControllerTest {
         when(cupboardDAO.getNeed("Blankets")).thenReturn(cupboardNeed);
         when(cupboardDAO.updateNeed(eq("Blankets"), any(Need.class))).thenReturn(cupboardNeed);
 
-        Map<String, String> response = basketController.checkoutBasket(session);
+        Map<String, Object> response = basketController.checkoutBasket(session);
         assertEquals("Checkout successful", response.get("message"));
     }
 
@@ -141,7 +147,7 @@ class BasketControllerTest {
         when(session.getAttribute("basket")).thenReturn(basket);
         when(cupboardDAO.getNeed("Blankets")).thenReturn(cupboardNeed);
 
-        Map<String, String> response = basketController.checkoutBasket(session);
-        assertTrue(response.get("message").contains("Checkout failed"));
+        Map<String, Object> response = basketController.checkoutBasket(session);
+        assertTrue(response.get("message").toString().contains("Checkout failed"));
     }
 }
