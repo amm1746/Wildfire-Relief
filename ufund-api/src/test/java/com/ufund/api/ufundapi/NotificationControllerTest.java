@@ -27,9 +27,7 @@ public class NotificationControllerTest {
         controller = new NotificationController(mockDao);
 
         sampleNotification = new Notification(
-            "Test message", 
-            "helper", 
-            List.of("manager")
+
         );
     }
 

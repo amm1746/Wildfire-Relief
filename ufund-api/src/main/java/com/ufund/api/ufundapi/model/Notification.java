@@ -13,7 +13,7 @@ public class Notification {
     private String sender;
     private List<String> recipients;
 
-    public Notification(String message, String sender, List<String> recipients){
+    public Notification(){
         this.message = message;
         this.sender = sender;
         this.recipients = recipients;

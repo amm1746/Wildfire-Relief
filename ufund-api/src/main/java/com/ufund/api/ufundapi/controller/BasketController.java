@@ -148,7 +148,7 @@ public class BasketController {
             }
 
             String message = currentUser + " purchased items from the cupboard!";
-            Notification notification = new Notification(message, currentUser, recipients);
+            Notification notification = new Notification();
             notificationDAO.createNotification(notification);
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create notification");
