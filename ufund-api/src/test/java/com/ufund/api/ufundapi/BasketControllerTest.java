@@ -19,10 +19,13 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ufund.api.ufundapi.controller.BasketController;
+import com.ufund.api.ufundapi.dao.BasketFileDAO;
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.dao.NotificationDAO;
 import com.ufund.api.ufundapi.dao.UserDAO;
@@ -31,6 +34,7 @@ import com.ufund.api.ufundapi.model.RewardsService;
 
 import jakarta.servlet.http.HttpSession;
 
+@MockitoSettings(strictness = Strictness.LENIENT)
 @ExtendWith(MockitoExtension.class)  
 class BasketControllerTest {
 
@@ -41,19 +45,27 @@ class BasketControllerTest {
     private HttpSession session;
 
     @Mock
+    @SuppressWarnings("unused")
     private UserDAO userDAO;
 
     @Mock
+    @SuppressWarnings("unused")
     private NotificationDAO notificationDAO;
 
     @Mock
+    @SuppressWarnings("unused")
     private RewardsService rewardsService;
+
+    @Mock
+    @SuppressWarnings("unused")
+    private BasketFileDAO basketFileDAO;
 
     @InjectMocks
     private BasketController basketController;
 
     @Test
     void testAddToBasket_Success() throws IOException {
+        lenient().when(session.getAttribute("username")).thenReturn("helper");
         Need testNeed = new Need("Blankets", 10.0, 5, "Supply");
         List<Need> basket = new ArrayList<>();
         
@@ -66,6 +78,7 @@ class BasketControllerTest {
 
     @Test
     void testAddToBasket_NeedNotFound() throws IOException {
+    lenient().when(session.getAttribute("username")).thenReturn("helper");
     Need testNeed = new Need("Blankets", 10.0, 5, "Supply");
 
     when(cupboardDAO.getNeed("Blankets")).thenReturn(null);
@@ -78,25 +91,27 @@ class BasketControllerTest {
 
     @Test
     void testAddToBasket_ExceedsAvailableQuantity() throws IOException {
+        lenient().when(session.getAttribute("username")).thenReturn("helper");
         Need testNeed = new Need("Blankets", 10.0, 5, "Supply");
         List<Need> basket = new ArrayList<>();
 
     
         for (int i = 0; i < 5; i++) {
-            basket.add(new Need("Blankets", 10.0, 1, "Supply"));
+            basket.add(testNeed);
         }
 
         when(cupboardDAO.getNeed("Blankets")).thenReturn(testNeed);
         when(session.getAttribute("basket")).thenReturn(basket);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, 
-            () -> basketController.addToBasket(new Need("Blankets", 10.0, 1, "Supply"), session));
+            () -> basketController.addToBasket(testNeed, session));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
     }
 
     @Test
     void testGetBasket_Empty() {
+        lenient().when(session.getAttribute("username")).thenReturn("helper");
         when(session.getAttribute("basket")).thenReturn(null); 
         List<Need> result = basketController.getBasket(session);
 
@@ -106,18 +121,21 @@ class BasketControllerTest {
 
     @Test
     void testRemoveFromBasket_Success() {
+        lenient().when(session.getAttribute("username")).thenReturn("helper");
         Need testNeed = new Need("Blankets", 10.0, 5, "Supply");
         List<Need> basket = new ArrayList<>();
         basket.add(testNeed);
 
         when(session.getAttribute("basket")).thenReturn(basket);
 
-        Map<String, String> response = basketController.removeFromBasket(testNeed, session);
+        Map<String, String> response = basketController.removeFromBasket(
+            new Need("Blankets", 10.0, 5, "Supply"), session);
         assertEquals("Removed need from basket", response.get("message"));
     }
 
     @Test
     void testRemoveFromBasket_NotFound() {
+        lenient().when(session.getAttribute("username")).thenReturn("helper");
         Need testNeed = new Need("Blankets", 10.0, 5, "Supply");
         List<Need> basket = new ArrayList<>(); 
 
@@ -131,6 +149,7 @@ class BasketControllerTest {
 
     @Test
     void testCheckout_Success() throws IOException {
+        lenient().when(session.getAttribute("username")).thenReturn("helper");
         Need testNeed = new Need("Blankets", 10.0, 2, "Supply");
         Need cupboardNeed = new Need("Blankets", 10.0, 5, "Supply");
         List<Need> basket = new ArrayList<>();
@@ -149,6 +168,7 @@ class BasketControllerTest {
 
     @Test
     void testCheckout_FailsDueToInsufficientQuantity() throws IOException {
+        lenient().when(session.getAttribute("username")).thenReturn("helper");
         Need testNeed = new Need("Blankets", 10.0, 5, "Supply");
         Need cupboardNeed = new Need("Blankets", 10.0, 2, "Supply");
         
