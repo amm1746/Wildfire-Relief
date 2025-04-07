@@ -267,8 +267,12 @@ Sprint 2: Create admin account, funding basket obscurity not tested.
 
 >_**[Sprint 2, 3 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss
 > those._
->
+
+Sprint 2:
 ![Code Coverage](code_coverage_updated.png)
+
+Sprint 3:
+![Code Coverage](Sprint_3_Test.png)
 
 We did not run into any anomalies while testing. 
 
@@ -280,3 +284,11 @@ We did not run into any anomalies while testing.
 2025/03/18: Sprint 2, implemented manager dashboard and ability for manager to add/remove/edit needs.
 
 2025/03/19: Sprint 2, implemented helper dashboard and ability for helper to add/remove needs to their basket and search for needs. 
+
+2025/04/07: Sprint 3, implemented notification system to give users notifications when other users have made purchases.
+
+2025/04/07: Sprint 3, implemented rewards system to give helpers rewards.
+
+2025/04/07: Sprint 3, implemented data persistence.
+
+2025/04/07: Sprint 3, added ability for helpers to be able to checkout. 
