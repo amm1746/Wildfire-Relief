@@ -1,12 +1,14 @@
+<div>
 <h2>Register a New Account</h2>
 <form (ngSubmit)="register()">
     <label for="username">Username:</label>
-    <input id="username" [(ngModel)]="username" name="username" required />
+    <input id="username" [(ngModel)]="username" name="username" required (keydown.enter)="register()"/>
 
     <label for="password">Password:</label>
-    <input id="password" type="password" [(ngModel)]="password" name="password" required />
+    <input id="password" type="password" [(ngModel)]="password" name="password" required (keydown.enter)="register()"/>
 
     <button type="submit">Register</button>
 </form>
 
-<button routerLink="/login" class="btn btn-link">Back to Login</button>
+<button (click)="navigateToLogin()" class="btn-link">Back to Login</button>
+</div>

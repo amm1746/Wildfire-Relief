@@ -1,0 +1,77 @@
+div {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: #fff8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    border: 1px solid #e6d5c3;
+  }
+  
+  h2 {
+    color: #c72e00;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 0.5rem 0 1rem;
+    border: 2px solid #d4a76a;
+    border-radius: 4px;
+    background-color: #fffdfa;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #e67e22;
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2);
+  }
+  
+  button {
+    width: 100%;
+    padding: 12px;
+    margin: 0.5rem 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  button:first-of-type {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  button:first-of-type:hover {
+    background-color: #c0392b;
+  }
+  
+  .btn-link {
+    background: none;
+    color: #3498db;
+    text-decoration: underline;
+    padding: 0;
+    margin-top: 1rem;
+  }
+  
+  .btn-link:hover {
+    color: #2980b9;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: #fdecea;
+    border-left: 4px solid #e74c3c;
+    border-radius: 4px;
+  }

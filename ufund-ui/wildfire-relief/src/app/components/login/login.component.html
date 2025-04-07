@@ -1,7 +1,7 @@
 <div>
-    <h2>Login</h2>
-    <input type ="text" placeholder ="Username" [(ngModel)]="username">
-    <input type="password" placeholder="Password" [(ngModel)]="password">
+    <h2>Wildfire Relief Portal</h2>
+    <input type ="text" placeholder ="Username" [(ngModel)]="username" (keydown.enter)="login()">
+    <input type="password" placeholder="Password" [(ngModel)]="password" (keydown.enter)="login()">
     <button (click)="login()">Login</button>
     <button routerLink="/register" class="btn btn-link">Register Account</button>
 

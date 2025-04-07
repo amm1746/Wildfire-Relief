@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.ufund.api.ufundapi.dao.BasketFileDAO;
 import com.ufund.api.ufundapi.dao.CupboardDAO;
 import com.ufund.api.ufundapi.dao.NotificationDAO;
 import com.ufund.api.ufundapi.dao.UserDAO;
@@ -43,24 +44,26 @@ public class BasketController {
     private final NotificationDAO notificationDAO;
     private final UserDAO userDAO;
     private final RewardsService rewardsService;
+    private final BasketFileDAO basketDAO;
 
-    public BasketController(CupboardDAO cupboardDAO, NotificationDAO notificationDAO, UserDAO userDAO, RewardsService rewardsService) {
+    public BasketController(CupboardDAO cupboardDAO, NotificationDAO notificationDAO, UserDAO userDAO, RewardsService rewardsService, BasketFileDAO basketDAO) {
         this.cupboardDAO = cupboardDAO;
         this.notificationDAO = notificationDAO;
         this.userDAO = userDAO;
         this.rewardsService = rewardsService;
-
+        this.basketDAO = basketDAO;
     }
 
 
     @PostMapping("/add-to-basket")
     public Map<String, String> addToBasket(@RequestBody Need need, HttpSession session) throws IOException {
+        String username = (String) session.getAttribute("username");
         Need existingNeed = cupboardDAO.getNeed(need.getName());
         if (existingNeed == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Need does not exist");
         }
 
-        List<Need> basket = getBasket(session);
+        List<Need> basket = basketDAO.getBasket(username);
         int count = 0;
 
         for(Need n : basket){
@@ -73,28 +76,29 @@ public class BasketController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot add more than the available quantity");
         }
         basket.add(need);
-        session.setAttribute(BASKET_KEY, basket);
+        basketDAO.saveBasket(username, basket);
 
         return Map.of("message", "Added to basket");
     }
     @GetMapping("/basket")
     public List<Need> getBasket(HttpSession session) {
-        List<Need> basket = (List<Need>) session.getAttribute(BASKET_KEY);
-        if (basket == null) {
-            basket = new ArrayList<>();
-            session.setAttribute(BASKET_KEY, basket);
-        }
-        return basket;
+        String username = (String) session.getAttribute("username");
+        return basketDAO.getBasket(username);
     }
 
 @PostMapping("/remove-from-basket")
     public Map<String, String> removeFromBasket(@RequestBody Need need, HttpSession session) {
-        List<Need> basket = getBasket(session);
+        String username = (String) session.getAttribute("username");
+        List<Need> basket = basketDAO.getBasket(username);
         
         for (int i = 0; i < basket.size(); i++) {
             if (basket.get(i).getName().equalsIgnoreCase(need.getName())) {
                 basket.remove(i);
-                session.setAttribute(BASKET_KEY, basket);
+                try {
+                    basketDAO.saveBasket(username, basket);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return Map.of("message", "Removed need from basket");
             }
         }
@@ -104,8 +108,8 @@ public class BasketController {
 
     @PostMapping("/checkout")
     public Map<String, Object> checkoutBasket(HttpSession session) throws IOException {
-        String currentUser = (String) session.getAttribute("username");
-        List<Need> basket = getBasket(session);
+        String username = (String) session.getAttribute("username");
+        List<Need> basket = basketDAO.getBasket(username);
     
         Map<String, Integer> needCountMap = new HashMap<>();
         for (Need need : basket) {
@@ -142,30 +146,28 @@ public class BasketController {
         try {
             List<String> recipients = new ArrayList<>();
             for (User user : userDAO.getAllUsers()){
-                if(!user.getUsername().equalsIgnoreCase(currentUser)){
+                if(!user.getUsername().equalsIgnoreCase(username)){
                     recipients.add(user.getUsername());
                 }
             }
 
-            String message = currentUser + " purchased items from the cupboard!";
-            Notification notification = new Notification(message, currentUser, recipients);
+            Notification notification = new Notification(username + " purchased items from the cupboard!", username, recipients);
             notificationDAO.createNotification(notification);
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create notification");
         }
 
         basket.clear();
-        session.setAttribute(BASKET_KEY, basket);
+        basketDAO.saveBasket(username, basket);
     
         // Record the purchase
-        String helper = (String) session.getAttribute("helper-id");  // Extract helper ID from session
-        rewardsService.recordPurchase(helper);
+        rewardsService.recordPurchase(username);
     
         // Add first donation reward if applicable
-        rewardsService.addFirstDonationReward(helper);
+        rewardsService.addFirstDonationReward(username);
     
         // Get rewards after the checkout
-        List<Rewards> rewards = rewardsService.getRewards(helper);  // Get rewards based on helper
+        List<Rewards> rewards = rewardsService.getRewards(username);  // Get rewards based on helper
     
         // Return the response with message and rewards
         Map<String, Object> response = new HashMap<>();
@@ -175,11 +177,9 @@ public class BasketController {
     
         return response;
     }
-    
-
-    
 
     public List<Rewards> getRewards(HttpSession session) {
-        return rewardsService.getRewards("HELPER");
+        String username = (String) session.getAttribute("username");
+        return rewardsService.getRewards(username);
     }
 }
