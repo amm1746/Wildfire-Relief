@@ -54,12 +54,14 @@ This section describes the features of the application.
 > _**[Sprint 2 & 4]** Provide a simple description of the Minimum Viable Product._
 
 > _Sprint 2_
+The Minimum Viable Product (MVP) aims to provide a foundational system for managing a needs cupboard. The system supports basic user authentication and role-based access, where users can be Admins or Helpers. Admins have elevated permissions to manage inventory, view and edit user data, and oversee the system, while Helpers can view and fulfill requests. The core entity of the system is the Basket, which represents a collection of needs selected by a user.
 
-> _User Authentication: Users should be able to log in and log out to the system and basic security mechanisms like password validation_
+The MVP includes:
+> _User Authentication: Users must be able to log in and log out with credentials. Password validation and basic session control are implemented to secure the system.
 
-> _Data Management (DAO Layer - CupboardDAO.java, CupboardFileDAO.java): Provides basic Create, Read, Update, Delete (CRUD)  operations and stores data in a simple file._
+> _Data Management: A DAO (Data Access Object) layer handles persistent storage using file-based systems (CupboardDAO.java, CupboardFileDAO.java), supporting full CRUD (Create, Read, Update, Delete) operations on inventory and user data.
 
-> _Basic Logic (Controller Layer - CupboardController.java, InventoryController.java): Handles requests for managing cupboard items._
+> _Application Logic: Controllers (CupboardController.java, InventoryController.java) process incoming requests and coordinate interactions between the user interface and data layers to manage cupboard inventory, user accounts, and basket contents.
 
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
