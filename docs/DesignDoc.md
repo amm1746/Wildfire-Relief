@@ -81,6 +81,9 @@ As a Helper, I see only what I’m permitted to see (i.e., not admin tools), and
 ### Enhancements
 > _**[Sprint 4]** Describe what enhancements you have implemented for the project._
 
+Rewards System: Rewards Helpers for reaching certain milestones such as completing their first purchase or making the most purchases so that Helpers are incentivized to continue supporting needs. Adds a gamified layer to the platform and encourages engagement
+
+Notification System: Notifies other users when a Helper completes a purchase. Alerts users about a change in the Needs Cupboard. This keeps the experience dynamic and gives Helpers a real-time view of the evolving needs landscape, enhancing a sense of community contribution.
 
 ## Application Domain
 
