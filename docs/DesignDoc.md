@@ -142,84 +142,67 @@ This section describes the web interface flow; this is how the user views and in
 
 
 ### View Tier
-> _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
-> Describe the types of components in the tier and describe their
-> responsibilities.  This should be a narrative description, i.e. it has
-> a flow or "story line" that the reader can follow._
+The View Tier is responsible for managing the user interface and all user interactions. It acts as the entry point for both wildfire relief managers (U-Fund Managers) and helpers (supporters), providing tailored experiences based on their roles. This tier includes the following components:
 
-> _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects 
-> of the design that you are describing.  (**For example**, in a shopping experience application you might create a 
-> sequence diagram of a customer searching for an item and adding to their cart.)
-> As these can span multiple tiers, be sure to include an relevant HTTP requests from the client-side to the server-side 
-> to help illustrate the end-to-end flow._
+Landing Page: Acts as the main entry point of the application. It provides options to login as either a helper or U-Fund manager and introduces users to the purpose of the platform.
 
-> _**[Sprint 4]** To adequately show your system, you will need to present the **class diagrams** where relevant in your design. Some additional tips:_
- >* _Class diagrams only apply to the **ViewModel** and **Model** Tier_
->* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
- >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
- >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
+Login Page: Simple username-based login interface. If the username is admin, the user is logged in as a U-Fund Manager; otherwise, they are a helper.
 
-The View Tier is responsible for the user interface and interactions. It provides a seamless and intuitive experience for both wildfire relief managers and supporters. This tier consists of:
+Helper Dashboard: Displays all current wildfire relief needs from the cupboard. Helpers can search, filter, and view detailed information about each need. From here, they can add needs to their personal funding basket.
 
-Landing Page: Introduces the platform and provides access to login/signup.
+Funding Basket Page: Shows all the needs added by a helper. Allows them to modify quantities or remove needs before proceeding to checkout.
 
-Helper Dashboard: Allows supporters to browse needs, add them to their funding basket, and proceed with the donation process.
+Checkout Page: Final step in the donation process. The helper can review and confirm their donation. Once completed, needs are updated in the cupboard and other helpers are notified via the Notification system (enhancement).
 
-Manager Dashboard: Enables relief managers to create, update, and remove wildfire relief needs.
+Manager Dashboard: Allows U-Fund Managers to create, update, or delete wildfire relief needs in their organization’s cupboard. Changes are persisted and reflected in the system.
 
-Checkout Page: Facilitates the funding process with a simple and secure transaction mechanism.
+Notification Display (Enhancement): Notifies helpers in real-time when any need is updated, funded, or fulfilled by another user.
+
+Reward Display (Enhancement): Shows rewards to helpers based on their contributions — e.g. a badge for first donation or leaderboard for most funded needs.
+
+> _Helper Donates to a Need
+![Helper Donates A Need](<sequence diagram - team.png>)
+
+> _Manager Updates a Need
+![Manager Updates A Need](<sequence diagram 2.png>)
 
 ### ViewModel Tier
-> _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
+The ViewModel Tier serves as a mediator between the user interface (View Tier) and the business logic/data layer (Model Tier). It translates user actions into commands that interact with the data model and then prepares the results for display in the View.
 
-> _CupboardController: Implements the REST API endpoints for CRUD operations for wildfire relief needs. It also interacts with
-> the CupboardDAO file for data persistence._
->
-> _CupboardDAO (interface): Defines the methods for need management, such as retrieving, adding, and updating a need._
+This tier includes:
 
-> _**[Sprint 4]** Provide a summary of this tier of your architecture. This
-> section will follow the same instructions that are given for the View
-> Tier above._
+LoginViewModel: Handles logic for determining user roles based on input. It ensures that the system presents the correct UI (Helper vs Manager) based on the login credentials.
 
-> _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
-> static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
-> 
+NeedListViewModel: Coordinates between the CupboardDAO and the front-end view. Retrieves all current needs for display and filters based on search queries.
+
+BasketViewModel: Maintains the state of a helper’s funding basket, handles add/remove operations, and manages the transition to the checkout process.
+
+ManagerViewModel: Interfaces with the CupboardDAO to update the cupboard contents. Enables managers to add new needs or edit/delete existing ones.
+
+NotificationViewModel (Enhancement): Collects and formats real-time changes to needs and triggers notifications for helpers.
+
+RewardViewModel (Enhancement): Tracks helper activity and updates the reward system accordingly.
+
 ![Replace with your ViewModel Tier class diagram 1, etc.](model-placeholder.png)
 
-The ViewModel Tier bridges the View Tier and Model Tier by handling business logic and API interactions. This tier consists of:
-
-CupboardController: Implements REST API endpoints for CRUD operations on wildfire relief needs and interacts with the CupboardDAO for data persistence.
-
-LoginController: Implements REST API endpoints for handling user authentication and login.
-
-BasketController: Handles all commands related to a helper and their basket. 
-
-
 ### Model Tier
-> _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
+The Model Tier is responsible for data representation, persistence, and core business logic. It stores all information about wildfire relief needs and user activity and ensures consistent state throughout the system.
 
-> _Model:_
-> _Need: Represents a single need. Contains the attributes name, cost, quantity, and type. _
-> _CupboardFileDAO: Reads and writes needs to a JSON file._
+This tier includes the following key components:
 
+Need: Core data model representing a single wildfire relief need. It includes attributes such as id, name, description, cost, quantity, and urgency.
 
-> _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
-> section will follow the same instructions that are given for the View
-> Tier above._
+Cupboard: Contains a list of all current needs and serves as the authoritative source for what is available to be funded.
 
-> _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
-> static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
-> 
+CupboardFileDAO: Responsible for reading from and writing to JSON files to persist the state of the cupboard across sessions.
+
+Notification (Enhancement): Represents an update or alert triggered by a change to any need — such as a new need being added or one being fulfilled.
+
+Reward (Enhancement): Represents reward objects like badges or achievements given to helpers based on their funding behavior.
+
+Helper: Represents a logged-in user (non-admin) and tracks their activity including current basket and reward status.
+
 ![Replace with your Model Tier class diagram 1, etc.](model-placeholder.png)
-
-The Model Tier is responsible for data representation and persistence. It ensures that wildfire relief needs and funding transactions are accurately managed. This tier consists of:
-
-Need: Represents a single wildfire relief need with attributes such as name, cost, quantity, and urgency level.
-
-Notification: Represents a single notification for the wildfire relief website. 
-
-Reward: Represents a single reward for the wildfire relief website. 
-
 
 ## OO Design Principles
 
