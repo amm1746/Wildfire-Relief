@@ -65,6 +65,18 @@ The MVP includes:
 
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
+As a user, I can log in and log out of the system using a simple username input.
+
+As an Admin (U-Fund Manager), I can add, edit, and remove needs in the Needs Cupboard.
+
+As a Helper, I can browse and search through needs posted by organizations.
+
+As a Helper, I can add needs to my Funding Basket and proceed to a checkout process.
+
+As a system, I persist all needs and funding data to files so that changes are retained between sessions.
+
+As a Helper, I see only what I’m permitted to see (i.e., not admin tools), and vice versa for the Admin.
+
 
 ### Enhancements
 > _**[Sprint 4]** Describe what enhancements you have implemented for the project._
