@@ -106,6 +106,10 @@ This section describes the application domain.
 > Funding Basket: A temporary selection of Needs a Helper wants to fund. Belongs to a specific Helper.
 >
 > Authentication System: Manages user login and role-based access. Determines if user is a Helper or a U-Fund Manager. 
+> 
+> Rewards: A popup for Helpers after they make a purchase in the funding basket and reach a milestone such as first purchase or most purchases
+> 
+> Notifications: Window appears in the Helper dashboard displaying history of user purchases every time a Helper makes a purchase
 
 
 ## Architecture and Design
