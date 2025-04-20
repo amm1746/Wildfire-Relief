@@ -210,7 +210,7 @@ Helper: Represents a logged-in user (non-admin) and tracks their activity includ
 
 > _Single Responsibility Principle (SRP): Need is responsible only for storing data about a need._
 
-> _Open/Closed Principle (OCP): CupboardDAO is an interface which allows for future modifications without changing the existing logic._
+> _Open/Closed Principle (OCP): CupboardDAOs is an interface which allows for future modifications without changing the existing logic._
 
 > _Controller: Component that manages user input and interacts with the model and view to process requests and update the user interface._
 
@@ -230,6 +230,8 @@ OO PRINCIPLE #1: Single responsibility. This principle states that a class shoul
 OO PRINCIPLE #2: Open/closed principle. This principle states that a class should be open for extension but closed for modification (new functionality can be added without changing existing code). We applied this by making key components extensible, instead of having modifications be made to existing code. For example, the LoginService class determines user roles based on their username (admin = U-Fund Manager, anything else = Helper). In the future, if another role needs to be added, we can extend the system instead of modifying the existing logic. In addition, instead of hardcoding different need categories, we could use polymorphism to add these things easily and without modifying existing code. This allows for easier expansion of our code in the future.
 >
 OO PRINCIPLE #3: Dependency Inversion Principle. This principle states that high-level modules should not depend on low-level modules; they should both depend on abstractions. In our project, we follow this by having services and controllers depend on interfaces instead of actual implementations. For example, CupboardController interacts with CupboardDAO, not directly with CupboardFileDAO. This makes the system easier to test mocks, and makes it easier to adapt in the future without having to rewrite service logic.
+>
+OO PRINCIPLE #4: Liskov Substitution Principle (LSP). This principle states that objects of a superclass should be replaceable with objects of a subclass without altering the correctness of the program. In other words, if class S is a subtype of class T, we should be able to replace T with S without breaking functionality. We applied LSP in our project through the use of interfaces and subclass implementations. A good example is the use of the CupboardDAO interface. CupboardFileDAO implements CupboardDAO and can be used interchangeably wherever CupboardDAO is expected. For example, CupboardController only depends on CupboardDAO, so we can substitute CupboardFileDAO or any future subclass (e.g., CupboardDatabaseDAO) without changing how the controller behaves. This follows LSP by allowing polymorphic behavior and making our code more modular and flexible for future enhancements (like switching to a database-backed storage system).
 
 > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
 
