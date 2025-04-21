@@ -294,6 +294,9 @@ Sprint 2:
 Sprint 3:
 ![Code Coverage](Sprint_3_Test.png)
 
+Sprint 4: 
+![Code Coverage](Sprint_3_Test.png)
+
 We did not run into any anomalies while testing. 
 
 ## Ongoing Rationale
@@ -312,3 +315,7 @@ We did not run into any anomalies while testing.
 2025/04/07: Sprint 3, implemented data persistence.
 
 2025/04/07: Sprint 3, added ability for helpers to be able to checkout. 
+
+2025/04/21: Sprint 4, completed Design Doc
+
+2025/04/21" Sprint 4, finalized program 
