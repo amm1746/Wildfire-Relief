@@ -241,6 +241,18 @@ OO PRINCIPLE #4: Liskov Substitution Principle (LSP). This principle states that
 > Analysis Tool (SonarQube) and provide your analysis and recommendations.  
 > Include any relevant screenshot(s) with each area._
 
+![Problem_1](analysis1.png)
+
+The return type is written as ResponseEntity<?>, which means "this could return anything." But in this method, you always return a list of Need objects, not just anything. Using <?> makes the method less clear. Other developers won’t know what to expect from this endpoint. It also makes the code harder to read and work with later on. We can change it to ResponseEntity<List<Need>>, by doing this, we could make the code clearer to the user
+
+![Problem_2](analysis2.png)
+
+Another problem is that we had an unused private field; removing it helps keep the code cleaner, easier to understand, and less error-prone.
+
+![Problem_3](analysis3.png)
+
+Repeating the same string in multiple places makes it harder to update later, since you’d have to change every copy. We can fix the issue by defining a constant for this. 
+
 > _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
 
 ## Testing
