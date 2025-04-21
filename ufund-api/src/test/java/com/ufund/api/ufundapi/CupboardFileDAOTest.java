@@ -1,17 +1,19 @@
 package com.ufund.api.ufundapi;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ufund.api.ufundapi.dao.BasketFileDAO;
 import com.ufund.api.ufundapi.dao.CupboardFileDAO;
 import com.ufund.api.ufundapi.model.Need;
 
@@ -25,13 +27,18 @@ public class CupboardFileDAOTest {
 
     private CupboardFileDAO cupboardFileDAO;
     private Need testNeed;
+    private BasketFileDAO basketFileDAO;
+
 
     @BeforeEach
     public void setup() throws IOException {
         
         Files.write(Paths.get("test-needs.json"), "[]".getBytes());
+        Files.write(Paths.get("test-baskets.json"), "{}".getBytes());
+
         ObjectMapper objectMapper = new ObjectMapper();
-        cupboardFileDAO = new CupboardFileDAO("test-needs.json", objectMapper);
+        basketFileDAO = new BasketFileDAO("test-baskets.json", objectMapper);
+        cupboardFileDAO = new CupboardFileDAO("test-needs.json", objectMapper, basketFileDAO);
         testNeed = new Need("Socks", 5.0, 10, "Clothing");
     }
 
@@ -129,7 +136,8 @@ public class CupboardFileDAOTest {
     public void testLoadWhenFileMissing() throws IOException {
     Files.deleteIfExists(Paths.get("test-needs.json"));
     ObjectMapper mapper = new ObjectMapper();
-    CupboardFileDAO freshDAO = new CupboardFileDAO("test-needs.json", mapper);
+    BasketFileDAO testBasketDAO = new BasketFileDAO("test-baskets.json", mapper);
+    CupboardFileDAO freshDAO = new CupboardFileDAO("test-needs.json", mapper, testBasketDAO);
 
     assertTrue(freshDAO.getAllNeeds().isEmpty()); 
     }
