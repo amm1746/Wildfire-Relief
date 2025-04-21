@@ -183,7 +183,7 @@ NotificationViewModel (Enhancement): Collects and formats real-time changes to n
 
 RewardViewModel (Enhancement): Tracks helper activity and updates the reward system accordingly.
 
-![Replace with your ViewModel Tier class diagram 1, etc.](model-placeholder.png)
+![ViewModel Tier Class](ViewModel.png)
 
 ### Model Tier
 The Model Tier is responsible for data representation, persistence, and core business logic. It stores all information about wildfire relief needs and user activity and ensures consistent state throughout the system.
@@ -202,7 +202,7 @@ Reward (Enhancement): Represents reward objects like badges or achievements give
 
 Helper: Represents a logged-in user (non-admin) and tracks their activity including current basket and reward status.
 
-![Replace with your Model Tier class diagram 1, etc.](model-placeholder.png)
+![Model Tier](Model.png)
 
 ## OO Design Principles
 
@@ -294,6 +294,9 @@ Sprint 2:
 Sprint 3:
 ![Code Coverage](Sprint_3_Test.png)
 
+Sprint 4: 
+![Code Coverage](Sprint_3_Test.png)
+
 We did not run into any anomalies while testing. 
 
 ## Ongoing Rationale
@@ -312,3 +315,7 @@ We did not run into any anomalies while testing.
 2025/04/07: Sprint 3, implemented data persistence.
 
 2025/04/07: Sprint 3, added ability for helpers to be able to checkout. 
+
+2025/04/21: Sprint 4, completed Design Doc
+
+2025/04/21" Sprint 4, finalized program 
