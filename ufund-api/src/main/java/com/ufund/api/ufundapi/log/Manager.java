@@ -63,6 +63,4 @@ public class Manager {
         }
         return false;
     }
-    // Need create(String name, double cost, int quantity, String type);
-
 }
