@@ -7,10 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufund.api.ufundapi.model.Need;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ufund.api.ufundapi.model.Need;
 
 /**
  * 
@@ -54,4 +55,16 @@ public class BasketFileDAO {
         baskets.put(username, items);
         save();
     }
+
+    public void removeNeedFromAllBaskets(String needName) throws IOException {
+    boolean modified = false;
+    for (List<Need> basket : baskets.values()) {
+        if (basket.removeIf(need -> need.getName().equalsIgnoreCase(needName))) {
+            modified = true;
+        }
+    }
+    if (modified) {
+        save();
+    }
+}
 }

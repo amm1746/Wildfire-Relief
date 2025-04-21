@@ -2,13 +2,13 @@ package com.ufund.api.ufundapi.dao;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.model.Need;
 
@@ -24,14 +24,17 @@ public class CupboardFileDAO implements CupboardDAO {
     private final ObjectMapper objectMapper;
     private final String filename;
     private List<Need> needs;
+    private BasketFileDAO basketDAO;
 
     /**
      * Constructs CupboardFileDAO with an empty list of needs.
      */
     public CupboardFileDAO(@Value("${needs.file}") String filename, 
-                          ObjectMapper objectMapper) throws IOException {
+                          ObjectMapper objectMapper,
+                          BasketFileDAO basketDAO) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
+        this.basketDAO = basketDAO;
         load();
     }
 
@@ -102,6 +105,7 @@ public class CupboardFileDAO implements CupboardDAO {
         try {
         needs.removeIf(need -> need.getName().equalsIgnoreCase(name));
         save();
+        basketDAO.removeNeedFromAllBaskets(name);
         } catch (IOException e) {
             // Log error or throw as unchecked exception
             throw new RuntimeException("Failed to delete needs", e);
