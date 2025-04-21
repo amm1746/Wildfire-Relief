@@ -255,6 +255,8 @@ Repeating the same string in multiple places makes it harder to update later, si
 
 > _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
 
+Our current design effectively applies key object-oriented principles like Single Responsibility and Dependency Inversion, but could better implement other principles. Future improvements should focus on strengthening type safety by replacing generic returns with specific types. We should also introduce better notification implementations and standardize error handling. 
+
 ## Testing
 > _This section will provide information about the testing performed
 > and the results of the testing._
