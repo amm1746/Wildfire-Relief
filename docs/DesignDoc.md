@@ -285,6 +285,10 @@ Sprint 2: Create admin account, funding basket obscurity not tested.
 > code coverage met your targets._
 > 
 
+Our testing strategy is to make a unit test for each function we created, testing if the function work
+or what will happen if no such objects exist (for example, object is NULL). And we just decided to just
+do everything on the rubric, meet the 90% code coverage requirement. 
+
 >_**[Sprint 2, 3 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss
 > those._
 
