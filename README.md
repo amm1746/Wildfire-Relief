@@ -1,6 +1,6 @@
 # U-Fund: Wildfire Relief
 
-An online U-Fund system built in Java **21. **
+An online U-Fund system built in Java **21.**
   
 ## Team
 
