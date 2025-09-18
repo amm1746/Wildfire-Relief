@@ -15,7 +15,6 @@ An online U-Fund system built in Java **21** and ___ _replace with other platfor
 
 - Java **21** (Make sure to have correct JAVA_HOME setup in your environment)
 - Maven
--  _add any other tech stack requirements_
 
 
 ## How to run it
@@ -23,13 +22,6 @@ An online U-Fund system built in Java **21** and ___ _replace with other platfor
 1. Clone the repository and go to the root directory.
 2. Execute `mvn compile exec:java`
 3. Open in your browser `http://localhost:8080/`
-4.  _add any other steps required or examples of how to use/run_
-
-## Known bugs and disclaimers
-(It may be the case that your implementation is not perfect.)
-
-Document any known bug or nuisance.
-If any shortcomings, make clear what these are and where they are located.
 
 ## How to test it
 
@@ -62,13 +54,6 @@ To run tests on all the tiers in isolation do this:
 2. Execute `mvn exec:exec@docs`
 3. The generated PDF will be in `PROJECT_DOCS_HOME/` directory
 
-
-## How to setup/run/test program 
-1. Tester, first obtain the Acceptance Test plan
-2. IP address of target machine running the app
-3. Execute ________
-4. ...
-5. ...
 
 ## License
 
